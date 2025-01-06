@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@PropertySource("classpath:cloud/application-cloud-profile.yml")
 public class S3FileHandler {
 
     private final AmazonS3Client amazonS3Client;
