@@ -61,9 +61,7 @@ public class S3FileHandler {
 
     // S3로 파일 업로드
     private String upload(final File uploadFile, final String dirName, final Long userId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(dirName).append(userId).append("/").append(UUID.randomUUID()).append(uploadFile.getName());
-        String fileName = sb.toString();
+        String fileName = dirName + userId + "/" + UUID.randomUUID() + uploadFile.getName();
 
         String uploadFileUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
@@ -90,9 +88,7 @@ public class S3FileHandler {
 
     // 로컬에 파일 업로드 하기
     private Optional<File> convert(final MultipartFile file) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(System.getProperty("user.home")).append("/").append(file.getOriginalFilename());
-        String filePath = sb.toString();
+        String filePath = System.getProperty("user.home") + "/" + file.getOriginalFilename();
 
         File convertFile = new File(filePath);
         if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨
