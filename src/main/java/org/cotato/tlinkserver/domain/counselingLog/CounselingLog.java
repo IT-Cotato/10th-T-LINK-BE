@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -41,7 +42,8 @@ public class CounselingLog {
 	@Column(name = "title", nullable = false, length = 50)
 	private String title;
 
-	@Column(name = "content", nullable = false)
+	@Lob
+	@Column(name = "content", nullable = false, length = 300)
 	private String content;
 
 	@Column(name = "engagement", nullable = false, length = 10)
