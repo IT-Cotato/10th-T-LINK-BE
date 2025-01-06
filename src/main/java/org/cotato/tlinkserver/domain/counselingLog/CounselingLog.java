@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,8 +48,9 @@ public class CounselingLog {
 	@Column(name = "content", nullable = false, length = 300)
 	private String content;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "engagement", nullable = false, length = 10)
-	private String engagement;
+	private Engagement engagement;
 
 	@Column(name = "homework_submitted")
 	private boolean homeworkSubmitted;
@@ -57,7 +60,7 @@ public class CounselingLog {
 	private LocalDateTime updatedAt;
 
 	@Builder
-	public CounselingLog(Room room, String title, String content, String engagement, boolean homeworkSubmitted) {
+	public CounselingLog(Room room, String title, String content, Engagement engagement, boolean homeworkSubmitted) {
 		this.room = room;
 		this.title = title;
 		this.content = content;
