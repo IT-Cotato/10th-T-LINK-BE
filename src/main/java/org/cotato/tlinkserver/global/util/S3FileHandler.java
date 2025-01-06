@@ -24,7 +24,7 @@ public class S3FileHandler {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket-name}")
     private String bucket;
 
     private final String EXAMPLE_DIR = "example/";
