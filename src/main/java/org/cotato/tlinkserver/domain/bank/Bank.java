@@ -1,4 +1,4 @@
-package org.cotato.tlinkserver.domain.user;
+package org.cotato.tlinkserver.domain.bank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

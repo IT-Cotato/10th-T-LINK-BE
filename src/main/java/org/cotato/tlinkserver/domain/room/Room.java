@@ -8,7 +8,7 @@ import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
-import org.cotato.tlinkserver.domain.user.Bank;
+import org.cotato.tlinkserver.domain.bank.Bank;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
