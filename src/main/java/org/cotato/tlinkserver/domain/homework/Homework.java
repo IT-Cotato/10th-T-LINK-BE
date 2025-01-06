@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.Room;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -47,11 +47,11 @@ public class Homework {
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
 
-	@UpdateTimestamp
 	@Column(name = "deadline", nullable = false)
 	private LocalDateTime deadline;
 
-	@Column(name = "discription", nullable = false)
+	@Lob
+	@Column(name = "discription", nullable = false, length = 300)
 	private String description;
 
 	@OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
