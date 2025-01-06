@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -69,6 +70,9 @@ public class Room {
 	@Column(name = "deposit_amount", nullable = false)
 	private int depositAmount;
 
+	@Embedded
+	private RoomPermission roomPermission;
+
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LectureFileBox> lectureFileBoxes = new ArrayList<>();
 
@@ -80,9 +84,6 @@ public class Room {
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoomList> roomLists = new ArrayList<>();
-
-	@OneToOne(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-	private RoomPermission roomPermission;
 
 	@Builder
 	public Room(String name, String subject, DayOfWeek lessonDay, Bank bank,
@@ -110,11 +111,6 @@ public class Room {
 	public void addCounselingLog(CounselingLog counselingLog) {
 		counselingLogs.add(counselingLog);
 		counselingLog.setRoom(this);
-	}
-
-	public void addRoomPermission(RoomPermission roomPermission) {
-		this.setRoomPermission(roomPermission);
-		roomPermission.setRoom(this);
 	}
 
 	public void addRoomList(RoomList roomList) {
