@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.domain.counselingLog;
 
 import java.time.LocalDateTime;
 
+import org.cotato.tlinkserver.domain.counselingLog.constant.Engagement;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.hibernate.annotations.UpdateTimestamp;
 

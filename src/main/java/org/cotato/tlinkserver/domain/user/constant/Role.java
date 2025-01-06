@@ -1,4 +1,4 @@
-package org.cotato.tlinkserver.domain.user;
+package org.cotato.tlinkserver.domain.user.constant;
 
 import lombok.Getter;
 

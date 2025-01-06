@@ -1,4 +1,4 @@
-package org.cotato.tlinkserver.domain.room;
+package org.cotato.tlinkserver.domain.room.constant;
 
 import lombok.Getter;
 
