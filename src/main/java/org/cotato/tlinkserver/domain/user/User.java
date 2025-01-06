@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.RoomList;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;

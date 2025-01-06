@@ -1,4 +1,4 @@
-package org.cotato.tlinkserver.domain.counselingLog;
+package org.cotato.tlinkserver.domain.counselingLog.constant;
 
 import lombok.Getter;
 
