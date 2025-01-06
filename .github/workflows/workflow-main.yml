@@ -15,7 +15,7 @@ jobs:
     # 실행환경 설정
     runs-on: ubuntu-24.04
 
-    # Action을 사용하여 Step을 구성
+    # 액션을 사용하여 Step을 구성
     steps:
       # GitHub repository 코드 체크아웃
       - name: Checkout the repository
