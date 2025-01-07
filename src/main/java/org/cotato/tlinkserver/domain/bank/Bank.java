@@ -18,7 +18,6 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})
 public class Bank {
 
 	@Id

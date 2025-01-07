@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-@EqualsAndHashCode(of = {""})
 public class RoomPermission {
 
 	@Column(name = "lec_files")
