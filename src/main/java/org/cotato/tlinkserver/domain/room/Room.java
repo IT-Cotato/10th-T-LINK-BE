@@ -43,6 +43,9 @@ public class Room {
 	@Column(name = "room_id", updatable = false)
 	private Long id;
 
+	@Column(name = "student_name", nullable = false, length = 20)
+	private String studentName;
+
 	@Column(name = "subject", nullable = false, length = 30)
 	private String subject;
 
