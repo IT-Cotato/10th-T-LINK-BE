@@ -15,8 +15,8 @@ import lombok.Setter;
 @Setter
 public class RoomPermission {
 
-	@Column(name = "lec_files")
-	private boolean lecFiles;
+	@Column(name = "lecture_file")
+	private boolean lectureFile;
 
 	@Column(name = "homework")
 	private boolean homework;
@@ -31,9 +31,9 @@ public class RoomPermission {
 	private boolean account;
 
 	@Builder
-	public RoomPermission(boolean lecFiles, boolean homework, boolean gradeStatistic, boolean counselingLog,
+	public RoomPermission(boolean lectureFile, boolean homework, boolean gradeStatistic, boolean counselingLog,
 		boolean account) {
-		this.lecFiles = lecFiles;
+		this.lectureFile = lectureFile;
 		this.homework = homework;
 		this.gradeStatistic = gradeStatistic;
 		this.counselingLog = counselingLog;
