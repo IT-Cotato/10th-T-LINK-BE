@@ -70,9 +70,6 @@ public class Room {
 	@Column(name = "deposit_amount", nullable = false)
 	private int depositAmount;
 
-	@Embedded
-	private RoomPermission roomPermission;
-
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LectureFileBox> lectureFileBoxes = new ArrayList<>();
 
