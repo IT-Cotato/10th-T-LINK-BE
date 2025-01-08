@@ -43,9 +43,6 @@ public class Room {
 	@Column(name = "room_id", updatable = false)
 	private Long id;
 
-	@Column(name = "room_name", nullable = false, length = 50)
-	private String name;
-
 	@Column(name = "subject", nullable = false, length = 30)
 	private String subject;
 
@@ -86,9 +83,8 @@ public class Room {
 	private List<RoomList> roomLists = new ArrayList<>();
 
 	@Builder
-	public Room(String name, String subject, DayOfWeek lessonDay, Bank bank,
+	public Room(String subject, DayOfWeek lessonDay, Bank bank,
 		String accountNumber, int depositAt, int depositAmount) {
-		this.name = name;
 		this.subject = subject;
 		this.lessonDay = lessonDay;
 		this.bank = bank;
