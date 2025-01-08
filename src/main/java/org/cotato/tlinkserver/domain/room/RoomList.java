@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.domain.room;
 
 import org.cotato.tlinkserver.domain.user.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -31,10 +32,14 @@ public class RoomList {
 	@JoinColumn(name = "room_id")
 	private Room room;
 
+	@Column(name = "room_name", nullable = false, length = 50)
+	private String name;
+
 	@Builder
-	public RoomList(User user, Room room) {
+	public RoomList(User user, Room room, String name) {
 		this.user = user;
 		this.room = room;
+		this.name = name;
 	}
 
 }
