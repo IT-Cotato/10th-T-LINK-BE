@@ -35,11 +35,31 @@ public class RoomList {
 	@Column(name = "room_name", nullable = false, length = 50)
 	private String name;
 
+	@Column(name = "lecture_file")
+	private boolean lectureFile;
+
+	@Column(name = "homework")
+	private boolean homework;
+
+	@Column(name = "grade_statistic")
+	private boolean gradeStatistic;
+
+	@Column(name = "counseling_log")
+	private boolean counselingLog;
+
+	@Column(name = "deposit")
+	private boolean deposit;
+
 	@Builder
-	public RoomList(User user, Room room, String name) {
+	public RoomList(User user, Room room, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
+		boolean counselingLog, boolean deposit) {
 		this.user = user;
 		this.room = room;
 		this.name = name;
+		this.lectureFile = lectureFile;
+		this.homework = homework;
+		this.gradeStatistic = gradeStatistic;
+		this.counselingLog = counselingLog;
+		this.deposit = deposit;
 	}
-
 }
