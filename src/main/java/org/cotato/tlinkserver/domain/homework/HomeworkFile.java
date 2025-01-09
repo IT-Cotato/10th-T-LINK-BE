@@ -1,5 +1,7 @@
 package org.cotato.tlinkserver.domain.homework;
 
+import org.cotato.tlinkserver.domain.user.User;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,6 +32,10 @@ public class HomeworkFile {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "homework_id")
 	private Homework homework;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@Builder
 	public HomeworkFile(String filePath, Homework homework) {
