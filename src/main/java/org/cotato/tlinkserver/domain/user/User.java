@@ -1,8 +1,10 @@
 package org.cotato.tlinkserver.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.room.RoomList;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.hibernate.annotations.CreationTimestamp;
@@ -51,7 +53,10 @@ public class User {
 	private LocalDateTime createdAt;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RoomList> roomLists;
+	private List<RoomList> roomLists = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
 	public User(String username, String phoneNumber, String profilePath, Role role) {
