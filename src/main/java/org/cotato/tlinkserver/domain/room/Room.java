@@ -120,4 +120,9 @@ public class Room {
 		lessonDay.setRoom(this);
 	}
 
+	public void addLessonDay(LessonDay lessonDay) {
+		lessonDays.add(lessonDay);
+		lessonDay.setRoom(this);
+	}
+
 }
