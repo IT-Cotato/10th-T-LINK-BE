@@ -1,13 +1,12 @@
 package org.cotato.tlinkserver.domain.user;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.room.RoomList;
 import org.cotato.tlinkserver.domain.user.constant.Role;
-import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,7 +18,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,7 +47,7 @@ public class User {
 	private Role role;
 
 	@Column(name = "birtyday", nullable = false)
-	private LocalDateTime birthday;
+	private LocalDate birthday;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<RoomList> roomLists = new ArrayList<>();
