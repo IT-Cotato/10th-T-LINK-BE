@@ -49,10 +49,10 @@ public class User {
 	@Column(name = "birtyday", nullable = false)
 	private LocalDate birthday;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
 	private List<Registration> registrations = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
