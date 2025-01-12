@@ -82,6 +82,9 @@ public class Room {
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoomList> roomLists = new ArrayList<>();
 
+	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LessonDay> lessonDays = new ArrayList<>();
+
 	@Builder
 	public Room(String subject, DayOfWeek lessonDay, Bank bank,
 		String accountNumber, int depositAt, int depositAmount) {
