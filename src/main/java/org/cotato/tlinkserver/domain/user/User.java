@@ -48,9 +48,8 @@ public class User {
 	@Column(name = "role", nullable = false, length = 10)
 	private Role role;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false)
-	private LocalDateTime createdAt;
+	@Column(name = "birtyday", nullable = false)
+	private LocalDateTime birthday;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RoomList> roomLists = new ArrayList<>();
