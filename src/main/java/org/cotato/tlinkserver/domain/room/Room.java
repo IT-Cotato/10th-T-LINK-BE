@@ -76,9 +76,6 @@ public class Room {
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LessonDay> lessonDays = new ArrayList<>();
 
-	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<LessonDay> lessonDays = new ArrayList<>();
-
 	@Builder
 	public Room(String subject, Bank bank,
 		String accountNumber, int depositAt, int depositAmount) {
@@ -108,16 +105,6 @@ public class Room {
 	public void addRegistration(Registration registration) {
 		registrations.add(registration);
 		registration.setRoom(this);
-	}
-
-	public void addLessonDay(LessonDay lessonDay) {
-		lessonDays.add(lessonDay);
-		lessonDay.setRoom(this);
-	}
-
-	public void addLessonDay(LessonDay lessonDay) {
-		lessonDays.add(lessonDay);
-		lessonDay.setRoom(this);
 	}
 
 	public void addLessonDay(LessonDay lessonDay) {

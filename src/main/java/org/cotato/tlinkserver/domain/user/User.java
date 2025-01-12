@@ -74,14 +74,4 @@ public class User {
 		homeworkFile.setUser(this);
 	}
 
-	public void addHomeworkFile(HomeworkFile homeworkFile) {
-		homeworkFiles.add(homeworkFile);
-		homeworkFile.setUser(this);
-	}
-
-	public void addHomeworkFile(HomeworkFile homeworkFile) {
-		homeworkFiles.add(homeworkFile);
-		homeworkFile.setUser(this);
-	}
-
 }
