@@ -7,16 +7,12 @@ import java.util.List;
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
-import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 import org.cotato.tlinkserver.domain.bank.Bank;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +22,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,8 +38,8 @@ public class Room {
 	@Column(name = "room_id", updatable = false)
 	private Long id;
 
-	@Column(name = "room_name", nullable = false, length = 50)
-	private String name;
+	@Column(name = "student_name", nullable = false, length = 20)
+	private String studentName;
 
 	@Column(name = "subject", nullable = false, length = 30)
 	private String subject;
@@ -52,10 +47,6 @@ public class Room {
 	@CreationTimestamp
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "lesson_day", nullable = false, length = 10)
-	private DayOfWeek lessonDay;
 
 	@OneToOne
 	@JoinColumn(name = "account_bank_id")
@@ -70,9 +61,6 @@ public class Room {
 	@Column(name = "deposit_amount", nullable = false)
 	private int depositAmount;
 
-	@Embedded
-	private RoomPermission roomPermission;
-
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LectureFileBox> lectureFileBoxes = new ArrayList<>();
 
@@ -83,14 +71,15 @@ public class Room {
 	private List<CounselingLog> counselingLogs = new ArrayList<>();
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RoomList> roomLists = new ArrayList<>();
+	private List<Registration> registrations = new ArrayList<>();
+
+	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LessonDay> lessonDays = new ArrayList<>();
 
 	@Builder
-	public Room(String name, String subject, DayOfWeek lessonDay, Bank bank,
+	public Room(String subject, Bank bank,
 		String accountNumber, int depositAt, int depositAmount) {
-		this.name = name;
 		this.subject = subject;
-		this.lessonDay = lessonDay;
 		this.bank = bank;
 		this.accountNumber = accountNumber;
 		this.depositAt = depositAt;
@@ -113,9 +102,14 @@ public class Room {
 		counselingLog.setRoom(this);
 	}
 
-	public void addRoomList(RoomList roomList) {
-		roomLists.add(roomList);
-		roomList.setRoom(this);
+	public void addRegistration(Registration registration) {
+		registrations.add(registration);
+		registration.setRoom(this);
+	}
+
+	public void addLessonDay(LessonDay lessonDay) {
+		lessonDays.add(lessonDay);
+		lessonDay.setRoom(this);
 	}
 
 }

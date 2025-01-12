@@ -53,14 +53,14 @@ public class CounselingLog {
 	private Engagement engagement;
 
 	@Column(name = "homework_submitted")
-	private boolean homeworkSubmitted;
+	private Boolean homeworkSubmitted;
 
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 
 	@Builder
-	public CounselingLog(Room room, String title, String content, Engagement engagement, boolean homeworkSubmitted) {
+	public CounselingLog(Room room, String title, String content, Engagement engagement, Boolean homeworkSubmitted) {
 		this.room = room;
 		this.title = title;
 		this.content = content;

@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.domain.homework;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +45,13 @@ public class Homework {
 
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false)
-	private LocalDateTime createdAt;
+	private LocalDate createdAt;
 
 	@Column(name = "deadline", nullable = false)
 	private LocalDateTime deadline;
 
 	@Lob
-	@Column(name = "discription", nullable = false, length = 300)
+	@Column(name = "description", nullable = false, length = 300)
 	private String description;
 
 	@OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,11 +1,12 @@
 package org.cotato.tlinkserver.domain.user;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.cotato.tlinkserver.domain.room.RoomList;
+import org.cotato.tlinkserver.domain.homework.HomeworkFile;
+import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.user.constant.Role;
-import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,7 +18,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,12 +46,14 @@ public class User {
 	@Column(name = "role", nullable = false, length = 10)
 	private Role role;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false)
-	private LocalDateTime createdAt;
+	@Column(name = "birtyday", nullable = false)
+	private LocalDate birthday;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RoomList> roomLists;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<Registration> registrations = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
 	public User(String username, String phoneNumber, String profilePath, Role role) {
@@ -62,9 +64,14 @@ public class User {
 	}
 
 	// 연관 관계 메서드
-	public void addRoomList(RoomList roomList) {
-		roomLists.add(roomList);
-		roomList.setUser(this);
+	public void addRoomList(Registration registration) {
+		registrations.add(registration);
+		registration.setUser(this);
+	}
+
+	public void addHomeworkFile(HomeworkFile homeworkFile) {
+		homeworkFiles.add(homeworkFile);
+		homeworkFile.setUser(this);
 	}
 
 }
