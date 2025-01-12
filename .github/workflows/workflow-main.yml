@@ -52,8 +52,8 @@ jobs:
       # application-cloud.yml 파일 생성
       - name: make application-cloud.yml
         run: |
-          touch ./src/main/resources/application-cloud.yml
-          echo "${{ secrets.APPLICATION_CLOUD }}" > ./src/main/resources/application-cloud.yml
+          touch ./src/main/resources/cloud/application-cloud.yml
+          echo "${{ secrets.APPLICATION_CLOUD }}" > ./src/main/resources/cloud/application-cloud.yml
         shell: bash
 
       # 빌드 속도 향상을 위한 Gradle 캐싱
