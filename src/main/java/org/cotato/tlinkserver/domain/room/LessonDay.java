@@ -4,6 +4,7 @@ import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +33,7 @@ public class LessonDay {
 	@JoinColumn(name = "room_id")
 	private Room room;
 
+	@Enumerated
 	@Column(name = "lesson_day", nullable = false, length = 10)
 	private DayOfWeek lessonDay;
 
