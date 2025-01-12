@@ -13,7 +13,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +25,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,10 +50,6 @@ public class Room {
 	@CreationTimestamp
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "lesson_day", nullable = false, length = 10)
-	private DayOfWeek lessonDay;
 
 	@OneToOne
 	@JoinColumn(name = "account_bank_id")
@@ -86,10 +80,9 @@ public class Room {
 	private List<LessonDay> lessonDays = new ArrayList<>();
 
 	@Builder
-	public Room(String subject, DayOfWeek lessonDay, Bank bank,
+	public Room(String subject, Bank bank,
 		String accountNumber, int depositAt, int depositAmount) {
 		this.subject = subject;
-		this.lessonDay = lessonDay;
 		this.bank = bank;
 		this.accountNumber = accountNumber;
 		this.depositAt = depositAt;
@@ -115,6 +108,11 @@ public class Room {
 	public void addRoomList(RoomList roomList) {
 		roomLists.add(roomList);
 		roomList.setRoom(this);
+	}
+
+	public void addLessonDay(LessonDay lessonDay) {
+		lessonDays.add(lessonDay);
+		lessonDay.setRoom(this);
 	}
 
 }
