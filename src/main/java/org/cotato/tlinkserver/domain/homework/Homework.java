@@ -51,7 +51,7 @@ public class Homework {
 	private LocalDateTime deadline;
 
 	@Lob
-	@Column(name = "discription", nullable = false, length = 300)
+	@Column(name = "description", nullable = false, length = 300)
 	private String description;
 
 	@OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
