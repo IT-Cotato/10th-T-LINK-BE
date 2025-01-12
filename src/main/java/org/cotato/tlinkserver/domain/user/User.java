@@ -51,10 +51,10 @@ public class User {
 	@Column(name = "birtyday", nullable = false)
 	private LocalDateTime birthday;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<RoomList> roomLists = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
