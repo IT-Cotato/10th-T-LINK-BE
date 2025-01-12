@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
-import org.cotato.tlinkserver.domain.room.RoomList;
+import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import jakarta.persistence.CascadeType;
@@ -50,7 +50,7 @@ public class User {
 	private LocalDate birthday;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<RoomList> roomLists = new ArrayList<>();
+	private List<Registration> registrations = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
@@ -64,9 +64,9 @@ public class User {
 	}
 
 	// 연관 관계 메서드
-	public void addRoomList(RoomList roomList) {
-		roomLists.add(roomList);
-		roomList.setUser(this);
+	public void addRoomList(Registration registration) {
+		registrations.add(registration);
+		registration.setUser(this);
 	}
 
 	public void addHomeworkFile(HomeworkFile homeworkFile) {

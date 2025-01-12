@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "room_lists")
+@Table(name = "registrations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class RoomList {
+public class Registration {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -51,7 +51,7 @@ public class RoomList {
 	private boolean deposit;
 
 	@Builder
-	public RoomList(User user, Room room, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
+	public Registration(User user, Room room, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
 		boolean counselingLog, boolean deposit) {
 		this.user = user;
 		this.room = room;

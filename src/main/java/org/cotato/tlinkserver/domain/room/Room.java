@@ -7,15 +7,12 @@ import java.util.List;
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
-import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 import org.cotato.tlinkserver.domain.bank.Bank;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -74,7 +71,7 @@ public class Room {
 	private List<CounselingLog> counselingLogs = new ArrayList<>();
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RoomList> roomLists = new ArrayList<>();
+	private List<Registration> registrations = new ArrayList<>();
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LessonDay> lessonDays = new ArrayList<>();
@@ -105,9 +102,9 @@ public class Room {
 		counselingLog.setRoom(this);
 	}
 
-	public void addRoomList(RoomList roomList) {
-		roomLists.add(roomList);
-		roomList.setRoom(this);
+	public void addRegistration(Registration registration) {
+		registrations.add(registration);
+		registration.setRoom(this);
 	}
 
 	public void addLessonDay(LessonDay lessonDay) {
