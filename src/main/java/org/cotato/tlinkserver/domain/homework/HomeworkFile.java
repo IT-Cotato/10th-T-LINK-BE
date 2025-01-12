@@ -43,8 +43,7 @@ public class HomeworkFile {
 	private String filePath;
 
 	@Builder
-	public HomeworkFile(User user, String originalName, String filePath) {
-		this.user = user;
+	public HomeworkFile(String originalName, String filePath) {
 		this.originalName = originalName;
 		this.filePath = filePath;
 	}
