@@ -46,6 +46,9 @@ public class User {
 	@Column(name = "background_color", nullable = false, length = 10)
 	private String backgroundColor;
 
+	@Column(name = "status_message", length = 50)
+	private String statusMessage;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false, length = 10)
 	private Role role;
