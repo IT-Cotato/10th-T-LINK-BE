@@ -64,10 +64,12 @@ public class User {
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
-	public User(String username, String phoneNumber, String profilePath, Role role) {
+	public User(String username, String phoneNumber, String profilePath, String backgroundColor, Role role) {
 		this.username = username;
 		this.phoneNumber = phoneNumber;
 		this.profilePath = profilePath;
+		this.backgroundColor = backgroundColor;
+		this.statusMessage = "";
 		this.role = role;
 	}
 
