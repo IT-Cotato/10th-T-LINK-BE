@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.room.Registration;
+import org.cotato.tlinkserver.domain.user.constant.Gender;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import jakarta.persistence.CascadeType;
@@ -46,8 +47,9 @@ public class User {
 	@Column(name = "role", nullable = false, length = 10)
 	private Role role;
 
-	@Column(name = "birtyday", nullable = false)
-	private LocalDate birthday;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "gender", nullable = false, length = 2)
+	private Gender gender;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Registration> registrations = new ArrayList<>();
