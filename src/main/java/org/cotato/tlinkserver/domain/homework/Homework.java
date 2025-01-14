@@ -51,17 +51,17 @@ public class Homework {
 	private LocalDateTime deadline;
 
 	@Lob
-	@Column(name = "description", nullable = false, length = 300)
-	private String description;
+	@Column(name = "name", nullable = false, length = 50)
+	private String name;
 
 	@OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
-	public Homework(Room room, LocalDateTime deadline, String description) {
+	public Homework(Room room, LocalDateTime deadline, String name) {
 		this.room = room;
 		this.deadline = deadline;
-		this.description = description;
+		this.name = name;
 	}
 
 	// 연관 관계 메서드
