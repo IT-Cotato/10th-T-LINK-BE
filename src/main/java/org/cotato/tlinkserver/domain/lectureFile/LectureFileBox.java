@@ -43,8 +43,8 @@ public class LectureFileBox {
 	private Room room;
 
 	@Lob
-	@Column(name = "description", nullable = false, length = 300)
-	private String description;
+	@Column(name = "name", nullable = false, length = 50)
+	private String name;
 
 	@UpdateTimestamp
 	@Column(name = "updated_at")
@@ -54,9 +54,9 @@ public class LectureFileBox {
 	private List<LectureFile> lectureFiles = new ArrayList<>();
 
 	@Builder
-	public LectureFileBox(Room room, String description) {
+	public LectureFileBox(Room room, String name) {
 		this.room = room;
-		this.description = description;
+		this.name = name;
 		this.updatedAt = LocalDateTime.now();
 	}
 
