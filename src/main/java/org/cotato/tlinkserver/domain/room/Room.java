@@ -61,6 +61,9 @@ public class Room {
 	@Column(name = "deposit_amount", nullable = false)
 	private int depositAmount;
 
+	@Column(name = "share_code", nullable = false, length = 250)
+	private String shareCode;
+
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LectureFileBox> lectureFileBoxes = new ArrayList<>();
 
@@ -78,12 +81,13 @@ public class Room {
 
 	@Builder
 	public Room(String subject, Bank bank,
-		String accountNumber, int depositAt, int depositAmount) {
+		String accountNumber, int depositAt, int depositAmount, String shareCode) {
 		this.subject = subject;
 		this.bank = bank;
 		this.accountNumber = accountNumber;
 		this.depositAt = depositAt;
 		this.depositAmount = depositAmount;
+		this.shareCode = shareCode;
 	}
 
 	// 연관 관계 메서드
