@@ -2,6 +2,8 @@ package org.cotato.tlinkserver.global.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 
 import io.awspring.cloud.s3.ObjectMetadata;
@@ -27,6 +29,8 @@ public class S3FileHandler {
     @Value("${spring.cloud.aws.s3.bucket-name}")
     private String bucket;
 
+    private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
+
     // S3 파일 업로드
     public void upload(final MultipartFile multipartFile, final String key) throws IOException {
         try (InputStream is = multipartFile.getInputStream()) {
@@ -47,6 +51,11 @@ public class S3FileHandler {
 
     public void deleteFiles(final List<String> keys) {
         keys.forEach(this::deleteFile);
+    }
+
+    // S3 파일 조회 URL 반환
+    public URL getFileUrl(final String key) {
+        return s3Operations.createSignedGetURL(bucket, key, duration);
     }
 
 }
