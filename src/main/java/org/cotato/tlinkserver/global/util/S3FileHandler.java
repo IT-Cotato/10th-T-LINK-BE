@@ -67,4 +67,8 @@ public class S3FileHandler {
         return s3Operations.createSignedGetURL(bucket, key, duration);
     }
 
+    public List<URL> getFileUrls(final List<String> keys) {
+        return keys.stream().map(this::getFileUrl).toList();
+    }
+
 }
