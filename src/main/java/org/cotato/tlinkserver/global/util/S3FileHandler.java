@@ -1,17 +1,8 @@
 package org.cotato.tlinkserver.global.util;
 
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Operations;
@@ -21,11 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -49,6 +38,15 @@ public class S3FileHandler {
     // S3 파일 다운로드
     public S3Resource download(final String key) throws NoSuchKeyException {
         return s3Operations.download(bucket, key);
+    }
+
+    // S3 파일 삭제
+    public void deleteFile(final String key) {
+        s3Operations.deleteObject(bucket, key);
+    }
+
+    public void deleteFiles(final List<String> keys) {
+        keys.forEach(this::deleteFile);
     }
 
 }
