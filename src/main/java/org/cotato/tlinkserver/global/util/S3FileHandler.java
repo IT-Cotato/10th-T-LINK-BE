@@ -46,4 +46,9 @@ public class S3FileHandler {
         }
     }
 
+    // S3 파일 다운로드
+    public S3Resource download(final String key) throws NoSuchKeyException {
+        return s3Operations.download(bucket, key);
+    }
+
 }
