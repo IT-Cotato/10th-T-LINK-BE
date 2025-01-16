@@ -11,7 +11,6 @@ import io.awspring.cloud.s3.S3Operations;
 import io.awspring.cloud.s3.S3Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -32,7 +31,7 @@ public class S3FileHandler {
     private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
 
     // S3 파일 업로드
-    public void upload(final MultipartFile multipartFile, final String key) throws IOException {
+    public void uploadFile(final MultipartFile multipartFile, final String key) throws IOException {
         try (InputStream is = multipartFile.getInputStream()) {
 			s3Operations.upload(bucket, key, is,
                 ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
@@ -40,7 +39,7 @@ public class S3FileHandler {
     }
 
     // S3 파일 다운로드
-    public S3Resource download(final String key) throws NoSuchKeyException {
+    public S3Resource downloadFile(final String key) {
         return s3Operations.download(bucket, key);
     }
 
