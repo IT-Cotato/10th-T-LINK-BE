@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Operations;
@@ -35,6 +37,14 @@ public class S3FileHandler {
         try (InputStream is = multipartFile.getInputStream()) {
 			s3Operations.upload(bucket, key, is,
                 ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
+        }
+    }
+
+    public void uploadFiles(final List<MultipartFile> multipartFiles, final List<String> keys) throws IOException {
+        int size = keys.size();
+
+        for (int i = 0; i < size; i++){
+            uploadFile(multipartFiles.get(i), keys.get(i));
         }
     }
 
