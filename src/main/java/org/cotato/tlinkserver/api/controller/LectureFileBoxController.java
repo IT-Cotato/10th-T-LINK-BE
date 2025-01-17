@@ -9,6 +9,7 @@ import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.Lectur
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,12 @@ public class LectureFileBoxController {
 		@RequestPart(value = "lectureFiles") List<MultipartFile> lectureFiles) throws IOException {
 		lectureFileBoxFacade.saveLectureFileBox(roomId, lectureFileBoxName, lectureFiles);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.CREATED, SuccessMessage.CREATED.getDetailMessage(), null));
+	}
+
+	@DeleteMapping("/{lectureFileBoxId}")
+	public ResponseEntity<DataResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+		lectureFileBoxFacade.removeLectureFileBox(lectureFileBoxId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
 	}
 
 }
