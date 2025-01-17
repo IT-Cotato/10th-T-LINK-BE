@@ -3,7 +3,7 @@ package org.cotato.tlinkserver.domain.lectureFile.application;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesDTO;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileBoxRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ public class LectureFileBoxService {
 
 	private final LectureFileBoxRepository lectureFileBoxRepository;
 
-	public LectureFileBoxesDTO getLectureFileBoxes(final Long roomId) {
+	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
 		List<LectureFileBox> lectureFileBoxes = lectureFileBoxRepository.findLectureFileBoxesByRoomId(roomId);
-		return LectureFileBoxesDTO.from(lectureFileBoxes);
+		return LectureFileBoxesResponse.from(lectureFileBoxes);
 	}
 
 }
