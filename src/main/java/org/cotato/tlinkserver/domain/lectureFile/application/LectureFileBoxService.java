@@ -23,4 +23,8 @@ public class LectureFileBoxService {
 		return LectureFileBoxesResponse.from(lectureFileBoxes);
 	}
 
+	public void saveLectureFileBox(final LectureFileBox lectureFileBox) {
+		lectureFileBoxRepository.save(lectureFileBox);
+	}
+
 }
