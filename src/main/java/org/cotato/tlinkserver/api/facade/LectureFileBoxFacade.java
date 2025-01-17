@@ -60,4 +60,8 @@ public class LectureFileBoxFacade {
 		lectureFileBoxService.saveLectureFileBox(lectureFileBox);
 	}
 
+	public void removeLectureFileBox(Long lectureFileBoxId) {
+		lectureFileBoxService.removeLectureFileBox(lectureFileBoxId);
+	}
+
 }

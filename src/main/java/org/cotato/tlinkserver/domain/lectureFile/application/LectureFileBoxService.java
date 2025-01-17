@@ -27,4 +27,8 @@ public class LectureFileBoxService {
 		lectureFileBoxRepository.save(lectureFileBox);
 	}
 
+	public void removeLectureFileBox(final Long id) {
+		lectureFileBoxRepository.deleteById(id);
+	}
+
 }
