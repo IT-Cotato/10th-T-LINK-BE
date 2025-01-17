@@ -2,7 +2,7 @@ package org.cotato.tlinkserver.api.controller;
 
 import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesDTO;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class LectureFileBoxController {
 	private final LectureFileBoxFacade lectureFileBoxFacade;
 
 	@GetMapping
-	public ResponseEntity<DataResponse<LectureFileBoxesDTO>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
-		LectureFileBoxesDTO lectureFileBoxes = lectureFileBoxFacade.getLectureFileBoxes(roomId);
+	public ResponseEntity<DataResponse<LectureFileBoxesResponse>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
+		LectureFileBoxesResponse lectureFileBoxes = lectureFileBoxFacade.getLectureFileBoxes(roomId);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), lectureFileBoxes));
 	}
 
