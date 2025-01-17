@@ -8,6 +8,7 @@ import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileService;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
+import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileBoxRepository;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileRepository;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
@@ -25,7 +26,6 @@ public class LectureFileBoxFacade {
 	private final LectureFileService lectureFileService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
-	private final LectureFileRepository lectureFileRepository;
 
 	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
 		return lectureFileBoxService.getLectureFileBoxes(roomId);
@@ -54,7 +54,7 @@ public class LectureFileBoxFacade {
 
 			s3FileHandler.uploadFile(lectureFiles.get(i), filePaths.get(i));	// 파일 업로드
 			lectureFileBox.addLectureFile(lectureFile);	// 연관 관계 매핑
-			lectureFileRepository.save(lectureFile);	// 강의 자료 파일 저장
+			lectureFileService.saveLectureFile(lectureFile);	// 강의 자료 파일 저장
 		}
 
 		lectureFileBoxService.saveLectureFileBox(lectureFileBox);
