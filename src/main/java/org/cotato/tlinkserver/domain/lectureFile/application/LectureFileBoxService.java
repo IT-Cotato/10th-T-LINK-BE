@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.domain.lectureFile.application;
 
 import java.util.List;
 
+import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileBoxRepository;
@@ -17,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class LectureFileBoxService {
 
 	private final LectureFileBoxRepository lectureFileBoxRepository;
+
+	public LectureFileBox getLectureFileBox(final Long id) {
+		return lectureFileBoxRepository.findById(id).orElseThrow();
+	}
 
 	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
 		List<LectureFileBox> lectureFileBoxes = lectureFileBoxRepository.findLectureFileBoxesByRoomId(roomId);
