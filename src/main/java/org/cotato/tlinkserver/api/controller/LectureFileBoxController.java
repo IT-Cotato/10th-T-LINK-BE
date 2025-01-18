@@ -48,7 +48,7 @@ public class LectureFileBoxController {
 	}
 
 	@GetMapping("/{lectureFileBoxId}")
-	public ResponseEntity<DataResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<DataResponse<LectureFileBoxDetailResponse>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		LectureFileBoxDetailResponse lectureFileBox = lectureFileBoxFacade.getLectureFileBox(lectureFileBoxId);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), lectureFileBox));
 	}
