@@ -12,6 +12,7 @@ import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,12 @@ public class LectureFileBoxFacade {
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
 
+	@Transactional(readOnly = true)
 	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
 		return lectureFileBoxService.getLectureFileBoxes(roomId);
 	}
 
+	@Transactional
 	public void saveLectureFileBox(final Long roomId, final String lectureFileBoxName, final List<MultipartFile> lectureFiles) throws
 		IOException {
 		Room room = roomService.getRoom(roomId);
@@ -41,11 +44,13 @@ public class LectureFileBoxFacade {
 		lectureFileBoxService.saveLectureFileBox(lectureFileBox);
 	}
 
-	public void removeLectureFileBox(Long lectureFileBoxId) {
+	@Transactional
+	public void removeLectureFileBox(final Long lectureFileBoxId) {
 		lectureFileBoxService.removeLectureFileBox(lectureFileBoxId);
 	}
 
-	public void modifyLectureFileBox(Long lectureFileBoxId, String lectureFileBoxName,
+	@Transactional
+	public void modifyLectureFileBox(final Long lectureFileBoxId, final String lectureFileBoxName,
 		List<MultipartFile> addLectureFiles, List<Long> removeLectureFiles) throws IOException {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
 

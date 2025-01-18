@@ -18,11 +18,11 @@ public class LectureFileService {
 	private final LectureFileRepository lectureFileRepository;
 	private final String DIRECTORY_PATH = "/uploads/";
 
-	public void saveLectureFile(LectureFile lectureFile){
+	public void saveLectureFile(final LectureFile lectureFile){
 		lectureFileRepository.save(lectureFile);
 	}
 
-	public String generateFilePath(String originalFileName) {
+	public String generateFilePath(final String originalFileName) {
 		String uuid = UUID.randomUUID().toString();
 		return DIRECTORY_PATH + uuid + originalFileName;
 	}
