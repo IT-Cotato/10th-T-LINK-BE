@@ -1,8 +1,11 @@
 package org.cotato.tlinkserver.domain.lectureFile.application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,12 @@ public class LectureFileService {
 		lectureFileRepository.save(lectureFile);
 	}
 
-	public String generateFilePath(final String originalFileName) {
+	public List<String> getKeys(final Long lectureFileBoxId) {
+		List<String> keys = lectureFileRepository.findKeysByLectureFileBoxId(lectureFileBoxId);
+		return new ArrayList<>(keys);
+	}
+
+	public String generateKey(final String originalFileName) {
 		String uuid = UUID.randomUUID().toString();
 		return DIRECTORY_PATH + uuid + originalFileName;
 	}

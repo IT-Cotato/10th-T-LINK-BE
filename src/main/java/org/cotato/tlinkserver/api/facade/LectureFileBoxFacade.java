@@ -2,11 +2,13 @@ package org.cotato.tlinkserver.api.facade;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileService;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.room.Room;
@@ -36,6 +38,20 @@ public class LectureFileBoxFacade {
 	@Transactional(readOnly = true)
 	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
 		return lectureFileBoxService.getLectureFileBoxes(roomId);
+	}
+
+	@Transactional(readOnly = true)
+	public FilePathsResponse getFilePaths(final Long lectureFileBoxId) {
+		List<String> keys = lectureFileService.getKeys(lectureFileBoxId);
+		List<String> urls = keys.stream().map(key -> {
+			try {
+				return s3FileHandler.downloadFile(key).getURL().toString();
+			} catch (IOException e) {
+				throw new NoSuchElementException();
+			}
+		}).toList();
+
+		return FilePathsResponse.from(urls);
 	}
 
 	@Transactional
@@ -76,7 +92,7 @@ public class LectureFileBoxFacade {
 		IOException {
 		// S3 파일 저장 경로 생성
 		List<String> filePaths = lectureFiles.stream()
-			.map(lectureFile -> lectureFileService.generateFilePath(lectureFile.getOriginalFilename()))
+			.map(lectureFile -> lectureFileService.generateKey(lectureFile.getOriginalFilename()))
 			.toList();
 
 		int size = lectureFiles.size();
@@ -84,7 +100,7 @@ public class LectureFileBoxFacade {
 		for (int i=0; i<size; i++) {
 			LectureFile lectureFile = LectureFile.builder().	// 강의 자료 파일 생성
 				lectureFileBox(lectureFileBox).
-				filePath(filePaths.get(i)).
+				key(filePaths.get(i)).
 				originalName(lectureFiles.get(i).getOriginalFilename())
 				.build();
 
