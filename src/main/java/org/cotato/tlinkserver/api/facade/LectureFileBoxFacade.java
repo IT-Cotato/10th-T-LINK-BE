@@ -69,6 +69,10 @@ public class LectureFileBoxFacade {
 
 	@Transactional
 	public void removeLectureFileBox(final Long lectureFileBoxId) {
+		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
+		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
+
+		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(lectureFile.getKey()));
 		lectureFileBoxService.removeLectureFileBox(lectureFileBoxId);
 	}
 
@@ -76,13 +80,16 @@ public class LectureFileBoxFacade {
 	public void modifyLectureFileBox(final Long lectureFileBoxId, final String lectureFileBoxName,
 		List<MultipartFile> addLectureFiles, List<Long> removeLectureFiles) throws IOException {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
+		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
-		removeLectureFiles.forEach(id ->
-			lectureFileBox.getLectureFiles()
-				.removeIf(
-					lectureFile -> lectureFile.getId().equals(id)
-				)
-		);
+		removeLectureFiles.forEach(id -> {
+			LectureFile lectureFile = lectureFiles.stream()
+				.filter(file -> file.getId().equals(id))
+				.findFirst()
+				.orElseThrow();
+			s3FileHandler.deleteFile(lectureFile.getKey());
+			lectureFiles.remove(lectureFile);
+		});
 
 		this.saveLectureFiles(addLectureFiles, lectureFileBox);
 		lectureFileBox.setName(lectureFileBoxName);
