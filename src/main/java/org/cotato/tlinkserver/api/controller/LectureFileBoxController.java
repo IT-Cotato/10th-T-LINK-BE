@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,12 @@ public class LectureFileBoxController {
 		@RequestPart(value = "lectureFiles") List<MultipartFile> lectureFiles) throws IOException {
 		lectureFileBoxFacade.saveLectureFileBox(roomId, lectureFileBoxName, lectureFiles);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.CREATED, SuccessMessage.CREATED.getDetailMessage(), null));
+	}
+
+	@GetMapping("/{lectureFileBoxId}")
+	public ResponseEntity<DataResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+		LectureFileBoxDetailResponse lectureFileBox = lectureFileBoxFacade.getLectureFileBox(lectureFileBoxId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), lectureFileBox));
 	}
 
 	@DeleteMapping("/{lectureFileBoxId}")

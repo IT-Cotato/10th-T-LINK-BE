@@ -7,6 +7,7 @@ import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileService;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
@@ -25,6 +26,12 @@ public class LectureFileBoxFacade {
 	private final LectureFileService lectureFileService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
+
+	@Transactional(readOnly = true)
+	public LectureFileBoxDetailResponse getLectureFileBox(final Long id) {
+		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(id);
+		return LectureFileBoxDetailResponse.from(lectureFileBox);
+	}
 
 	@Transactional(readOnly = true)
 	public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {
