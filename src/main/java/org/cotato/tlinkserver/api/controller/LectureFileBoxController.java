@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
+import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.global.util.SuccessMessage;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class LectureFileBoxController {
 
 	private final LectureFileBoxFacade lectureFileBoxFacade;
+	private final LectureFileBoxService lectureFileBoxService;
 
 	@GetMapping
 	public ResponseEntity<DataResponse<LectureFileBoxesResponse>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
@@ -63,6 +66,12 @@ public class LectureFileBoxController {
 		@RequestParam("removeLectureFiles") List<Long> removeLectureFiles) throws IOException {
 		lectureFileBoxFacade.modifyLectureFileBox(lectureFileBoxId, lectureFileBoxName, addLectureFiles, removeLectureFiles);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+	}
+
+	@GetMapping("/{lectureFileBoxId}/download")
+	public ResponseEntity<DataResponse<FilePathsResponse>> getLectureFiles(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+		FilePathsResponse filePaths = lectureFileBoxFacade.getFilePaths(lectureFileBoxId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), filePaths));
 	}
 
 }
