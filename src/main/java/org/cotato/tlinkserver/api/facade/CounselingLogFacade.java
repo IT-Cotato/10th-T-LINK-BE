@@ -7,7 +7,6 @@ import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.Coun
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogsResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
-import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,6 @@ public class CounselingLogFacade {
 	public void modifyCounselingLog(final Long counselingLogId, final CounselingLogSaveRequest counselingLogSaveRequest) {
 		counselingLogService.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
 	}
-
 	@Transactional
 	public void removeCounselingLog(final Long counselingLogId) {
 		counselingLogService.removeCounselingLog(counselingLogId);
