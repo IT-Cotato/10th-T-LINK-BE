@@ -6,6 +6,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import io.awspring.cloud.s3.ObjectMetadata;
@@ -29,7 +30,7 @@ public class S3FileHandler {
 
     @Value("${spring.cloud.aws.s3.bucket-name}")
     private String bucket;
-
+    private final String DIRECTORY_PATH = "/uploads/";
     private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
 
     // S3 파일 업로드
@@ -69,6 +70,12 @@ public class S3FileHandler {
 
     public List<URL> getFileUrls(final List<String> keys) {
         return keys.stream().map(this::getFileUrl).toList();
+    }
+
+    // S3 키 생성
+    public String generateS3Key(final String originalFileName) {
+        String uuid = UUID.randomUUID().toString();
+        return DIRECTORY_PATH + uuid + originalFileName;
     }
 
 }
