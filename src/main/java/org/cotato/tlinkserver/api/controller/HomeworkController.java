@@ -9,6 +9,7 @@ import org.cotato.tlinkserver.domain.homework.application.dto.response.Homeworks
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,12 @@ public class HomeworkController {
 		@RequestPart(value = "homeworkFiles") List<MultipartFile> homeworkFiles) throws IOException {
 		homeworkFacade.saveHomework(roomId, homeworkName, deadline, homeworkFiles);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.CREATED, SuccessMessage.CREATED.getDetailMessage(), null));
+	}
+
+	@DeleteMapping("/{homeworkId}")
+	public ResponseEntity<DataResponse<?>> deleteHomework(@PathVariable(value = "homeworkId") Long homeworkId) {
+		homeworkFacade.removeHomework(homeworkId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
 	}
 
 }
