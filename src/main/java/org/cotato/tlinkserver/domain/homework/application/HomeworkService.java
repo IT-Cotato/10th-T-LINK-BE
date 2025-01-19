@@ -22,4 +22,8 @@ public class HomeworkService {
 		return HomeworksResponse.from(homeworks);
 	}
 
+	public void saveHomework(final Homework homework) {
+		homeworkRepository.save(homework);
+	}
+
 }
