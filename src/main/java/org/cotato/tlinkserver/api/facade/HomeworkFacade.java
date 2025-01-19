@@ -9,8 +9,9 @@ import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkFileService;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkService;
+import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkFileModifyResponse;
+import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
-import org.cotato.tlinkserver.domain.homework.infra.repository.HomeworkRepository;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
@@ -77,6 +78,24 @@ public class HomeworkFacade {
 		this.saveHomeworkFiles(addHomeworkFiles, homework);
 		homework.setName(homeworkName);
 		homework.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+	}
+
+	@Transactional(readOnly = true)
+	public HomeworkModifyResponse getHomeworkModify(final Long homeworkId) {
+		Homework homework = homeworkService.getHomework(homeworkId);
+		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
+		List<HomeworkFileModifyResponse> homeworkFileModifys = homeworkFiles.stream().map(file -> {
+			try {
+				return HomeworkFileModifyResponse.from(
+					file.getId(),
+					file.getOriginalName(),
+					s3FileHandler.downloadFile(file.getS3Key()).getURL().toString());
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}).toList();
+
+		return HomeworkModifyResponse.from(homework, homeworkFileModifys);
 	}
 
 	private void saveHomeworkFiles(final List<MultipartFile> homeworkFiles, final Homework homework) throws
