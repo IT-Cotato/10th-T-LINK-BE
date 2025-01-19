@@ -11,7 +11,7 @@ public record HomeworkModifyResponse
 		List<HomeworkFileModifyResponse> homeworkFiles
 	)
 {
-	public static HomeworkModifyResponse from(Homework homework, List<HomeworkFileModifyResponse> homeworkFiles) {
+	public static HomeworkModifyResponse from(final Homework homework, final List<HomeworkFileModifyResponse> homeworkFiles) {
 		return new HomeworkModifyResponse(
 			homework.getId(),
 			homework.getName(),

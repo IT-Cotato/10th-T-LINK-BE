@@ -8,7 +8,7 @@ public record HomeworksResponse(
 	List<HomeworkResponse> homeworks
 )
 {
-	public static HomeworksResponse from(List<Homework> homeworks) {
+	public static HomeworksResponse from(final List<Homework> homeworks) {
 		return new HomeworksResponse(
 			homeworks.stream()
 				.map(HomeworkResponse::from)
