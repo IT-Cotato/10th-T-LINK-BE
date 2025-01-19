@@ -10,6 +10,7 @@ import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkFileService;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkService;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
+import org.cotato.tlinkserver.domain.homework.infra.repository.HomeworkRepository;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
@@ -46,6 +47,15 @@ public class HomeworkFacade {
 		room.addHomework(homework);	// 과외 방과 숙제 간 연관 관계 매핑
 		this.saveHomeworkFiles(homeworks, homework);
 		homeworkService.saveHomework(homework);
+	}
+
+	@Transactional
+	public void removeHomework(final Long homeworkId) {
+		Homework homework = homeworkService.getHomework(homeworkId);
+		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
+
+		homeworkFiles.forEach(homeworkFile -> s3FileHandler.deleteFile(homeworkFile.getS3Key()));
+		homework.getRoom().getHomeworks().remove(homework);
 	}
 
 	private void saveHomeworkFiles(final List<MultipartFile> homeworkFiles, final Homework homework) throws
