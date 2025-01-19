@@ -8,10 +8,10 @@ public record HomeworkModifyResponse
 	(
 		Long id,
 		String name,
-		List<HomeworkFileModifyResponse> homeworkFiles
+		List<HomeworkFileResponse> homeworkFiles
 	)
 {
-	public static HomeworkModifyResponse from(final Homework homework, final List<HomeworkFileModifyResponse> homeworkFiles) {
+	public static HomeworkModifyResponse from(final Homework homework, final List<HomeworkFileResponse> homeworkFiles) {
 		return new HomeworkModifyResponse(
 			homework.getId(),
 			homework.getName(),
