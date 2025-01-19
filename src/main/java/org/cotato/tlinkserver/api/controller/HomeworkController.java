@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.HomeworkFacade;
+import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,12 @@ public class HomeworkController {
 		@RequestPart(value = "addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
 		homeworkFacade.modifyHomework(homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+	}
+
+	@GetMapping("/{homeworkId}/info")
+	public ResponseEntity<DataResponse<HomeworkModifyResponse>> getHomeworkModify(@PathVariable(value = "homeworkId") Long homeworkId) {
+		HomeworkModifyResponse homeworkModifys = homeworkFacade.getHomeworkModify(homeworkId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), homeworkModifys));
 	}
 
 }
