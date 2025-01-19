@@ -9,11 +9,13 @@ import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkFileService;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkService;
+import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkDetailResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkFileResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +80,42 @@ public class HomeworkFacade {
 		this.saveHomeworkFiles(addHomeworkFiles, homework);
 		homework.setName(homeworkName);
 		homework.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+	}
+
+	@Transactional(readOnly = true)
+	public HomeworkDetailResponse getHomework(final Long homeworkId) {
+		Homework homework = homeworkService.getHomework(homeworkId);
+		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
+
+		List<HomeworkFileResponse> teacherFiles = homeworkFiles.stream()
+			.filter(file -> file.getUser().getRole().equals(Role.TEACHER))
+			.toList().stream().map(teacherFile -> {
+				try {
+					return HomeworkFileResponse.from(
+						teacherFile.getId(),
+						teacherFile.getOriginalName(),
+						s3FileHandler.downloadFile(teacherFile.getS3Key()).getURL().toString()
+					);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}).toList();
+
+		List<HomeworkFileResponse> studentFiles = homeworkFiles.stream()
+			.filter(file -> file.getUser().getRole().equals(Role.STUDENT))
+			.toList().stream().map(studentFile -> {
+				try {
+					return HomeworkFileResponse.from(
+						studentFile.getId(),
+						studentFile.getOriginalName(),
+						s3FileHandler.downloadFile(studentFile.getS3Key()).getURL().toString()
+					);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}).toList();
+
+		return HomeworkDetailResponse.from(homework, teacherFiles, studentFiles);
 	}
 
 	@Transactional(readOnly = true)
