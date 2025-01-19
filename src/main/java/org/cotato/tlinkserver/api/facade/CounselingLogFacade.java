@@ -41,4 +41,9 @@ public class CounselingLogFacade {
 	public void modifyCounselingLog(final Long counselingLogId, final CounselingLogSaveRequest counselingLogSaveRequest) {
 		counselingLogService.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
 	}
+
+	@Transactional
+	public void removeCounselingLog(final Long counselingLogId) {
+		counselingLogService.removeCounselingLog(counselingLogId);
+	}
 }

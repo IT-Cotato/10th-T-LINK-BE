@@ -41,4 +41,7 @@ public class CounselingLogService {
 		counselingLog.setHomeworkSubmitted(counselingLogSaveRequest.homeworkSubmitted());
 	}
 
+	public void removeCounselingLog(final Long counselingLogId) {
+		counselingLogRepository.deleteById(counselingLogId);
+	}
 }

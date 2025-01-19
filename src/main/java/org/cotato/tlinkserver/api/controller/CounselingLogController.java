@@ -8,6 +8,7 @@ import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.Coun
 import org.cotato.tlinkserver.global.util.SuccessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,12 @@ public class CounselingLogController {
 		@RequestBody CounselingLogSaveRequest counselingLogSaveRequest) {
 		counselingLogFacade.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+	}
+
+	@DeleteMapping("/{counselingLogId}")
+	public ResponseEntity<DataResponse<?>> removeCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId) {
+		counselingLogFacade.removeCounselingLog(counselingLogId);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
 	}
 
 }
