@@ -7,7 +7,7 @@ public record HomeworkFileModifyResponse
 		String fileUrl
 	)
 {
-	public static HomeworkFileModifyResponse from(Long id, String originalName, String fileUrl) {
+	public static HomeworkFileModifyResponse from(final Long id, final String originalName, final String fileUrl) {
 		return new HomeworkFileModifyResponse(id, originalName, fileUrl);
 	}
 }

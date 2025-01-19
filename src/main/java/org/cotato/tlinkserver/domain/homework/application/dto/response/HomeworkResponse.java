@@ -12,7 +12,7 @@ public record HomeworkResponse(
 	boolean passed
 )
 {
-	public static HomeworkResponse from(Homework homework) {
+	public static HomeworkResponse from(final Homework homework) {
 		return new HomeworkResponse(
 			homework.getId(),
 			homework.getCreatedAt().toString(),
