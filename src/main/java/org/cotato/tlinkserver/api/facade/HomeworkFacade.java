@@ -108,16 +108,14 @@ public class HomeworkFacade {
 		int size = homeworkFiles.size();
 
 		for (int i=0; i<size; i++) {
-			HomeworkFile homeworkFile = HomeworkFile.builder().	// 강의 자료 파일 생성
+			HomeworkFile homeworkFile = HomeworkFile.builder().	// 숙제 파일 생성
 				s3Key(filePaths.get(i)).
 				originalName(homeworkFiles.get(i).getOriginalFilename())
 				.build();
 
-			s3FileHandler.uploadFile(homeworkFiles.get(i), filePaths.get(i));	// 파일 업로드
+			s3FileHandler.uploadFile(homeworkFiles.get(i), filePaths.get(i));	// 숙제 파일 업로드
 			homework.addHomeworkFile(homeworkFile);	// 숙제와 숙제 파일 간 연관 관계 매핑
-			homeworkService.saveHomework(homework);	// 강의 자료 파일 저장
 		}
 	}
-
 
 }
