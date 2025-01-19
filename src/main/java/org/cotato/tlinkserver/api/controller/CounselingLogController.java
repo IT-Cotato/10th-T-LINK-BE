@@ -44,7 +44,7 @@ public class CounselingLogController {
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), counselingLogDetail));
 	}
 
-	@PutMapping
+	@PutMapping("/{counselingLogId}")
 	public ResponseEntity<DataResponse<?>> modifyCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId,
 		@RequestBody CounselingLogSaveRequest counselingLogSaveRequest) {
 		counselingLogFacade.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
