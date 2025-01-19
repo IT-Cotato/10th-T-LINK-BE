@@ -9,7 +9,7 @@ import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkFileService;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkService;
-import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkFileModifyResponse;
+import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkFileResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
 import org.cotato.tlinkserver.domain.room.Room;
@@ -84,9 +84,9 @@ public class HomeworkFacade {
 	public HomeworkModifyResponse getHomeworkModify(final Long homeworkId) {
 		Homework homework = homeworkService.getHomework(homeworkId);
 		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
-		List<HomeworkFileModifyResponse> homeworkFileModifys = homeworkFiles.stream().map(file -> {
+		List<HomeworkFileResponse> homeworkFileModifys = homeworkFiles.stream().map(file -> {
 			try {
-				return HomeworkFileModifyResponse.from(
+				return HomeworkFileResponse.from(
 					file.getId(),
 					file.getOriginalName(),
 					s3FileHandler.downloadFile(file.getS3Key()).getURL().toString());
