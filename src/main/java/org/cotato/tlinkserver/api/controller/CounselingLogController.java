@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,11 @@ public class CounselingLogController {
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), counselingLogDetail));
 	}
 
-
+	@PutMapping
+	public ResponseEntity<DataResponse<?>> modifyCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId,
+		@RequestBody CounselingLogSaveRequest counselingLogSaveRequest) {
+		counselingLogFacade.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+	}
 
 }

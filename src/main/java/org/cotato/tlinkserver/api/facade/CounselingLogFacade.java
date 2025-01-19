@@ -36,4 +36,9 @@ public class CounselingLogFacade {
 		Room room = roomService.getRoom(roomId);
 		room.addCounselingLog(counselingLog);
 	}
+
+	@Transactional
+	public void modifyCounselingLog(final Long counselingLogId, final CounselingLogSaveRequest counselingLogSaveRequest) {
+		counselingLogService.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
+	}
 }
