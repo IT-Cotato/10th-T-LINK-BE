@@ -39,13 +39,13 @@ public class HomeworkFile {
 	@Column(name = "original_name", nullable = false, length = 30)
 	private String originalName;
 
-	@Column(name = "file_path", length = 250)
-	private String filePath;
+	@Column(name = "s3_key", length = 250)
+	private String s3Key;
 
 	@Builder
-	public HomeworkFile(String originalName, String filePath) {
+	public HomeworkFile(String originalName, String s3Key) {
 		this.originalName = originalName;
-		this.filePath = filePath;
+		this.s3Key = s3Key;
 	}
 	
 }
