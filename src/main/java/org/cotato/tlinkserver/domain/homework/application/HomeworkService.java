@@ -17,6 +17,10 @@ public class HomeworkService {
 
 	private final HomeworkRepository homeworkRepository;
 
+	public Homework getHomework(final Long homeworkId) {
+		return homeworkRepository.findById(homeworkId).orElseThrow();
+	}
+
 	public HomeworksResponse getHomeworks(final Long roomId) {
 		List<Homework> homeworks = homeworkRepository.findHomeworksByRoomId(roomId);
 		return HomeworksResponse.from(homeworks);
@@ -24,6 +28,10 @@ public class HomeworkService {
 
 	public void saveHomework(final Homework homework) {
 		homeworkRepository.save(homework);
+	}
+
+	public void removeHomework(final Long homeworkId) {
+		homeworkRepository.deleteById(homeworkId);
 	}
 
 }
