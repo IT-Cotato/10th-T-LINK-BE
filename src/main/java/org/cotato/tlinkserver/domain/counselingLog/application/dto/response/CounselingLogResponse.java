@@ -9,7 +9,7 @@ public record CounselingLogResponse
 		String updatedAt
 	)
 {
-	public static CounselingLogResponse from(CounselingLog counselingLog) {
+	public static CounselingLogResponse from(final CounselingLog counselingLog) {
 		return new CounselingLogResponse(
 			counselingLog.getId(),
 			counselingLog.getTitle(),

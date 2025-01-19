@@ -7,7 +7,7 @@ public record CounselingLogsResponse
 		List<CounselingLogResponse> counselingLogs
 	)
 {
-	public static CounselingLogsResponse from(List<CounselingLogResponse> counselingLogs) {
+	public static CounselingLogsResponse from(final List<CounselingLogResponse> counselingLogs) {
 		return new CounselingLogsResponse(counselingLogs);
 	}
 }
