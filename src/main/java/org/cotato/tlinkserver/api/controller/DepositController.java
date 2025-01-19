@@ -50,4 +50,11 @@ public class DepositController {
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
 	}
 
+	@PutMapping("/modify")
+	public ResponseEntity<DataResponse<?>> modifyDeposit(@PathVariable(value = "roomId") Long roomId,
+		@RequestBody DepositRequest depositRequest) {
+		depositFacade.modifyDeposit(roomId, depositRequest);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+	}
+
 }
