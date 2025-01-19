@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.api.facade;
 
+import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositModifyResponse;
 import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
@@ -17,4 +18,10 @@ public class DepositFacade {
 		Room room = roomService.getRoom(roomId);
 		return DepositResponse.from(room);
 	}
+
+	public DepositModifyResponse getDepositModify(final Long roomId) {
+		Room room = roomService.getRoom(roomId);
+		return DepositModifyResponse.from(room);
+	}
+
 }
