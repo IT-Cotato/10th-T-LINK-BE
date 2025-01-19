@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,16 @@ public class HomeworkController {
 	public ResponseEntity<DataResponse<?>> deleteHomework(@PathVariable(value = "homeworkId") Long homeworkId) {
 		homeworkFacade.removeHomework(homeworkId);
 		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
+	}
+
+	@PatchMapping("/{homeworkId}")
+	public ResponseEntity<DataResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") Long homeworkId,
+		@RequestParam("homeworkName") String homeworkName,
+		@RequestParam("deadline") String deadline,
+		@RequestParam("removeHomeworkFiles") List<Long> removeHomeworkFiles,
+		@RequestPart(value = "addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
+		homeworkFacade.modifyHomework(homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
+		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
 	}
 
 }
