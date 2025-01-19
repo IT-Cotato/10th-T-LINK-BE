@@ -58,6 +58,27 @@ public class HomeworkFacade {
 		homework.getRoom().getHomeworks().remove(homework);
 	}
 
+	@Transactional
+	public void modifyHomework(final Long homeworkId, final String homeworkName, final String deadline, final List<Long> removeHomeworkFiles,
+		final List<MultipartFile> addHomeworkFiles) throws IOException {
+		Homework homework = homeworkService.getHomework(homeworkId);
+		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
+
+		removeHomeworkFiles.forEach(id -> {
+			HomeworkFile homeworkFile = homeworkFiles.stream()
+				.filter(file -> file.getId().equals(id))
+				.findFirst()
+				.orElseThrow();
+
+			s3FileHandler.deleteFile(homeworkFile.getS3Key());
+			homeworkFiles.remove(homeworkFile);
+		});
+
+		this.saveHomeworkFiles(addHomeworkFiles, homework);
+		homework.setName(homeworkName);
+		homework.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+	}
+
 	private void saveHomeworkFiles(final List<MultipartFile> homeworkFiles, final Homework homework) throws
 		IOException {
 		// S3 파일 저장 경로 생성
@@ -78,5 +99,6 @@ public class HomeworkFacade {
 			homeworkService.saveHomework(homework);	// 강의 자료 파일 저장
 		}
 	}
+
 
 }
