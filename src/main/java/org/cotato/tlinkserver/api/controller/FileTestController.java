@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import org.cotato.tlinkserver.global.message.SuccessMessage;
+import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class FileTestController {
 		IOException {
 		List<String> list = Arrays.asList("aa", "bb", "cc");
 		s3FileHandler.uploadFiles(multipartFiles, list);
-		return ResponseEntity.ok("success");
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS);
 	}
 
 	@PostMapping("/download")
