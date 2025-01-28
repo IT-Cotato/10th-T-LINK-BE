@@ -1,6 +1,6 @@
 package org.cotato.tlinkserver.api.dto.response;
 
-import org.cotato.tlinkserver.global.util.ErrorMessage;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;

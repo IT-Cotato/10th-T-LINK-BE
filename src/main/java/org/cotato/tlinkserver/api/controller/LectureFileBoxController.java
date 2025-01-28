@@ -9,7 +9,7 @@ import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxServi
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
-import org.cotato.tlinkserver.global.util.SuccessMessage;
+import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
