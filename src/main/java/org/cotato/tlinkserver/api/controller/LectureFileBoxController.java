@@ -3,13 +3,14 @@ package org.cotato.tlinkserver.api.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
+import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
+import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,44 +35,44 @@ public class LectureFileBoxController {
 	private final LectureFileBoxService lectureFileBoxService;
 
 	@GetMapping
-	public ResponseEntity<DataResponse<LectureFileBoxesResponse>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
 		LectureFileBoxesResponse lectureFileBoxes = lectureFileBoxFacade.getLectureFileBoxes(roomId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), lectureFileBoxes));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBoxes);
 	}
 
 	@PostMapping
-	public ResponseEntity<DataResponse<?>> saveLectureFileBox(@PathVariable(value = "roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> saveLectureFileBox(@PathVariable(value = "roomId") Long roomId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
 		@RequestPart(value = "lectureFiles") List<MultipartFile> lectureFiles) throws IOException {
 		lectureFileBoxFacade.saveLectureFileBox(roomId, lectureFileBoxName, lectureFiles);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.CREATED, SuccessMessage.CREATED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.CREATED);
 	}
 
 	@GetMapping("/{lectureFileBoxId}")
-	public ResponseEntity<DataResponse<LectureFileBoxDetailResponse>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		LectureFileBoxDetailResponse lectureFileBox = lectureFileBoxFacade.getLectureFileBox(lectureFileBoxId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), lectureFileBox));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBox);
 	}
 
 	@DeleteMapping("/{lectureFileBoxId}")
-	public ResponseEntity<DataResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		lectureFileBoxFacade.removeLectureFileBox(lectureFileBoxId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
 	@PatchMapping("/{lectureFileBoxId}")
-	public ResponseEntity<DataResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId,
+	public ResponseEntity<BaseResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
 		@RequestPart(value = "addLectureFiles") List<MultipartFile> addLectureFiles,
 		@RequestParam("removeLectureFiles") List<Long> removeLectureFiles) throws IOException {
 		lectureFileBoxFacade.modifyLectureFileBox(lectureFileBoxId, lectureFileBoxName, addLectureFiles, removeLectureFiles);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
 	@GetMapping("/{lectureFileBoxId}/download")
-	public ResponseEntity<DataResponse<FilePathsResponse>> getLectureFiles(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFiles(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		FilePathsResponse filePaths = lectureFileBoxFacade.getFilePaths(lectureFileBoxId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), filePaths));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, filePaths);
 	}
 
 }
