@@ -64,13 +64,14 @@ public class User {
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
-	public User(String username, String phoneNumber, String profilePath, String backgroundColor, Role role) {
+	public User(long id, String username, String phoneNumber, String profilePath, String backgroundColor, Role role, Gender gender) {
+		this.id = id;
 		this.username = username;
 		this.phoneNumber = phoneNumber;
 		this.profilePath = profilePath;
 		this.backgroundColor = backgroundColor;
-		this.statusMessage = "";
 		this.role = role;
+		this.gender = gender;
 	}
 
 	// 연관 관계 메서드
