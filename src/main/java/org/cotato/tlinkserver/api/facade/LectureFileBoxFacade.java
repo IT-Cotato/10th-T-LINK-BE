@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.cotato.tlinkserver.annotation.Facade;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
@@ -20,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Facade
 @RequiredArgsConstructor
 public class LectureFileBoxFacade {
 
