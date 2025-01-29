@@ -1,4 +1,4 @@
-package org.cotato.tlinkserver.api.dto.response;
+package org.cotato.tlinkserver.domain.auth.kakao.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoTokenResponse {
+public class KakaoTokenDTO {
 
     @JsonProperty("token_type")
     public String tokenType;

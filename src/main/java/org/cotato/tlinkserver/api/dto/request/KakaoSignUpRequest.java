@@ -1,10 +1,14 @@
 package org.cotato.tlinkserver.api.dto.request;
 
+import org.cotato.tlinkserver.domain.user.constant.Gender;
+import org.cotato.tlinkserver.domain.user.constant.Role;
+
 public record KakaoSignUpRequest(
         String code,
-        String role,
+        Role role,
         String name,
         String phoneNumber,
-        String gender
+        Gender gender,
+        String backgroundColor
 ) {
 }

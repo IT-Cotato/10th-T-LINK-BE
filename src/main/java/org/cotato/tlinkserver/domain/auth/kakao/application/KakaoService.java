@@ -1,11 +1,11 @@
-package org.cotato.tlinkserver.domain.auth.kakao;
+package org.cotato.tlinkserver.domain.auth.kakao.application;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cotato.tlinkserver.api.dto.response.KakaoTokenResponse;
-import org.cotato.tlinkserver.api.dto.response.KakaoUserInfoResponse;
+import org.cotato.tlinkserver.domain.auth.kakao.application.dto.response.KakaoTokenDTO;
+import org.cotato.tlinkserver.domain.auth.kakao.application.dto.response.KakaoUserInfoDTO;
 import org.cotato.tlinkserver.global.exception.TLinkException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class KakaoService {
 
     public String getAccessTokenFromKakao(final String code) {
 
-        KakaoTokenResponse kakaoToken = WebClient.create(KAUTH_TOKEN_URL_HOST).post()
+        KakaoTokenDTO kakaoToken = WebClient.create(KAUTH_TOKEN_URL_HOST).post()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
                         .path("/oauth/token")
@@ -45,15 +45,15 @@ public class KakaoService {
                 .onStatus(
                         HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR))
                 )
-                .bodyToMono(KakaoTokenResponse.class)
+                .bodyToMono(KakaoTokenDTO.class)
                 .block();
 
         return kakaoToken.getAccessToken();
     }
 
-    public KakaoUserInfoResponse getUserInfo(String accessToken) {
+    public KakaoUserInfoDTO getUserInfo(String accessToken) {
 
-        KakaoUserInfoResponse userInfo = WebClient.create(KAUTH_USER_URL_HOST)
+        KakaoUserInfoDTO userInfo = WebClient.create(KAUTH_USER_URL_HOST)
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -69,7 +69,7 @@ public class KakaoService {
                 .onStatus(
                         HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR))
                 )
-                .bodyToMono(KakaoUserInfoResponse.class)
+                .bodyToMono(KakaoUserInfoDTO.class)
                 .block();
 
         log.info("[ Kakao Service ] Auth ID ---> {} ", userInfo.getId());
