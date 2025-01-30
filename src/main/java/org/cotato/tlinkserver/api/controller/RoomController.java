@@ -40,6 +40,13 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
 	}
 
+	@PostMapping
+	public ResponseEntity<BaseResponse<?>> saveRoom(@RequestBody RoomRequest roomRequest) {
+		Long userId = 1L; // 임시 teacher Id
+		roomFacade.saveRoom(userId, roomRequest);
+		return ApiResponseUtil.success(SuccessMessage.CREATED);
+	}
+
 	@PatchMapping("/{roomId}")
 	public ResponseEntity<BaseResponse<?>> modifyRoom(@PathVariable("roomId") Long roomId,
 		@RequestBody RoomRequest roomRequest) {
