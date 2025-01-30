@@ -5,6 +5,7 @@ import java.util.List;
 import org.cotato.tlinkserver.domain.room.application.RegistrationService;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataResponse;
+import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,10 @@ public class RoomFacade {
 			.toList();
 
 		return RoomsResponse.from(rooms);
+	}
+
+	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {
+		return registrationService.getRoomModify(userId, roomId);
 	}
 
 }
