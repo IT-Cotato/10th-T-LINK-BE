@@ -11,6 +11,16 @@ public record PermissionRequest
 		boolean deposit
 	)
 {
+	public Registration create() {
+		return Registration.builder()
+			.lectureFile(lectureFile)
+			.homework(homework)
+			.gradeStatistic(gradeStatistic)
+			.counselingLog(counselingLog)
+			.deposit(deposit)
+			.build();
+	}
+
 	public void modify(Registration registration) {
 		registration.setLectureFile(lectureFile);
 		registration.setHomework(homework);
