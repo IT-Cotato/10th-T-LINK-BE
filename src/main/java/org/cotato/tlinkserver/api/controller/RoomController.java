@@ -48,7 +48,7 @@ public class RoomController {
 	}
 
 	@DeleteMapping("/{roomId}")
-	public ResponseEntity<BaseResponse<?>> deleteRoom(@PathVariable("roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> removeRoom(@PathVariable("roomId") Long roomId) {
 		Long userId = 1L;	// 임시 teacher Id
 		roomFacade.deleteRoom(userId, roomId);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
