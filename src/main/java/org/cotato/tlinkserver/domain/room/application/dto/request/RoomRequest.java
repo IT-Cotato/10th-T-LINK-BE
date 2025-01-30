@@ -6,6 +6,7 @@ import org.cotato.tlinkserver.domain.room.LessonDay;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
+import org.cotato.tlinkserver.domain.user.User;
 
 import lombok.Builder;
 
@@ -20,6 +21,24 @@ public record RoomRequest
 		PermissionRequest studentPermission
 	)
 {
+	public Room save(User user) {
+		Room room = Room.builder()
+			.studentName(studentName)
+			.subject(subject)
+			.build();
+
+		Registration teacherRegistration = teacherPermission.create();
+		teacherRegistration.setName(roomName);
+		user.addRegistration(teacherRegistration);
+		room.addRegistration(teacherRegistration);
+
+		Registration studentRegistration = studentPermission.create();
+		studentRegistration.setName(roomName);
+		room.addRegistration(studentRegistration);
+
+		return room;
+	}
+
 	public void modify(Room room, Registration teacherRegistration, Registration studentRegistration) {
 		room.setStudentName(studentName);
 		room.setSubject(subject);
