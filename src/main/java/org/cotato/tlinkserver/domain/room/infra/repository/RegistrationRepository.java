@@ -17,4 +17,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 	@Query("SELECT r FROM Registration r WHERE r.room.id = :roomId")
 	List<Registration> findAllByRoomId(@Param("roomId") Long roomId);
 
+	@Query("SELECT r FROM Registration r WHERE r.room.id = :roomId")
+	List<Registration> findAllByRoomId(@Param("roomId") Long roomId);
+
 }
