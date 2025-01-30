@@ -19,6 +19,8 @@ public class RoomService {
 		return roomRepository.findById(id).orElseThrow();
 	}
 
-	public void deleteRoom(final Long roomId) { roomRepository.deleteById(roomId); }
+	public void deleteRoom(final Long roomId) {
+		roomRepository.deleteById(roomId);
+	}
 
 }
