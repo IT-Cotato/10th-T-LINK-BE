@@ -3,6 +3,8 @@ package org.cotato.tlinkserver.domain.room.application;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.Registration;
+import org.cotato.tlinkserver.domain.room.Room;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.infra.repository.RegistrationRepository;
@@ -24,6 +26,22 @@ public class RegistrationService {
 		return registrationRepository.findAllByUserId(userId).stream()
 			.map(r -> RoomDataResponse.from(r.getRoom(), r.getName(), r.getUser()))
 			.toList();
+	}
+
+	public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
+		List<Registration> registrations = registrationRepository.findAllByRoomId(roomId);
+
+		Registration teacherRegistration = registrations.stream()
+			.filter(r -> r.getUser().getId().equals(userId))
+			.findFirst()
+			.orElseThrow();
+		Registration studentRegistration = registrations.stream()
+			.filter(r -> !r.getUser().getId().equals(userId))
+			.findFirst()
+			.orElseThrow();
+		Room room = teacherRegistration.getRoom();
+
+		roomModifyRequest.modify(room, teacherRegistration, studentRegistration);
 	}
 
 	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {
