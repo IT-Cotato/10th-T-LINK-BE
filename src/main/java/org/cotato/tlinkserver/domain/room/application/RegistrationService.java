@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
-import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.infra.repository.RegistrationRepository;
@@ -28,7 +28,7 @@ public class RegistrationService {
 			.toList();
 	}
 
-	public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
+	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
 		List<Registration> registrations = registrationRepository.findAllByRoomId(roomId);
 
 		Registration teacherRegistration = registrations.stream()
@@ -41,7 +41,7 @@ public class RegistrationService {
 			.orElseThrow();
 		Room room = teacherRegistration.getRoom();
 
-		roomModifyRequest.modify(room, teacherRegistration, studentRegistration);
+		roomRequest.modify(room, teacherRegistration, studentRegistration);
 	}
 
 	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {

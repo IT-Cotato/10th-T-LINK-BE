@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.application.RegistrationService;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
-import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomResponse;
@@ -33,9 +33,9 @@ public class RoomFacade {
 		return registrationService.getRoomModify(userId, roomId);
 	}
 
-	public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
+	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
 		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
-			registrationService.modifyRoom(userId, roomId, roomModifyRequest);
+			registrationService.modifyRoom(userId, roomId, roomRequest);
 	}
 
 	public void deleteRoom(final Long userId, final Long roomId) {
