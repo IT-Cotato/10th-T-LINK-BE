@@ -59,7 +59,7 @@ public class User {
 	private Role role;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", length = 2)
+	@Column(name = "gender", nullable = false, length = 2)
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -76,6 +76,7 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.profilePath = profilePath;
 		this.backgroundColor = backgroundColor;
+		this.statusMessage = "";
 		this.role = role;
 		this.gender = gender;
 	}
@@ -110,6 +111,11 @@ public class User {
 	public void addHomeworkFile(HomeworkFile homeworkFile) {
 		homeworkFiles.add(homeworkFile);
 		homeworkFile.setUser(this);
+	}
+
+	public void addRegistration(Registration registration) {
+		registrations.add(registration);
+		registration.setUser(this);
 	}
 
 	public boolean isOnboarding() {
