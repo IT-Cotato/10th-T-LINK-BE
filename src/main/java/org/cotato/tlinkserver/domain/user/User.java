@@ -1,6 +1,5 @@
 package org.cotato.tlinkserver.domain.user;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +81,11 @@ public class User {
 	public void addHomeworkFile(HomeworkFile homeworkFile) {
 		homeworkFiles.add(homeworkFile);
 		homeworkFile.setUser(this);
+	}
+
+	public void addRegistration(Registration registration) {
+		registrations.add(registration);
+		registration.setUser(this);
 	}
 
 }
