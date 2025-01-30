@@ -20,9 +20,9 @@ public class RoomController {
 	private final RoomFacade roomFacade;
 
 	@GetMapping
-	public ResponseEntity<BaseResponse<?>> getRoomsAndOpponents() {
+	public ResponseEntity<BaseResponse<?>> getRooms() {
 		Long userId = 1L;	// 임시
-		RoomsResponse roomsAndOpponents = roomFacade.getRoomsAndOpponents(userId);
+		RoomsResponse roomsAndOpponents = roomFacade.getRooms(userId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomsAndOpponents);
 	}
 
