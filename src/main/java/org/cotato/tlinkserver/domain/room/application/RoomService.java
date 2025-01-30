@@ -36,13 +36,4 @@ public class RoomService {
 	public void removeRoom(final Long id) {
 		roomRepository.deleteById(id);
 	}
-
-	public void deleteRoom(final Long roomId) {
-		roomRepository.deleteById(roomId);
-	}
-
-	public Long saveRoom(Room room) {
-		Room save = roomRepository.save(room);
-		return save.getId();
-	}
 }
