@@ -36,4 +36,8 @@ public class RoomService {
 		return roomRepository.findByShareCode(shareCode);
 	}
 
+	public Long saveRoom(Room room) {
+		Room save = roomRepository.save(room);
+		return save.getId();
+	}
 }
