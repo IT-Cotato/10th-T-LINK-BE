@@ -5,8 +5,8 @@ import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.user.User;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import software.amazon.awssdk.annotations.NotNull;
 
 @Builder
 public record RoomDataResponse
