@@ -7,6 +7,7 @@ import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,13 @@ public class RoomController {
 		Long userId = 1L;	// 임시 teacher Id
 		RoomModifyResponse roomModify = roomFacade.getRoomModify(userId, roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
+	}
+
+	@DeleteMapping("/{roomId}")
+	public ResponseEntity<BaseResponse<?>> deleteRoom(@PathVariable("roomId") Long roomId) {
+		Long userId = 1L;	// 임시 teacher Id
+		roomFacade.deleteRoom(userId, roomId);
+		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
 }
