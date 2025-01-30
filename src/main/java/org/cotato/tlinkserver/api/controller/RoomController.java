@@ -1,7 +1,7 @@
 package org.cotato.tlinkserver.api.controller;
 
 import org.cotato.tlinkserver.api.facade.RoomFacade;
-import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.global.common.BaseResponse;
@@ -41,9 +41,9 @@ public class RoomController {
 
 	@PatchMapping("/{roomId}")
 	public ResponseEntity<BaseResponse<?>> modifyRoom(@PathVariable("roomId") Long roomId,
-		@RequestBody RoomModifyRequest roomModifyRequest) {
+		@RequestBody RoomRequest roomRequest) {
 		Long userId = 1L;
-		roomFacade.modifyRoom(userId, roomId, roomModifyRequest);
+		roomFacade.modifyRoom(userId, roomId, roomRequest);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 

@@ -10,7 +10,7 @@ import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 import lombok.Builder;
 
 @Builder
-public record RoomModifyRequest
+public record RoomRequest
 	(
 		String roomName,
 		String studentName,
