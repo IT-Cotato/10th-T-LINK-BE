@@ -1,12 +1,14 @@
 package org.cotato.tlinkserver.api.controller;
 
 import org.cotato.tlinkserver.api.facade.RoomFacade;
+import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,13 @@ public class RoomController {
 		Long userId = 1L;	// 임시
 		RoomsResponse roomsAndOpponents = roomFacade.getRooms(userId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomsAndOpponents);
+	}
+
+	@GetMapping("/{roomId}/info")
+	public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") Long roomId) {
+		Long userId = 1L;	// 임시 teacher Id
+		RoomModifyResponse roomModify = roomFacade.getRoomModify(userId, roomId);
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
 	}
 
 }
