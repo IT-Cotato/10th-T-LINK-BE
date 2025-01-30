@@ -80,8 +80,9 @@ public class Room {
 	private List<LessonDay> lessonDays = new ArrayList<>();
 
 	@Builder
-	public Room(String subject, Bank bank,
+	public Room(String studentName, String subject, Bank bank,
 		String accountNumber, int depositAt, int depositAmount, String shareCode) {
+		this.studentName = studentName;
 		this.subject = subject;
 		this.bank = bank;
 		this.accountNumber = accountNumber;
