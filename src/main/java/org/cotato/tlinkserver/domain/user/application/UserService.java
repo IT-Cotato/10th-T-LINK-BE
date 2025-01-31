@@ -20,11 +20,11 @@ public class UserService {
     }
 
     @Transactional
-    public void signUp(
+    public long signUp(
             final KakaoSignUpDTO kakaoSignUpDTO,
             final KakaoUserInfoDTO userInfo
     ) {
-        userRepository.save(
+        return userRepository.save(
                 User.builder()
                         .id(userInfo.getId())
                         .username(kakaoSignUpDTO.name())
@@ -34,6 +34,6 @@ public class UserService {
                         .role(kakaoSignUpDTO.role())
                         .gender(kakaoSignUpDTO.gender())
                         .build()
-        );
+        ).getId();
     }
 }
