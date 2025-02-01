@@ -1,13 +1,12 @@
 package org.cotato.tlinkserver.api.controller;
 
-import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.DepositFacade;
 import org.cotato.tlinkserver.domain.bank.application.dto.request.DepositRequest;
 import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositModifyResponse;
 import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositResponse;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
-import org.cotato.tlinkserver.global.util.SuccessMessage;
-import org.springframework.http.HttpStatus;
+import org.cotato.tlinkserver.global.common.BaseResponse;
+import org.cotato.tlinkserver.global.message.SuccessMessage;
+import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,22 +25,22 @@ public class DepositController {
 	private final DepositFacade depositFacade;
 
 	@GetMapping
-	public ResponseEntity<DataResponse<DepositResponse>> getDeposit(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getDeposit(@PathVariable(value = "roomId") Long roomId) {
 		DepositResponse deposit = depositFacade.getDeposit(roomId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), deposit));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, deposit);
 	}
 
 	@GetMapping("/modify")
-	public ResponseEntity<DataResponse<DepositModifyResponse>> getDepositModify(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getDepositModify(@PathVariable(value = "roomId") Long roomId) {
 		DepositModifyResponse depositModify = depositFacade.getDepositModify(roomId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), depositModify));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, depositModify);
 	}
 
 	@PutMapping("/modify")
-	public ResponseEntity<DataResponse<?>> modifyDeposit(@PathVariable(value = "roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> modifyDeposit(@PathVariable(value = "roomId") Long roomId,
 		@RequestBody DepositRequest depositRequest) {
 		depositFacade.modifyDeposit(roomId, depositRequest);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
 }
