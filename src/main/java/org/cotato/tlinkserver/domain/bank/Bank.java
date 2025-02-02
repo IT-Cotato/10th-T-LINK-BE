@@ -28,12 +28,9 @@ public class Bank {
 	@Column(name = "bank_name", nullable = false, length = 20)
 	private String name;
 
-	@Column(name = "image_path", nullable = false, length = 250)
-	private String imagePath;
-
 	@Builder
-	public Bank(String name, String imagePath) {
+	public Bank(String name) {
 		this.name = name;
-		this.imagePath = imagePath;
 	}
+
 }
