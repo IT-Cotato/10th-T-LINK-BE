@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cotato.tlinkserver.annotation.Permission;
@@ -32,7 +33,7 @@ public class AuthController {
     private final AuthFacade authFacade;
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse<?>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<BaseResponse<?>> login(@Valid @RequestBody LoginRequest request) {
         LoginResult result = authFacade.login(
                 new LoginCommand(request.provider(), request.redirectUrl(), request.code())
         );
@@ -59,7 +60,7 @@ public class AuthController {
     @PostMapping("/onboard")
     public ResponseEntity<BaseResponse<?>> onboard(
             @UserId Long userId,
-            @RequestBody OnboardRequest request
+            @Valid @RequestBody OnboardRequest request
 
     ) {
         authFacade.addUserInfo(userId, OnboardCommand.toCommand(request));
