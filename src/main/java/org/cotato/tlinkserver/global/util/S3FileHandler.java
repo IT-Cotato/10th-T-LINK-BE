@@ -27,7 +27,7 @@ public class S3FileHandler {
 
     private final S3Operations s3Operations;
 
-    @Value("${cloud.aws.s3.bucket-name}")
+    @Value("${spring.cloud.aws.s3.bucket-name}")
     private String bucket;
 
     private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
