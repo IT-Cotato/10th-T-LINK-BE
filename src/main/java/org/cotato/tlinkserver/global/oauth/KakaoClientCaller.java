@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 @RequiredArgsConstructor
 public class KakaoClientCaller implements OauthClientApi {
 
-    @Value("${kakao.client_id}")
+    @Value("${kakao.client-id}")
     private String clientId;
     private final RestClient restClient;
 
