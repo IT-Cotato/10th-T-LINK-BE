@@ -38,13 +38,13 @@ public class RoomService {
 		return roomRepository.findByShareCode(shareCode);
 	}
 
-	public void deleteRoom(final Long roomId) {
-		roomRepository.deleteById(roomId);
-	}
-
-	public Long saveRoom(Room room) {
+	public Long saveRoom(final Room room) {
 		Room save = roomRepository.save(room);
 		return save.getId();
+	}
+
+	public void deleteRoom(final Long roomId) {
+		roomRepository.deleteById(roomId);
 	}
 
 }
