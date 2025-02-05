@@ -24,10 +24,10 @@ public class RoomFacade {
 	private final RegistrationService registrationService;
 	private final UserService userService;
 
-	public void saveRoom(final Long userId, final RoomRequest roomRequest) {
+	public Long saveRoom(final Long userId, final RoomRequest roomRequest) {
 		User user = userService.findUser(userId);
 		Room room = roomRequest.save(user);
-		roomService.saveRoom(room);
+		return roomService.saveRoom(room);
 	}
 
 	public RoomsResponse getRooms(final Long userId) {
