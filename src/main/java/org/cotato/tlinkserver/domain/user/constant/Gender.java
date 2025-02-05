@@ -8,8 +8,8 @@ import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum Gender {
-	MALE("남"),
-	FEMALE("여");
+	MALE("남자"),
+	FEMALE("여자");
 
 	private final String inKorean;
 
