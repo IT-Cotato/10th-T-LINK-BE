@@ -43,8 +43,8 @@ public class RoomController {
 	@PostMapping
 	public ResponseEntity<BaseResponse<?>> saveRoom(@RequestBody RoomRequest roomRequest) {
 		Long userId = 1L; // 임시 teacher Id
-		roomFacade.saveRoom(userId, roomRequest);
-		return ApiResponseUtil.success(SuccessMessage.CREATED);
+		Long roomId = roomFacade.saveRoom(userId, roomRequest);
+		return ApiResponseUtil.success(SuccessMessage.CREATED, roomId);
 	}
 
 	@PatchMapping("/{roomId}")
