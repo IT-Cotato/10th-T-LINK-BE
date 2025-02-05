@@ -35,11 +35,21 @@ public class ReissueService {
                 RefreshToken.of(newRefreshToken, Long.parseLong(userId))
         );
 
-        refreshTokenRepository.deleteAllByUserIdAndRefreshToken(
+        deleteAllByUserIdAndRefreshToken(
                 Long.parseLong(userId), token.getRefreshToken()
         );
 
         return new Token(newAccessToken, newRefreshToken);
+    }
+
+    @Transactional
+    public void deleteAllByUserId(long userId) {
+        refreshTokenRepository.deleteAllByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteAllByUserIdAndRefreshToken(long userId, String refreshToken) {
+        refreshTokenRepository.deleteAllByUserIdAndRefreshToken(userId, refreshToken);
     }
 
     private RefreshToken getValidRefreshToken(String refreshToken) {

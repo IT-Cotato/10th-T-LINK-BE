@@ -1,0 +1,30 @@
+package org.cotato.tlinkserver.api.facade;
+
+import lombok.RequiredArgsConstructor;
+import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.auth.ReissueService;
+import org.cotato.tlinkserver.domain.user.application.UserService;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
+import org.springframework.transaction.annotation.Transactional;
+
+@Facade
+@RequiredArgsConstructor
+public class UserFacade {
+
+    private final UserService userService;
+    private final ReissueService reissueService;
+
+    @Transactional
+    public void deleteAccount(long userId) {
+        validateExistUser(userId);
+        userService.deleteUserById(userId);
+        reissueService.deleteAllByUserId(userId);
+    }
+
+    private void validateExistUser(long userId) {
+        if (!userService.existUserById(userId)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND);
+        }
+    }
+}
