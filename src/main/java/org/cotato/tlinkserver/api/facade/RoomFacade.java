@@ -10,8 +10,10 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataRespo
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
+import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.dto.UserService;
+import org.cotato.tlinkserver.global.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +53,13 @@ public class RoomFacade {
 	public void deleteRoom(final Long userId, final Long roomId) {
 		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
 			roomService.deleteRoom(roomId);
+	}
+
+	public ShareCodeResponse getShareCode(final Long roomId) {
+		String shareCode = RandomUtil.generateRandomCode('0', 'z', 10);
+		Room room = roomService.getRoom(roomId);
+		room.setShareCode(shareCode);
+		return ShareCodeResponse.from(shareCode);
 	}
 
 }

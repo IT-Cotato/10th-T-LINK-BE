@@ -4,6 +4,7 @@ import org.cotato.tlinkserver.api.facade.RoomFacade;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
+import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
@@ -38,6 +39,12 @@ public class RoomController {
 		Long userId = 1L;	// 임시 teacher Id
 		RoomModifyResponse roomModify = roomFacade.getRoomModify(userId, roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
+	}
+
+	@GetMapping("/{roomId}/shareCode")
+	public ResponseEntity<BaseResponse<?>> getShareCode(@PathVariable("roomId") Long roomId) {
+		ShareCodeResponse shareCode = roomFacade.getShareCode(roomId);
+		return ApiResponseUtil.success(SuccessMessage.CREATED, shareCode);
 	}
 
 	@PostMapping
