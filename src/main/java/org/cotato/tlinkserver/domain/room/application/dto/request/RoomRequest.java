@@ -7,6 +7,7 @@ import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import lombok.Builder;
 
@@ -17,7 +18,7 @@ public record RoomRequest
 		String studentName,
 		String subject,
 		List<String> lessonDays,
-		PermissionRequest teacherPermission,
+		PermissionRequest parentPermission,
 		PermissionRequest studentPermission
 	)
 {
@@ -27,19 +28,28 @@ public record RoomRequest
 			.subject(subject)
 			.build();
 
-		Registration teacherRegistration = teacherPermission.create();
-		teacherRegistration.setName(roomName);
+		Registration teacherRegistration = Registration.builder()
+			.roomName(roomName)
+			.role(Role.TEACHER)
+			.lectureFile(true)
+			.homework(true)
+			.gradeStatistic(true)
+			.counselingLog(true)
+			.deposit(true)
+			.build();
 		user.addRegistration(teacherRegistration);
 		room.addRegistration(teacherRegistration);
 
-		Registration studentRegistration = studentPermission.create();
-		studentRegistration.setName(roomName);
+		Registration parentRegistration = parentPermission.create(Role.PARENT, roomName);
+		room.addRegistration(parentRegistration);
+
+		Registration studentRegistration = studentPermission.create(Role.STUDENT, roomName);
 		room.addRegistration(studentRegistration);
 
 		return room;
 	}
 
-	public void modify(Room room, Registration teacherRegistration, Registration studentRegistration) {
+	public void modify(Room room, Registration parentRegistration, Registration studentRegistration) {
 		room.setStudentName(studentName);
 		room.setSubject(subject);
 
@@ -49,8 +59,7 @@ public record RoomRequest
 			.toList()
 			.forEach(room::addLessonDay);
 
-		teacherPermission.modify(teacherRegistration);
-		studentPermission.modify(studentRegistration);
-		teacherRegistration.setName(studentName);
+		parentPermission.modify(parentRegistration, roomName);
+		studentPermission.modify(studentRegistration, roomName);
 	}
 }
