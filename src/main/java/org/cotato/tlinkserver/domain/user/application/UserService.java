@@ -23,4 +23,9 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(UnauthorizedException::wrong);
     }
+
+    @Transactional
+    public void deleteUserById(long userId) {
+        userRepository.deleteById(userId);
+    }
 }
