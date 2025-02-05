@@ -19,6 +19,10 @@ public class RoomService {
 		return roomRepository.findById(id).orElseThrow();
 	}
 
+	public Room getRoomByShareCode(final String shareCode) {
+		return roomRepository.findByShareCode(shareCode);
+	}
+
 	public void deleteRoom(final Long roomId) {
 		roomRepository.deleteById(roomId);
 	}
@@ -27,4 +31,5 @@ public class RoomService {
 		Room save = roomRepository.save(room);
 		return save.getId();
 	}
+
 }

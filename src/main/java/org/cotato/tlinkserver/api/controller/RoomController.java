@@ -1,11 +1,13 @@
 package org.cotato.tlinkserver.api.controller;
 
 import org.cotato.tlinkserver.api.facade.RoomFacade;
+import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.global.common.BaseResponse;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class RoomController {
 
 	private final RoomFacade roomFacade;
+	private final RoomService roomService;
 
 	@GetMapping
 	public ResponseEntity<BaseResponse<?>> getRooms() {
@@ -52,6 +55,18 @@ public class RoomController {
 		Long userId = 1L; // 임시 teacher Id
 		Long roomId = roomFacade.saveRoom(userId, roomRequest);
 		return ApiResponseUtil.success(SuccessMessage.CREATED, roomId);
+	}
+
+	@PostMapping("/code/{shareCode}")
+	public ResponseEntity<BaseResponse<?>> joinRoom(@PathVariable("shareCode") String shareCode) {
+		Long userId = 1L; // 임시 student Id
+		int result = roomFacade.joinRoom(userId, shareCode);
+
+		return switch (result) {
+			case 0, -1 -> ApiResponseUtil.failure(ErrorMessage.NOT_FOUND, result);
+			default -> ApiResponseUtil.success(SuccessMessage.SUCCESS);
+		};
+
 	}
 
 	@PatchMapping("/{roomId}")
