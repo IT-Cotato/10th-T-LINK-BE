@@ -24,7 +24,7 @@ public class RegistrationService {
 
 	public List<RoomDataResponse> getRooms(final Long userId) {
 		return registrationRepository.findAllByUserId(userId).stream()
-			.map(r -> RoomDataResponse.from(r.getRoom(), r.getName(), r.getUser()))
+			.map(r -> RoomDataResponse.from(r.getRoom(), r.getRoomName(), r.getUser()))
 			.toList();
 	}
 
@@ -58,7 +58,7 @@ public class RegistrationService {
 
 		return RoomModifyResponse.from(
 			teacherRegistration.getRoom(),
-			teacherRegistration.getName(),
+			teacherRegistration.getRoomName(),
 			teacherRegistration,
 			studentRegistration
 		);

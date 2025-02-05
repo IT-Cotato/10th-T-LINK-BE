@@ -18,6 +18,7 @@ import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,12 +30,14 @@ public class RoomFacade {
 	private final RegistrationService registrationService;
 	private final UserService userService;
 
-	public Long saveRoom(final Long userId, final RoomRequest roomRequest) {
-		User user = userService.findUser(userId);
-		Room room = roomRequest.save(user);
+	@Transactional
+	public Long saveRoom(final Long teacherId, final RoomRequest roomRequest) {
+		User teacher = userService.findUser(teacherId);
+		Room room = roomRequest.save(teacher);
 		return roomService.saveRoom(room);
 	}
 
+	@Transactional(readOnly = true)
 	public RoomsResponse getRooms(final Long userId) {
 		List<RoomDataResponse> roomData = registrationService.getRooms(userId);
 		List<RoomResponse> rooms = roomData.stream()
@@ -44,20 +47,24 @@ public class RoomFacade {
 		return RoomsResponse.from(rooms);
 	}
 
+	@Transactional(readOnly = true)
 	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {
 		return registrationService.getRoomModify(userId, roomId);
 	}
 
+	@Transactional
 	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
 		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
 			registrationService.modifyRoom(userId, roomId, roomRequest);
 	}
 
+	@Transactional
 	public void deleteRoom(final Long userId, final Long roomId) {
 		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
 			roomService.deleteRoom(roomId);
 	}
 
+	@Transactional
 	public ShareCodeResponse getShareCode(final Long roomId) {
 		String shareCode = RandomUtil.generateRandomCode('0', 'z', 10);
 		Room room = roomService.getRoom(roomId);
@@ -65,6 +72,7 @@ public class RoomFacade {
 		return ShareCodeResponse.from(shareCode);
 	}
 
+	@Transactional
 	public int joinRoom(final Long userId, final String shareCode) {
 		User user = userService.findUser(userId);
 		Room room = roomService.getRoomByShareCode(shareCode);
@@ -75,6 +83,7 @@ public class RoomFacade {
 
 		if (registration.getUser() == null) {
 			registration.setUser(user);
+			user.addRegistration(registration);
 			return 1;
 		} else if (registration.getUser().equals(user)) {
 			return 0;

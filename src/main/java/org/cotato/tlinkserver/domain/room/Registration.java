@@ -45,7 +45,7 @@ public class Registration {
 	private Role role;
 
 	@Column(name = "room_name", nullable = false, length = 50)
-	private String name;
+	private String roomName;
 
 	@Column(name = "lecture_file")
 	private boolean lectureFile;
@@ -63,16 +63,15 @@ public class Registration {
 	private boolean deposit;
 
 	@Builder
-	public Registration(User user, Room room, Role role, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
+	public Registration(Role role, String roomName, boolean lectureFile, boolean homework, boolean gradeStatistic,
 		boolean counselingLog, boolean deposit) {
-		this.user = user;
-		this.room = room;
 		this.role = role;
-		this.name = name;
+		this.roomName = roomName;
 		this.lectureFile = lectureFile;
 		this.homework = homework;
 		this.gradeStatistic = gradeStatistic;
 		this.counselingLog = counselingLog;
 		this.deposit = deposit;
 	}
+
 }

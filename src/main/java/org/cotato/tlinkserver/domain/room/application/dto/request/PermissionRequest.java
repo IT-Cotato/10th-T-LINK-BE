@@ -1,6 +1,7 @@
 package org.cotato.tlinkserver.domain.room.application.dto.request;
 
 import org.cotato.tlinkserver.domain.room.Registration;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 public record PermissionRequest
 	(
@@ -11,8 +12,10 @@ public record PermissionRequest
 		boolean deposit
 	)
 {
-	public Registration create() {
+	public Registration create(Role role, String roomName) {
 		return Registration.builder()
+			.roomName(roomName)
+			.role(role)
 			.lectureFile(lectureFile)
 			.homework(homework)
 			.gradeStatistic(gradeStatistic)
@@ -21,7 +24,8 @@ public record PermissionRequest
 			.build();
 	}
 
-	public void modify(Registration registration) {
+	public void modify(Registration registration, String roomName) {
+		registration.setRoomName(roomName);
 		registration.setLectureFile(lectureFile);
 		registration.setHomework(homework);
 		registration.setGradeStatistic(gradeStatistic);
