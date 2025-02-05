@@ -40,6 +40,14 @@ public class BaseResponse<T> {
                 .build();
     }
 
+    public static <T> BaseResponse<?> of(ErrorMessage errorMessage, T data) {
+        return builder()
+            .status(errorMessage.getHttpStatus().value())
+            .message(errorMessage.getMessage())
+            .data(data)
+            .build();
+    }
+
     public static <T> Builder<T> builder(){
         return new Builder<>();
     }

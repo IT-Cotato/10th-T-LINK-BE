@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.api.facade;
 
 import java.util.List;
 
+import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RegistrationService;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
@@ -13,6 +14,8 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.dto.UserService;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
@@ -60,6 +63,25 @@ public class RoomFacade {
 		Room room = roomService.getRoom(roomId);
 		room.setShareCode(shareCode);
 		return ShareCodeResponse.from(shareCode);
+	}
+
+	public int joinRoom(final Long userId, final String shareCode) {
+		User user = userService.findUser(userId);
+		Room room = roomService.getRoomByShareCode(shareCode);
+
+		Registration registration = room.getRegistrations().stream()
+			.filter(r -> r.getRole().equals(user.getRole()))
+			.findFirst().orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+
+		if (registration.getUser() == null) {
+			registration.setUser(user);
+			return 1;
+		} else if (registration.getUser().equals(user)) {
+			return 0;
+		} else {
+			return -1;
+		}
+
 	}
 
 }
