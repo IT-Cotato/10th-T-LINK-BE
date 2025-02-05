@@ -35,13 +35,13 @@ public class LectureFile {
 	@Column(name = "original_name", nullable = false, length = 30)
 	private String originalName;
 
-	@Column(name = "file_path", nullable = false, length = 250)
-	private String filePath;
+	@Column(name = "key", nullable = false, length = 250)
+	private String key;
 
 	@Builder
-	public LectureFile(LectureFileBox lectureFileBox, String originalName, String filePath) {
+	public LectureFile(LectureFileBox lectureFileBox, String originalName, String key) {
 		this.lectureFileBox = lectureFileBox;
 		this.originalName = originalName;
-		this.filePath = filePath;
+		this.key = key;
 	}
 }

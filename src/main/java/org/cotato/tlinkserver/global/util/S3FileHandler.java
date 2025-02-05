@@ -1,20 +1,23 @@
 package org.cotato.tlinkserver.global.util;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.net.URL;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
+
+import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Operations;
+import io.awspring.cloud.s3.S3Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -22,81 +25,50 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class S3FileHandler {
 
-    private final AmazonS3Client amazonS3Client;
+    private final S3Operations s3Operations;
 
-    @Value("${cloud.aws.s3.bucket-name}")
+    @Value("${spring.cloud.aws.s3.bucket-name}")
     private String bucket;
 
-    private final String EXAMPLE_DIR = "example/";
+    private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
 
-    public List<String> examples(final List<MultipartFile> multipartFiles, final Long userId) throws IOException {
-        List<String> exampleUploadUrls = new ArrayList<>();
-
-        multipartFiles.forEach(mf -> {
-            try {
-                exampleUploadUrls.add(example(mf, userId));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        return exampleUploadUrls;
+    // S3 파일 업로드
+    public void uploadFile(final MultipartFile multipartFile, final String key) throws IOException {
+        try (InputStream is = multipartFile.getInputStream()) {
+			s3Operations.upload(bucket, key, is,
+                ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
+        }
     }
 
-    public String example(final MultipartFile multipartFile, final Long userId) throws IOException {
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] MultipartFile -> File convert fail"));
+    public void uploadFiles(final List<MultipartFile> multipartFiles, final List<String> keys) throws IOException {
+        int size = keys.size();
 
-        return upload(uploadFile, EXAMPLE_DIR, userId);
+        for (int i = 0; i < size; i++){
+            uploadFile(multipartFiles.get(i), keys.get(i));
+        }
+    }
+
+    // S3 파일 다운로드
+    public S3Resource downloadFile(final String key) {
+        return s3Operations.download(bucket, key);
     }
 
     // S3 파일 삭제
-    public void deleteFile(final String fileUrl) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileUrl));
+    public void deleteFile(final String key) {
+        s3Operations.deleteObject(bucket, key);
     }
 
-    public void deleteFiles(final List<String> fileUrls) {
-        fileUrls.forEach(this::deleteFile);
+    public void deleteFiles(final List<String> keys) {
+        keys.forEach(this::deleteFile);
     }
 
-    // S3로 파일 업로드
-    private String upload(final File uploadFile, final String dirName, final Long userId) {
-        String fileName = dirName + userId + "/" + UUID.randomUUID() + uploadFile.getName();
-
-        String uploadFileUrl = putS3(uploadFile, fileName);
-        removeNewFile(uploadFile);
-
-        return uploadFileUrl;
+    // S3 파일 조회 URL 반환
+    public URL getFileUrl(final String key) {
+        return s3Operations.createSignedGetURL(bucket, key, duration);
     }
 
-    // S3로 업로드
-    private String putS3(final File uploadFile, final String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
-                CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+    public List<URL> getFileUrls(final List<String> keys) {
+        return keys.stream().map(this::getFileUrl).toList();
     }
 
-    // 로컬에 저장된 이미지 지우기
-    private void removeNewFile(final File targetFile) {
-        if (targetFile.delete()) {
-            log.info("File delete success");
-            return;
-        }
-
-        log.info("File delete fail: " + targetFile.getPath());
-    }
-
-    // 로컬에 파일 업로드 하기
-    private Optional<File> convert(final MultipartFile file) throws IOException {
-        String filePath = System.getProperty("user.home") + "/" + file.getOriginalFilename();
-
-        File convertFile = new File(filePath);
-        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-        return Optional.empty();
-    }
 }
