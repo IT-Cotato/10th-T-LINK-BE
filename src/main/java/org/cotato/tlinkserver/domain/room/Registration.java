@@ -1,9 +1,12 @@
 package org.cotato.tlinkserver.domain.room;
 
 import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +40,10 @@ public class Registration {
 	@JoinColumn(name = "room_id")
 	private Room room;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role", nullable = false, length = 10)
+	private Role role;
+
 	@Column(name = "room_name", nullable = false, length = 50)
 	private String name;
 
@@ -56,10 +63,11 @@ public class Registration {
 	private boolean deposit;
 
 	@Builder
-	public Registration(User user, Room room, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
+	public Registration(User user, Room room, Role role, String name, boolean lectureFile, boolean homework, boolean gradeStatistic,
 		boolean counselingLog, boolean deposit) {
 		this.user = user;
 		this.room = room;
+		this.role = role;
 		this.name = name;
 		this.lectureFile = lectureFile;
 		this.homework = homework;
