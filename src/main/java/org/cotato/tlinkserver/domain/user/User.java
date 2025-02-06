@@ -59,7 +59,7 @@ public class User {
 	private Role role;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", nullable = false, length = 2)
+	@Column(name = "gender", length = 2)
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
