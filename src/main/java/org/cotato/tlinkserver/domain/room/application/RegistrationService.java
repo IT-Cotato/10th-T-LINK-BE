@@ -7,6 +7,7 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyRes
 import org.cotato.tlinkserver.domain.room.infra.repository.RegistrationRepository;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.exception.UnauthorizedException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class RegistrationService {
 
 	public Registration getRegistration(final Long userId, final Long roomId) {
 		return registrationRepository.findRegistrationByUserIdAndRoomId(userId, roomId)
-			.orElseThrow(() -> new NotFoundException(ErrorMessage.UNAUTHORIZED));
+			.orElseThrow(() -> new UnauthorizedException(ErrorMessage.UNAUTHORIZED));
 	}
 
 	public List<Registration> getRegistrations(final Long userId) {
