@@ -29,7 +29,7 @@ public class RegistrationService {
 
 	public Registration getRegistration(final Long userId, final Long roomId) {
 		return registrationRepository.findRegistrationByUserIdAndRoomId(userId, roomId)
-			.orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+			.orElseThrow(() -> new NotFoundException(ErrorMessage.UNAUTHORIZED));
 	}
 
 	public List<Registration> getRegistrations(final Long userId) {
