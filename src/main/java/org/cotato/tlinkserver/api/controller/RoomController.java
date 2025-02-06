@@ -1,11 +1,13 @@
 package org.cotato.tlinkserver.api.controller;
 
+import org.cotato.tlinkserver.annotation.Permission;
+import org.cotato.tlinkserver.annotation.UserId;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
-import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
@@ -28,11 +30,10 @@ import lombok.RequiredArgsConstructor;
 public class RoomController {
 
 	private final RoomFacade roomFacade;
-	private final RoomService roomService;
 
+	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
 	@GetMapping
-	public ResponseEntity<BaseResponse<?>> getRooms() {
-		Long userId = 1L;	// 임시
+	public ResponseEntity<BaseResponse<?>> getRooms(@UserId Long userId) {
 		RoomsResponse roomsAndOpponents = roomFacade.getRooms(userId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomsAndOpponents);
 	}
