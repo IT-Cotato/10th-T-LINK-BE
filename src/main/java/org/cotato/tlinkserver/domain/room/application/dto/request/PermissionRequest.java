@@ -24,8 +24,7 @@ public record PermissionRequest
 			.build();
 	}
 
-	public void modify(Registration registration, String roomName) {
-		registration.setRoomName(roomName);
+	public void modify(Registration registration) {
 		registration.setLectureFile(lectureFile);
 		registration.setHomework(homework);
 		registration.setGradeStatistic(gradeStatistic);
