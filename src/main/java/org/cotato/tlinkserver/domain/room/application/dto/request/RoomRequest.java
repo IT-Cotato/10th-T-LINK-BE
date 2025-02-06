@@ -35,6 +35,8 @@ public record RoomRequest
 			.studentName(studentName).subject(subject)
 			.build();
 
+		lessonDays.forEach(day -> room.addLessonDay(new LessonDay(day)));
+
 		Registration teacherRegistration = Registration.builder()
 			.roomName(roomName).role(Role.TEACHER).lectureFile(true).homework(true)
 			.gradeStatistic(true).counselingLog(true).deposit(true)
