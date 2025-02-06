@@ -19,14 +19,14 @@ public record RoomResponse
 		OpponentResponse opponent
 	)
 {
-	public static RoomResponse from(Registration registration) {
+	public static RoomResponse from(Registration registration, String roomName) {
 		Room room = registration.getRoom();
 		User opponent = registration.getUser();
 
 		if (opponent == null) {
 			return RoomResponse.builder()
 				.roomId(room.getId())
-				.roomName(registration.getRoomName())
+				.roomName(roomName)
 				.subject(room.getSubject())
 				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
 				.build();
