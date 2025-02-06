@@ -30,8 +30,8 @@ public class RoomService {
 		return save.getId();
 	}
 
-	public void deleteRoom(final Long roomId) {
-		roomRepository.deleteById(roomId);
+	public void removeRoom(final Long id) {
+		roomRepository.deleteById(id);
 	}
 
 }
