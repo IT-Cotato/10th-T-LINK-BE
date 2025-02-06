@@ -70,10 +70,10 @@ public class RoomController {
 
 	}
 
+	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
 	@PatchMapping("/{roomId}")
-	public ResponseEntity<BaseResponse<?>> modifyRoom(@PathVariable("roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> modifyRoom(@UserId Long userId, @PathVariable("roomId") Long roomId,
 		@RequestBody RoomRequest roomRequest) {
-		Long userId = 1L;
 		roomFacade.modifyRoom(userId, roomId, roomRequest);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
