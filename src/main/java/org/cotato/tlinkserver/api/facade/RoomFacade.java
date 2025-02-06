@@ -2,27 +2,26 @@ package org.cotato.tlinkserver.api.facade;
 
 import java.util.List;
 
+import org.cotato.tlinkserver.annotation.Facade;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RegistrationService;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
-import org.cotato.tlinkserver.domain.room.application.dto.response.RoomDataResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.domain.user.User;
-import org.cotato.tlinkserver.domain.user.application.dto.UserService;
+import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Facade
 @RequiredArgsConstructor
 public class RoomFacade {
 
@@ -32,18 +31,16 @@ public class RoomFacade {
 
 	@Transactional
 	public Long saveRoom(final Long teacherId, final RoomRequest roomRequest) {
-		User teacher = userService.findUser(teacherId);
+		User teacher = userService.getValidUser(teacherId);
 		Room room = roomRequest.save(teacher);
 		return roomService.saveRoom(room);
 	}
 
 	@Transactional(readOnly = true)
 	public RoomsResponse getRooms(final Long userId) {
-		List<RoomDataResponse> roomData = registrationService.getRooms(userId);
-		List<RoomResponse> rooms = roomData.stream()
+		List<RoomResponse> rooms = registrationService.getRooms(userId).stream()
 			.map(r -> RoomResponse.from(r.room(), r.roomName(), r.user()))
 			.toList();
-
 		return RoomsResponse.from(rooms);
 	}
 
@@ -74,7 +71,7 @@ public class RoomFacade {
 
 	@Transactional
 	public int joinRoom(final Long userId, final String shareCode) {
-		User user = userService.findUser(userId);
+		User user = userService.getValidUser(userId);
 		Room room = roomService.getRoomByShareCode(shareCode);
 
 		Registration registration = room.getRegistrations().stream()
