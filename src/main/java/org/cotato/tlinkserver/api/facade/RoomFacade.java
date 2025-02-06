@@ -86,9 +86,9 @@ public class RoomFacade {
 	}
 
 	@Transactional
-	public void deleteRoom(final Long userId, final Long roomId) {
-		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
-			roomService.deleteRoom(roomId);
+	public void removeRoom(final Long userId, final Long roomId) {
+		registrationService.getRegistration(userId, roomId);
+		roomService.removeRoom(roomId);
 	}
 
 	@Transactional

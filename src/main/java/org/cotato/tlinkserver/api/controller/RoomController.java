@@ -78,10 +78,10 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{roomId}")
-	public ResponseEntity<BaseResponse<?>> removeRoom(@PathVariable("roomId") Long roomId) {
-		Long userId = 1L;	// 임시 teacher Id
-		roomFacade.deleteRoom(userId, roomId);
+	public ResponseEntity<BaseResponse<?>> removeRoom(@UserId Long userId, @PathVariable("roomId") Long roomId) {
+		roomFacade.removeRoom(userId, roomId);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
