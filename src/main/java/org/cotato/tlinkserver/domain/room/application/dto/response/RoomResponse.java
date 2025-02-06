@@ -23,6 +23,15 @@ public record RoomResponse
 		Room room = registration.getRoom();
 		User opponent = registration.getUser();
 
+		if (opponent == null) {
+			return RoomResponse.builder()
+				.roomId(room.getId())
+				.roomName(registration.getRoomName())
+				.subject(room.getSubject())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.build();
+		}
+
 		if (opponent.getRole().equals(Role.TEACHER)) {
 			return RoomResponse.builder()
 				.roomId(room.getId())
