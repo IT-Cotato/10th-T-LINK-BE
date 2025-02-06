@@ -59,16 +59,14 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.CREATED, roomId);
 	}
 
+	@Permission(role = {Role.PARENT, Role.STUDENT})
 	@PostMapping("/code/{shareCode}")
-	public ResponseEntity<BaseResponse<?>> joinRoom(@PathVariable("shareCode") String shareCode) {
-		Long userId = 1L; // 임시 student Id
+	public ResponseEntity<BaseResponse<?>> joinRoom(@UserId Long userId, @PathVariable("shareCode") String shareCode) {
 		int result = roomFacade.joinRoom(userId, shareCode);
-
 		return switch (result) {
 			case 0, -1 -> ApiResponseUtil.failure(ErrorMessage.NOT_FOUND, result);
 			default -> ApiResponseUtil.success(SuccessMessage.SUCCESS);
 		};
-
 	}
 
 	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})

@@ -15,7 +15,6 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResp
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.domain.user.constant.Role;
-import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.exception.UnauthorizedException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
@@ -102,11 +101,9 @@ public class RoomFacade {
 	@Transactional
 	public int joinRoom(final Long userId, final String shareCode) {
 		User user = userService.getValidUser(userId);
-		Room room = roomService.getRoomByShareCode(shareCode);
+		Room room = roomService.getRoom(shareCode);
 
-		Registration registration = room.getRegistrations().stream()
-			.filter(r -> r.getRole().equals(user.getRole()))
-			.findFirst().orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+		Registration registration = registrationService.getRegistration(room.getId(), user.getRole());
 
 		if (registration.getUser() == null) {
 			registration.setUser(user);
