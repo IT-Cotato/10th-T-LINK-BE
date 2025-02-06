@@ -77,7 +77,7 @@ public class RoomFacade {
 		if (user.getRole().equals(Role.TEACHER)) {
 			Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
 			Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
-			roomRequest.modify(room, parentRegistration, studentRegistration);
+			roomRequest.modify(room, registration, parentRegistration, studentRegistration);
 		}
 		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
 			roomRequest.modify(registration);
