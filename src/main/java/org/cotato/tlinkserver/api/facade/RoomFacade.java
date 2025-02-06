@@ -45,16 +45,18 @@ public class RoomFacade {
 		if (user.getRole().equals(Role.TEACHER)) {
 			return RoomsResponse.from(userRooms.stream()
 				.map(room -> {
+					String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
 					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.STUDENT);
-					return RoomResponse.from(opponentRegistration);
+					return RoomResponse.from(opponentRegistration, roomName);
 				})
 				.toList());
 		}
 		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
 			return RoomsResponse.from(userRooms.stream()
 				.map(room -> {
+					String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
 					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.TEACHER);
-					return RoomResponse.from(opponentRegistration);
+					return RoomResponse.from(opponentRegistration, roomName);
 				})
 				.toList());
 		}
