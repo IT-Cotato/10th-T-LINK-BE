@@ -1,6 +1,5 @@
 package org.cotato.tlinkserver.domain.room.application.dto.request;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.LessonDay;
@@ -56,17 +55,17 @@ public record RoomRequest
 		registration.setRoomName(roomName);
 	}
 
-	public void modify(Room room, Registration parentRegistration, Registration studentRegistration) {
+	public void modify(Room room, Registration teacherRegistration, Registration parentRegistration, Registration studentRegistration) {
 		room.setStudentName(studentName);
 		room.setSubject(subject);
-
-		room.setLessonDays(new ArrayList<>());
+		room.getLessonDays().clear();
 		lessonDays().forEach(day -> {
 			LessonDay lessonDay = new LessonDay(day);
 			room.addLessonDay(lessonDay);
 		});
 
-		parentPermission.modify(parentRegistration, roomName);
-		studentPermission.modify(studentRegistration, roomName);
+		teacherRegistration.setRoomName(roomName);
+		parentPermission.modify(parentRegistration);
+		studentPermission.modify(studentRegistration);
 	}
 }
