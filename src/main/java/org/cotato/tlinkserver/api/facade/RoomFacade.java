@@ -65,8 +65,8 @@ public class RoomFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {
-		return registrationService.getRoomModify(userId, roomId);
+	public RoomModifyResponse getRoomModify(final Long roomId) {
+		return registrationService.getRoomModify(roomId);
 	}
 
 	@Transactional

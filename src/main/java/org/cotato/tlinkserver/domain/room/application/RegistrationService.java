@@ -37,6 +37,25 @@ public class RegistrationService {
 			.toList();
 	}
 
+	public RoomModifyResponse getRoomModify(final Long roomId) {
+		List<Registration> registrations = registrationRepository.findRegistrationsByRoomId(roomId);
+
+		Registration teacherRegistration = registrations.stream()
+			.filter(r -> r.getRole().equals(Role.TEACHER)).findFirst().get();
+		Registration parentRegistration = registrations.stream()
+			.filter(r -> r.getRole().equals(Role.PARENT)).findFirst().get();
+		Registration studentRegistration = registrations.stream()
+			.filter(r -> r.getRole().equals(Role.STUDENT)).findFirst().get();
+
+		return RoomModifyResponse.from(
+			teacherRegistration.getRoom(),
+			teacherRegistration.getRoomName(),
+			parentRegistration,
+			studentRegistration
+		);
+
+	}
+
 	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
 		List<Registration> registrations = registrationRepository.findRegistrationsByRoomId(roomId);
 
@@ -51,27 +70,6 @@ public class RegistrationService {
 		Room room = teacherRegistration.getRoom();
 
 		roomRequest.modify(room, teacherRegistration, studentRegistration);
-	}
-
-	public RoomModifyResponse getRoomModify(final Long userId, final Long roomId) {
-		List<Registration> registrations = registrationRepository.findRegistrationsByRoomId(roomId);
-
-		Registration teacherRegistration = registrations.stream()
-			.filter(r -> r.getUser().getId().equals(userId))
-			.findFirst()
-			.orElseThrow();
-		Registration studentRegistration = registrations.stream()
-			.filter(r -> !r.getUser().getId().equals(userId))
-			.findFirst()
-			.orElseThrow();
-
-		return RoomModifyResponse.from(
-			teacherRegistration.getRoom(),
-			teacherRegistration.getRoomName(),
-			teacherRegistration,
-			studentRegistration
-		);
-
 	}
 
 }
