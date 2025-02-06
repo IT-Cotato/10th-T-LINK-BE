@@ -52,16 +52,16 @@ public class Room {
 	@JoinColumn(name = "account_bank_id")
 	private Bank bank;
 
-	@Column(name = "account_number", nullable = false, length = 20)
+	@Column(name = "account_number", length = 20)
 	private String accountNumber;
 
-	@Column(name = "deposit_at", nullable = false)
+	@Column(name = "deposit_at")
 	private int depositAt;
 
-	@Column(name = "deposit_amount", nullable = false)
+	@Column(name = "deposit_amount")
 	private int depositAmount;
 
-	@Column(name = "share_code", nullable = false, length = 250)
+	@Column(name = "share_code", length = 250)
 	private String shareCode;
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
