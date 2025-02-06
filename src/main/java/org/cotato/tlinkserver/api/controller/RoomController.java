@@ -38,10 +38,10 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomsAndOpponents);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@GetMapping("/{roomId}/info")
 	public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") Long roomId) {
-		Long userId = 1L;	// 임시 teacher Id
-		RoomModifyResponse roomModify = roomFacade.getRoomModify(userId, roomId);
+		RoomModifyResponse roomModify = roomFacade.getRoomModify(roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
 	}
 
