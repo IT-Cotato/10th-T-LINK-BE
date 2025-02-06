@@ -14,7 +14,9 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.exception.UnauthorizedException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +40,28 @@ public class RoomFacade {
 
 	@Transactional(readOnly = true)
 	public RoomsResponse getRooms(final Long userId) {
-		List<RoomResponse> rooms = registrationService.getRooms(userId).stream()
-			.map(r -> RoomResponse.from(r.room(), r.roomName(), r.user()))
-			.toList();
-		return RoomsResponse.from(rooms);
+		User user = userService.getValidUser(userId);
+		List<Room> userRooms = registrationService.getRegistrations(userId).stream().map(Registration::getRoom).toList();
+
+		if (user.getRole().equals(Role.TEACHER)) {
+			return RoomsResponse.from(userRooms.stream()
+				.map(room -> {
+					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.STUDENT);
+					return RoomResponse.from(opponentRegistration);
+				})
+				.toList());
+		}
+		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
+			return RoomsResponse.from(userRooms.stream()
+				.map(room -> {
+					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.TEACHER);
+					return RoomResponse.from(opponentRegistration);
+				})
+				.toList());
+		}
+		else {
+			throw new UnauthorizedException(ErrorMessage.UNAUTHORIZED);
+		}
 	}
 
 	@Transactional(readOnly = true)

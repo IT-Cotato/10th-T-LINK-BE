@@ -2,8 +2,10 @@ package org.cotato.tlinkserver.domain.room.application.dto.response;
 
 import java.util.List;
 
+import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import lombok.Builder;
 
@@ -17,13 +19,27 @@ public record RoomResponse
 		OpponentResponse opponent
 	)
 {
-	public static RoomResponse from(Room room, String roomName, User user) {
-		return RoomResponse.builder()
-			.roomId(room.getId())
-			.roomName(roomName)
-			.subject(room.getSubject())
-			.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
-			.opponent(OpponentResponse.from(user))
-			.build();
+	public static RoomResponse from(Registration registration) {
+		Room room = registration.getRoom();
+		User opponent = registration.getUser();
+
+		if (opponent.getRole().equals(Role.TEACHER)) {
+			return RoomResponse.builder()
+				.roomId(room.getId())
+				.roomName(registration.getRoomName())
+				.subject(room.getSubject())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.opponent(OpponentResponse.from(opponent, opponent.getUsername()))
+				.build();
+		}
+		else {
+			return RoomResponse.builder()
+				.roomId(room.getId())
+				.roomName(registration.getRoomName())
+				.subject(room.getSubject())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.opponent(OpponentResponse.from(opponent, room.getStudentName()))
+				.build();
+		}
 	}
 }
