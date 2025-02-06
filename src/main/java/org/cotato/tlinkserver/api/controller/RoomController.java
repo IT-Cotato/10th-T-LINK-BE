@@ -45,6 +45,7 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@GetMapping("/{roomId}/shareCode")
 	public ResponseEntity<BaseResponse<?>> getShareCode(@PathVariable("roomId") Long roomId) {
 		ShareCodeResponse shareCode = roomFacade.getShareCode(roomId);
