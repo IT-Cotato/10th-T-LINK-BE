@@ -1,10 +1,7 @@
 package org.cotato.tlinkserver.domain.room.application;
 
-import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.infra.repository.RoomRepository;
-import org.cotato.tlinkserver.domain.user.User;
-import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
@@ -24,8 +21,8 @@ public class RoomService {
 		return roomRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 	}
 
-	public Room getRoomByShareCode(final String shareCode) {
-		return roomRepository.findByShareCode(shareCode);
+	public Room getRoom(final String shareCode) {
+		return roomRepository.findByShareCode(shareCode).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 	}
 
 	public Long saveRoom(final Room room) {
