@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.domain.room.application.dto.request;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.room.LessonDay;
@@ -9,15 +10,17 @@ import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
 public record RoomRequest
 	(
+		@NotBlank
 		String roomName,
 		String studentName,
 		String subject,
-		List<String> lessonDays,
+		List<DayOfWeek> lessonDays,
 		PermissionRequest parentPermission,
 		PermissionRequest studentPermission
 	)
@@ -49,15 +52,19 @@ public record RoomRequest
 		return room;
 	}
 
+	public void modify(Registration registration) {
+		registration.setRoomName(roomName);
+	}
+
 	public void modify(Room room, Registration parentRegistration, Registration studentRegistration) {
 		room.setStudentName(studentName);
 		room.setSubject(subject);
 
-		room.getLessonDays().clear();
-		lessonDays.stream()
-			.map(lessonDay -> LessonDay.builder().lessonDay(DayOfWeek.toEnum(lessonDay)).build())
-			.toList()
-			.forEach(room::addLessonDay);
+		room.setLessonDays(new ArrayList<>());
+		lessonDays().forEach(day -> {
+			LessonDay lessonDay = new LessonDay(day);
+			room.addLessonDay(lessonDay);
+		});
 
 		parentPermission.modify(parentRegistration, roomName);
 		studentPermission.modify(studentRegistration, roomName);

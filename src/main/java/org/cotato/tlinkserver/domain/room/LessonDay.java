@@ -39,8 +39,7 @@ public class LessonDay {
 	private DayOfWeek lessonDay;
 
 	@Builder
-	public LessonDay(Room room, DayOfWeek lessonDay) {
-		this.room = room;
+	public LessonDay(DayOfWeek lessonDay) {
 		this.lessonDay = lessonDay;
 	}
 

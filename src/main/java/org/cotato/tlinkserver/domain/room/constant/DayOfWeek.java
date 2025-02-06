@@ -1,7 +1,11 @@
 package org.cotato.tlinkserver.domain.room.constant;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import lombok.Getter;
 
@@ -16,19 +20,19 @@ public enum DayOfWeek {
 	SUNDAY("일");
 
 	private final String inKorean;
-	private static final Map<String, DayOfWeek> map = new HashMap<>();
-	static {
-		for (DayOfWeek day : DayOfWeek.values()) {
-			map.put(day.inKorean, day);
-		}
-	}
 
 	DayOfWeek(String inKorean) {
 		this.inKorean = inKorean;
 	}
 
-	public static DayOfWeek toEnum(String inKorean) {
-		return map.get(inKorean);
+	@JsonCreator
+	public static DayOfWeek from(final String input) {
+		return Arrays.stream(DayOfWeek.values())
+			.filter(day -> day.inKorean.equals(input))
+			.findFirst()
+			.orElseThrow(
+				() -> new TLinkException(ErrorMessage.BAD_REQUEST)
+			);
 	}
 
 }

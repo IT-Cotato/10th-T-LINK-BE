@@ -71,8 +71,18 @@ public class RoomFacade {
 
 	@Transactional
 	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
-		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
-			registrationService.modifyRoom(userId, roomId, roomRequest);
+		User user = userService.getValidUser(userId);
+		Room room = roomService.getRoom(roomId);
+		Registration registration = registrationService.getRegistration(userId, roomId);
+
+		if (user.getRole().equals(Role.TEACHER)) {
+			Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
+			Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
+			roomRequest.modify(room, parentRegistration, studentRegistration);
+		}
+		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
+			roomRequest.modify(registration);
+		}
 	}
 
 	@Transactional
