@@ -2,6 +2,8 @@ package org.cotato.tlinkserver.domain.room.application;
 
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.infra.repository.RoomRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
 import lombok.AccessLevel;
