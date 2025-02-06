@@ -51,9 +51,9 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.CREATED, shareCode);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PostMapping
-	public ResponseEntity<BaseResponse<?>> saveRoom(@RequestBody RoomRequest roomRequest) {
-		Long userId = 1L; // 임시 teacher Id
+	public ResponseEntity<BaseResponse<?>> saveRoom(@UserId Long userId, @RequestBody RoomRequest roomRequest) {
 		Long roomId = roomFacade.saveRoom(userId, roomRequest);
 		return ApiResponseUtil.success(SuccessMessage.CREATED, roomId);
 	}

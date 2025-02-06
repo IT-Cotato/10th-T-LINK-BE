@@ -11,6 +11,7 @@ import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
@@ -18,27 +19,26 @@ public record RoomRequest
 	(
 		@NotBlank
 		String roomName,
+		@NotBlank
 		String studentName,
+		@NotBlank
 		String subject,
+		@NotNull
 		List<DayOfWeek> lessonDays,
+		@NotNull
 		PermissionRequest parentPermission,
+		@NotNull
 		PermissionRequest studentPermission
 	)
 {
 	public Room save(User user) {
 		Room room = Room.builder()
-			.studentName(studentName)
-			.subject(subject)
+			.studentName(studentName).subject(subject)
 			.build();
 
 		Registration teacherRegistration = Registration.builder()
-			.roomName(roomName)
-			.role(Role.TEACHER)
-			.lectureFile(true)
-			.homework(true)
-			.gradeStatistic(true)
-			.counselingLog(true)
-			.deposit(true)
+			.roomName(roomName).role(Role.TEACHER).lectureFile(true).homework(true)
+			.gradeStatistic(true).counselingLog(true).deposit(true)
 			.build();
 		user.addRegistration(teacherRegistration);
 		room.addRegistration(teacherRegistration);
