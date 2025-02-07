@@ -119,9 +119,4 @@ public class RoomFacade {
 
 	}
 
-	public void deleteRoom(final Long userId, final Long roomId) {
-		if (registrationService.getRooms(userId).stream().anyMatch(r -> r.room().getId().equals(roomId)))
-			roomService.deleteRoom(roomId);
-	}
-
 }
