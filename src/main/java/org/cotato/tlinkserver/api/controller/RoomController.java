@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.api.controller;
 
+import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.annotation.UserId;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
@@ -40,14 +41,14 @@ public class RoomController {
 
 	@Permission(role = {Role.TEACHER})
 	@GetMapping("/{roomId}/info")
-	public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") @IdValidation Long roomId) {
 		RoomModifyResponse roomModify = roomFacade.getRoomModify(roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
 	}
 
 	@Permission(role = {Role.TEACHER})
 	@GetMapping("/{roomId}/shareCode")
-	public ResponseEntity<BaseResponse<?>> getShareCode(@PathVariable("roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getShareCode(@PathVariable("roomId") @IdValidation Long roomId) {
 		ShareCodeResponse shareCode = roomFacade.getShareCode(roomId);
 		return ApiResponseUtil.success(SuccessMessage.CREATED, shareCode);
 	}
@@ -71,7 +72,7 @@ public class RoomController {
 
 	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
 	@PatchMapping("/{roomId}")
-	public ResponseEntity<BaseResponse<?>> modifyRoom(@UserId Long userId, @PathVariable("roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> modifyRoom(@UserId Long userId, @PathVariable("roomId") @IdValidation Long roomId,
 		@RequestBody RoomRequest roomRequest) {
 		roomFacade.modifyRoom(userId, roomId, roomRequest);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
@@ -79,7 +80,7 @@ public class RoomController {
 
 	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{roomId}")
-	public ResponseEntity<BaseResponse<?>> removeRoom(@UserId Long userId, @PathVariable("roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> removeRoom(@UserId Long userId, @PathVariable("roomId") @IdValidation Long roomId) {
 		roomFacade.removeRoom(userId, roomId);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
