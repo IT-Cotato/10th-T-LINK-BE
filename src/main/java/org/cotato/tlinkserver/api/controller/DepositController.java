@@ -32,6 +32,7 @@ public class DepositController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, deposit);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@GetMapping("/modify")
 	public ResponseEntity<BaseResponse<?>> getDepositModify(@PathVariable(value = "roomId") Long roomId) {
 		DepositModifyResponse depositModify = depositFacade.getDepositModify(roomId);
