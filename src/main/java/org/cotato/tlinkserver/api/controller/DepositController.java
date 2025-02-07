@@ -1,9 +1,11 @@
 package org.cotato.tlinkserver.api.controller;
 
+import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.DepositFacade;
 import org.cotato.tlinkserver.domain.bank.application.dto.request.DepositRequest;
 import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositModifyResponse;
 import org.cotato.tlinkserver.domain.bank.application.dto.response.DepositResponse;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
@@ -36,6 +38,7 @@ public class DepositController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, depositModify);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PutMapping("/modify")
 	public ResponseEntity<BaseResponse<?>> modifyDeposit(@PathVariable(value = "roomId") Long roomId,
 		@RequestBody DepositRequest depositRequest) {
