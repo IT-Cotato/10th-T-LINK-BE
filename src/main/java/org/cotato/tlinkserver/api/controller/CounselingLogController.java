@@ -31,8 +31,9 @@ public class CounselingLogController {
 
 	private final CounselingLogFacade counselingLogFacade;
 
+	@Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
 	@GetMapping
-	public ResponseEntity<BaseResponse<?>> getCounselingLogs(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getCounselingLogs(@PathVariable(value = "roomId") @IdValidation Long roomId) {
 		CounselingLogsResponse counselingLogs = counselingLogFacade.getCounselingLogs(roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, counselingLogs);
 	}
