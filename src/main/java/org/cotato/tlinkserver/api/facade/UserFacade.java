@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.api.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.api.facade.dto.request.RewriteStatusMessageDTO;
 import org.cotato.tlinkserver.api.facade.dto.response.MyPageInfoDTO;
 import org.cotato.tlinkserver.auth.ReissueService;
 import org.cotato.tlinkserver.domain.user.User;
@@ -34,5 +35,11 @@ public class UserFacade {
     public MyPageInfoDTO getMyPageInfo(long userId) {
         User user = userService.findById(userId);
         return MyPageInfoDTO.from(user);
+    }
+
+    @Transactional
+    public void rewriteStatusMessage(long userId, RewriteStatusMessageDTO from) {
+        User user = userService.getValidUser(userId);
+        user.setStatusMessage(from.statusMessage());
     }
 }
