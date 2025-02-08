@@ -80,7 +80,7 @@ public class LectureFileBoxFacade {
 		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
 		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(lectureFile.getS3Key()));
-		lectureFileBoxService.removeLectureFileBox(lectureFileBoxId);
+		lectureFileBox.getRoom().getLectureFileBoxes().remove(lectureFileBox);
 	}
 
 	@Transactional
