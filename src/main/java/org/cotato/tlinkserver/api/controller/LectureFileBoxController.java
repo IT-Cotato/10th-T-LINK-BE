@@ -64,6 +64,7 @@ public class LectureFileBoxController {
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PatchMapping("/{lectureFileBoxId}")
 	public ResponseEntity<BaseResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
