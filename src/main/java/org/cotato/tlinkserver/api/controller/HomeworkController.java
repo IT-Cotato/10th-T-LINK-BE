@@ -60,6 +60,7 @@ public class HomeworkController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworkDetail);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{homeworkId}")
 	public ResponseEntity<BaseResponse<?>> deleteHomework(@PathVariable(value = "homeworkId") Long homeworkId) {
 		homeworkFacade.removeHomework(homeworkId);
