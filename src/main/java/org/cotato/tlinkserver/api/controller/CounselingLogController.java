@@ -46,8 +46,9 @@ public class CounselingLogController {
 		return ApiResponseUtil.success(SuccessMessage.CREATED);
 	}
 
+	@Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
 	@GetMapping("/{counselingLogId}")
-	public ResponseEntity<BaseResponse<?>> getCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId) {
+	public ResponseEntity<BaseResponse<?>> getCounselingLog(@PathVariable(value = "counselingLogId") @IdValidation Long counselingLogId) {
 		CounselingLogDetailResponse counselingLogDetail = counselingLogFacade.getCounselingLog(counselingLogId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, counselingLogDetail);
 	}

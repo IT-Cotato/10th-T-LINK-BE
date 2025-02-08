@@ -4,7 +4,7 @@ import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 
 public record CounselingLogDetailResponse
 	(
-		Long counselingLogId,
+		Long id,
 		String title,
 		String content,
 		String engagement,
