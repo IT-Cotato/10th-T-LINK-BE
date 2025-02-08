@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -55,4 +56,8 @@ public class RegistrationService {
 		);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Registration> getRegistrationsWithRoomInfo(long userId) {
+		return registrationRepository.findFetchRegistrationsByUserId(userId);
+	}
 }
