@@ -1,5 +1,12 @@
 package org.cotato.tlinkserver.domain.room.constant;
 
+import java.util.Arrays;
+
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import lombok.Getter;
 
 @Getter
@@ -17,4 +24,15 @@ public enum DayOfWeek {
 	DayOfWeek(String inKorean) {
 		this.inKorean = inKorean;
 	}
+
+	@JsonCreator
+	public static DayOfWeek from(final String input) {
+		return Arrays.stream(DayOfWeek.values())
+			.filter(day -> day.inKorean.equals(input))
+			.findFirst()
+			.orElseThrow(
+				() -> new TLinkException(ErrorMessage.BAD_REQUEST)
+			);
+	}
+
 }
