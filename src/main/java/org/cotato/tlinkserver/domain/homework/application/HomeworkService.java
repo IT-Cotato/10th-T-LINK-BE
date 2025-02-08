@@ -24,12 +24,4 @@ public class HomeworkService {
 		return homeworkRepository.findHomeworksByRoomId(roomId);
 	}
 
-	public void saveHomework(final Homework homework) {
-		homeworkRepository.save(homework);
-	}
-
-	public void removeHomework(final Long homeworkId) {
-		homeworkRepository.deleteById(homeworkId);
-	}
-
 }
