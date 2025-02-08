@@ -7,7 +7,6 @@ import org.cotato.tlinkserver.domain.counselingLog.application.dto.request.Couns
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogDetailResponse;
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogResponse;
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogsResponse;
-import org.cotato.tlinkserver.domain.counselingLog.constant.Engagement;
 import org.cotato.tlinkserver.domain.counselingLog.infra.repository.CounselingLogRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,7 @@ public class CounselingLogService {
 		CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId).orElseThrow();
 		counselingLog.setTitle(counselingLogSaveRequest.title());
 		counselingLog.setContent(counselingLogSaveRequest.content());
-		counselingLog.setEngagement(Engagement.valueOf(counselingLogSaveRequest.engagement()));
+		counselingLog.setEngagement(counselingLogSaveRequest.engagement());
 		counselingLog.setHomeworkSubmitted(counselingLogSaveRequest.homeworkSubmitted());
 	}
 

@@ -3,11 +3,17 @@ package org.cotato.tlinkserver.domain.counselingLog.application.dto.request;
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 import org.cotato.tlinkserver.domain.counselingLog.constant.Engagement;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public record CounselingLogSaveRequest
 	(
+		@NotBlank
 		String title,
+		@NotBlank
 		String content,
-		String engagement,
+		@NotNull
+		Engagement engagement,
 		Boolean homeworkSubmitted
 	)
 {
@@ -15,8 +21,8 @@ public record CounselingLogSaveRequest
 		return CounselingLog.builder()
 			.title(counselingLogSaveRequest.title)
 			.content(counselingLogSaveRequest.content)
-			.engagement(Engagement.valueOf(counselingLogSaveRequest.engagement))
+			.engagement(counselingLogSaveRequest.engagement)
 			.homeworkSubmitted(counselingLogSaveRequest.homeworkSubmitted)
 			.build();
-	};
+	}
 }
