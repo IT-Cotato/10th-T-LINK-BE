@@ -35,6 +35,7 @@ public class LectureFileBoxController {
 	private final LectureFileBoxFacade lectureFileBoxFacade;
 	private final LectureFileBoxService lectureFileBoxService;
 
+	@Permission(role = {Role.TEACHER, Role.PARENT, Role.STUDENT})
 	@GetMapping
 	public ResponseEntity<BaseResponse<?>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
 		LectureFileBoxesResponse lectureFileBoxes = lectureFileBoxFacade.getLectureFileBoxes(roomId);
