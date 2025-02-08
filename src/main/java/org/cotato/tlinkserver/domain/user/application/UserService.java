@@ -3,7 +3,9 @@ package org.cotato.tlinkserver.domain.user.application;
 import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.infra.repository.UserRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.exception.UnauthorizedException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +29,13 @@ public class UserService {
     @Transactional
     public void deleteUserById(long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public User findById(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new NotFoundException(ErrorMessage.NOT_FOUND)
+                );
     }
 }
