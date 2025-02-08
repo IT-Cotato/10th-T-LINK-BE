@@ -3,9 +3,9 @@ package org.cotato.tlinkserver.api.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
-import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FileUrlsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
@@ -33,18 +33,17 @@ import lombok.RequiredArgsConstructor;
 public class LectureFileBoxController {
 
 	private final LectureFileBoxFacade lectureFileBoxFacade;
-	private final LectureFileBoxService lectureFileBoxService;
 
 	@Permission(role = {Role.TEACHER, Role.PARENT, Role.STUDENT})
 	@GetMapping
-	public ResponseEntity<BaseResponse<?>> getLectureFileBoxes(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFileBoxes(@PathVariable(value = "roomId") @IdValidation Long roomId) {
 		LectureFileBoxesResponse lectureFileBoxes = lectureFileBoxFacade.getLectureFileBoxes(roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBoxes);
 	}
 
 	@Permission(role = {Role.TEACHER})
 	@PostMapping
-	public ResponseEntity<BaseResponse<?>> saveLectureFileBox(@PathVariable(value = "roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> saveLectureFileBox(@PathVariable(value = "roomId") @IdValidation Long roomId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
 		@RequestPart(value = "lectureFiles") List<MultipartFile> lectureFiles) throws IOException {
 		lectureFileBoxFacade.saveLectureFileBox(roomId, lectureFileBoxName, lectureFiles);
@@ -53,21 +52,21 @@ public class LectureFileBoxController {
 
 	@Permission(role = {Role.TEACHER, Role.PARENT, Role.STUDENT})
 	@GetMapping("/{lectureFileBoxId}")
-	public ResponseEntity<BaseResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") @IdValidation Long lectureFileBoxId) {
 		LectureFileBoxDetailResponse lectureFileBox = lectureFileBoxFacade.getLectureFileBox(lectureFileBoxId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBox);
 	}
 
 	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{lectureFileBoxId}")
-	public ResponseEntity<BaseResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") @IdValidation Long lectureFileBoxId) {
 		lectureFileBoxFacade.removeLectureFileBox(lectureFileBoxId);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
 	@Permission(role = {Role.TEACHER})
 	@PatchMapping("/{lectureFileBoxId}")
-	public ResponseEntity<BaseResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId,
+	public ResponseEntity<BaseResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") @IdValidation Long lectureFileBoxId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
 		@RequestPart(value = "addLectureFiles") List<MultipartFile> addLectureFiles,
 		@RequestParam("removeLectureFiles") List<Long> removeLectureFiles) throws IOException {
@@ -77,7 +76,7 @@ public class LectureFileBoxController {
 
 	@Permission(role = {Role.STUDENT, Role.TEACHER, Role.PARENT})
 	@GetMapping("/{lectureFileBoxId}/download")
-	public ResponseEntity<BaseResponse<?>> getLectureFileUrls(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+	public ResponseEntity<BaseResponse<?>> getLectureFileUrls(@PathVariable(value = "lectureFileBoxId") @IdValidation Long lectureFileBoxId) {
 		FileUrlsResponse fileUrls = lectureFileBoxFacade.getFilePaths(lectureFileBoxId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, fileUrls);
 	}
