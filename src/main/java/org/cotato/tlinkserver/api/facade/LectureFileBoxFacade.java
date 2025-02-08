@@ -12,6 +12,7 @@ import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileService;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
@@ -32,7 +33,14 @@ public class LectureFileBoxFacade {
 	@Transactional(readOnly = true)
 	public LectureFileBoxDetailResponse getLectureFileBox(final Long id) {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(id);
-		return LectureFileBoxDetailResponse.from(lectureFileBox);
+		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
+
+		List<LectureFileResponse> lectureFileResponses = lectureFiles.stream()
+			.map(file -> LectureFileResponse.from(file.getId(), file.getOriginalName(),
+				s3FileHandler.getFileUrl(file.getS3Key()).toString()))
+			.toList();
+
+		return LectureFileBoxDetailResponse.from(lectureFileBox.getId(), lectureFileBox.getName(), lectureFileResponses);
 	}
 
 	@Transactional(readOnly = true)
