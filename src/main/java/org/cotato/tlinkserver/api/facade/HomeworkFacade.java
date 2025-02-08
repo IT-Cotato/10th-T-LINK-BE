@@ -1,13 +1,12 @@
 package org.cotato.tlinkserver.api.facade;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.homework.HomeworkFile;
-import org.cotato.tlinkserver.domain.homework.application.HomeworkFileService;
 import org.cotato.tlinkserver.domain.homework.application.HomeworkService;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkDetailResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkFileResponse;
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class HomeworkFacade {
 
 	private final HomeworkService homeworkService;
-	private final HomeworkFileService homeworkFileService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
 
@@ -44,12 +42,11 @@ public class HomeworkFacade {
 		Homework homework = Homework.builder()
 			.room(room)
 			.name(homeworkName)
-			.deadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+			.deadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
 			.build();
 
 		room.addHomework(homework);	// 과외 방과 숙제 간 연관 관계 매핑
 		this.saveHomeworkFiles(homeworks, homework);
-		homeworkService.saveHomework(homework);
 	}
 
 	@Transactional
@@ -79,7 +76,7 @@ public class HomeworkFacade {
 
 		this.saveHomeworkFiles(addHomeworkFiles, homework);
 		homework.setName(homeworkName);
-		homework.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	}
 
 	@Transactional(readOnly = true)

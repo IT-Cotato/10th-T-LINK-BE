@@ -1,7 +1,6 @@
 package org.cotato.tlinkserver.domain.homework;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,7 +46,7 @@ public class Homework {
 	private LocalDate createdAt;
 
 	@Column(name = "deadline", nullable = false)
-	private LocalDateTime deadline;
+	private LocalDate deadline;
 
 	@Lob
 	@Column(name = "name", nullable = false, length = 50)
@@ -58,7 +56,7 @@ public class Homework {
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
-	public Homework(Room room, LocalDateTime deadline, String name) {
+	public Homework(Room room, LocalDate deadline, String name) {
 		this.room = room;
 		this.deadline = deadline;
 		this.name = name;

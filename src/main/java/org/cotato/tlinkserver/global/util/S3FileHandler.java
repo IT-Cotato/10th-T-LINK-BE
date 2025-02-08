@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Operations;
@@ -41,14 +39,6 @@ public class S3FileHandler {
         }
     }
 
-    public void uploadFiles(final List<MultipartFile> multipartFiles, final List<String> keys) throws IOException {
-        int size = keys.size();
-
-        for (int i = 0; i < size; i++){
-            uploadFile(multipartFiles.get(i), keys.get(i));
-        }
-    }
-
     // S3 파일 다운로드
     public S3Resource downloadFile(final String key) {
         return s3Operations.download(bucket, key);
@@ -65,7 +55,7 @@ public class S3FileHandler {
 
     // S3 파일 조회 URL 반환
     public URL getFileUrl(final String key) {
-        return s3Operations.createSignedGetURL(bucket, key, duration);
+        return s3Operations.createSignedGetURL(bucket, DIRECTORY_PATH + key, duration);
     }
 
     public List<URL> getFileUrls(final List<String> keys) {
@@ -74,8 +64,7 @@ public class S3FileHandler {
 
     // S3 키 생성
     public String generateS3Key(final String originalFileName) {
-        String uuid = UUID.randomUUID().toString();
-        return DIRECTORY_PATH + uuid + originalFileName;
+        return UUID.randomUUID() + originalFileName;
     }
 
 }
