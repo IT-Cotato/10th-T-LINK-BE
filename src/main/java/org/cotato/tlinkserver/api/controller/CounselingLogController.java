@@ -51,13 +51,15 @@ public class CounselingLogController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, counselingLogDetail);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PutMapping("/{counselingLogId}")
-	public ResponseEntity<BaseResponse<?>> modifyCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId,
-		@RequestBody CounselingLogSaveRequest counselingLogSaveRequest) {
+	public ResponseEntity<BaseResponse<?>> modifyCounselingLog(@PathVariable(value = "counselingLogId") @IdValidation Long counselingLogId,
+		@RequestBody @Validated CounselingLogSaveRequest counselingLogSaveRequest) {
 		counselingLogFacade.modifyCounselingLog(counselingLogId, counselingLogSaveRequest);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{counselingLogId}")
 	public ResponseEntity<BaseResponse<?>> removeCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId) {
 		counselingLogFacade.removeCounselingLog(counselingLogId);
