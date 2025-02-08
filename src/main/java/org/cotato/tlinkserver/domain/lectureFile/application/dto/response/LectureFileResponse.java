@@ -1,17 +1,12 @@
 package org.cotato.tlinkserver.domain.lectureFile.application.dto.response;
 
-import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
-
 public record LectureFileResponse(
-	Long id,
+	Long lectureFileId,
 	String originalName,
-	String key)
+	String fileUrl
+)
 {
-	public static LectureFileResponse from(final LectureFile lectureFile) {
-		return new LectureFileResponse(
-			lectureFile.getId(),
-			lectureFile.getOriginalName(),
-			lectureFile.getS3Key()
-		);
+	public static LectureFileResponse from(final Long id, final String originalName, final String fileUrl) {
+		return new LectureFileResponse(id, originalName, fileUrl);
 	}
 }
