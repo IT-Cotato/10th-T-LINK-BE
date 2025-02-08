@@ -65,13 +65,14 @@ public class HomeworkController {
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
+	@Permission(role = {Role.TEACHER, Role.STUDENT})
 	@PatchMapping("/{homeworkId}")
-	public ResponseEntity<BaseResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") Long homeworkId,
+	public ResponseEntity<BaseResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") @IdValidation Long homeworkId,
 		@UserId Long userId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestParam("removeHomeworkFiles") List<Long> removeHomeworkFiles,
-		@RequestPart(value = "addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
+		@RequestPart("addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
 		homeworkFacade.modifyHomework(userId, homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
