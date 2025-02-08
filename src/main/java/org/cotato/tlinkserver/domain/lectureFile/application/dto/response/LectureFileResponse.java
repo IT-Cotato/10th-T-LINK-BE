@@ -11,7 +11,7 @@ public record LectureFileResponse(
 		return new LectureFileResponse(
 			lectureFile.getId(),
 			lectureFile.getOriginalName(),
-			lectureFile.getKey()
+			lectureFile.getS3Key()
 		);
 	}
 }

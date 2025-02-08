@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class LectureFileService {
 	}
 
 	public List<String> getKeys(final Long lectureFileBoxId) {
-		List<String> keys = lectureFileRepository.findKeysByLectureFileBoxId(lectureFileBoxId);
+		List<String> keys = lectureFileRepository.findS3KeysByLectureFileBoxId(lectureFileBoxId);
 		return new ArrayList<>(keys);
 	}
 
