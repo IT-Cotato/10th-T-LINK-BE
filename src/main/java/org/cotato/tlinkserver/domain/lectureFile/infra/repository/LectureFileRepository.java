@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface LectureFileRepository extends JpaRepository<LectureFile, Long> {
 
-	@Query("SELECT lf.key FROM LectureFile lf WHERE lf.lectureFileBox.id = :lectureFileBoxId")
-	List<String> findKeysByLectureFileBoxId(@Param("lectureFileBoxId") Long lectureFileBoxId);
+	@Query("SELECT lf.s3Key FROM LectureFile lf WHERE lf.lectureFileBox.id = :lectureFileBoxId")
+	List<String> findS3KeysByLectureFileBoxId(@Param("lectureFileBoxId") Long lectureFileBoxId);
 
 }
