@@ -58,6 +58,7 @@ public class LectureFileBoxController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBox);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{lectureFileBoxId}")
 	public ResponseEntity<BaseResponse<?>> removeLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		lectureFileBoxFacade.removeLectureFileBox(lectureFileBoxId);
