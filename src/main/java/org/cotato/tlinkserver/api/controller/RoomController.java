@@ -3,7 +3,9 @@ package org.cotato.tlinkserver.api.controller;
 import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.annotation.UserId;
+import org.cotato.tlinkserver.api.dto.response.RoomInfoResponse;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
+import org.cotato.tlinkserver.api.facade.dto.response.RoomInfoDTO;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
@@ -85,4 +87,12 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
+	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
+	@GetMapping("/info")
+	public ResponseEntity<BaseResponse<?>> viewRoomInfo(
+			@UserId Long userId
+	) {
+		RoomInfoDTO roomInfoDTO = roomFacade.getRoomInfo(userId);
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, RoomInfoResponse.from(roomInfoDTO));
+	}
 }
