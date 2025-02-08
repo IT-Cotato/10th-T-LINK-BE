@@ -102,7 +102,7 @@ public class LectureFileBoxFacade {
 		lectureFileBox.setName(lectureFileBoxName);
 	}
 
-	public void saveLectureFiles(final List<MultipartFile> lectureFiles, final LectureFileBox lectureFileBox) throws
+	private void saveLectureFiles(final List<MultipartFile> lectureFiles, final LectureFileBox lectureFileBox) throws
 		IOException {
 		// S3 파일 저장 경로 생성
 		List<String> filePaths = lectureFiles.stream()
