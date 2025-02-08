@@ -46,6 +46,16 @@ public class UserController {
     }
 
     @Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
+    @PatchMapping("/mypage/statusMessage")
+    public ResponseEntity<BaseResponse<?>> rewriteStatusMessage(
+            @UserId Long userId,
+            @RequestBody @Valid RewriteStatusMessageRequest request
+    ) {
+        userFacade.rewriteStatusMessage(userId, RewriteStatusMessageDTO.from(request));
+        return ApiResponseUtil.success(SuccessMessage.SUCCESS);
+    }
+
+    @Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
     @GetMapping("/mypage")
     public ResponseEntity<BaseResponse<?>> viewMyPage(
             @UserId Long userId
