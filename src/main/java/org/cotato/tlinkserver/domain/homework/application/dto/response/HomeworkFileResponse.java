@@ -2,7 +2,7 @@ package org.cotato.tlinkserver.domain.homework.application.dto.response;
 
 public record HomeworkFileResponse
 	(
-		Long id,
+		Long homeworkFileId,
 		String originalName,
 		String fileUrl
 	)

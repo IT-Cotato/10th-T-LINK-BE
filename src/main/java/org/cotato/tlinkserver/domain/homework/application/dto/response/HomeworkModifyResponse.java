@@ -6,8 +6,8 @@ import org.cotato.tlinkserver.domain.homework.Homework;
 
 public record HomeworkModifyResponse
 	(
-		Long id,
-		String name,
+		Long homeworkId,
+		String homeworkName,
 		List<HomeworkFileResponse> homeworkFiles
 	)
 {
