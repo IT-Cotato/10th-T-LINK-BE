@@ -63,7 +63,7 @@ public class CounselingLogController {
 
 	@Permission(role = {Role.TEACHER})
 	@DeleteMapping("/{counselingLogId}")
-	public ResponseEntity<BaseResponse<?>> removeCounselingLog(@PathVariable(value = "counselingLogId") Long counselingLogId) {
+	public ResponseEntity<BaseResponse<?>> removeCounselingLog(@PathVariable(value = "counselingLogId") @IdValidation Long counselingLogId) {
 		counselingLogFacade.removeCounselingLog(counselingLogId);
 		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
