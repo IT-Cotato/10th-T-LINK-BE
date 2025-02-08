@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,13 +34,13 @@ public class LectureFile {
 	@Column(name = "original_name", nullable = false, length = 30)
 	private String originalName;
 
-	@Column(name = "key", nullable = false, length = 250)
-	private String key;
+	@Column(name = "s3_key", nullable = false, length = 250)
+	private String s3Key;
 
 	@Builder
-	public LectureFile(LectureFileBox lectureFileBox, String originalName, String key) {
+	public LectureFile(LectureFileBox lectureFileBox, String originalName, String s3Key) {
 		this.lectureFileBox = lectureFileBox;
 		this.originalName = originalName;
-		this.key = key;
+		this.s3Key = s3Key;
 	}
 }

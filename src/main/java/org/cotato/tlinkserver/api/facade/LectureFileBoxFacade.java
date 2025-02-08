@@ -15,7 +15,6 @@ import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.Lectur
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,12 +59,11 @@ public class LectureFileBoxFacade {
 		IOException {
 		Room room = roomService.getRoom(roomId);
 		LectureFileBox lectureFileBox = LectureFileBox.builder()
-							.room(room)
 							.name(lectureFileBoxName)
 							.build();
 
+		room.addLectureFileBox(lectureFileBox);
 		this.saveLectureFiles(lectureFiles, lectureFileBox);
-		lectureFileBoxService.saveLectureFileBox(lectureFileBox);
 	}
 
 	@Transactional
@@ -73,7 +71,7 @@ public class LectureFileBoxFacade {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
 		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
-		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(lectureFile.getKey()));
+		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(lectureFile.getS3Key()));
 		lectureFileBoxService.removeLectureFileBox(lectureFileBoxId);
 	}
 
@@ -88,7 +86,7 @@ public class LectureFileBoxFacade {
 				.filter(file -> file.getId().equals(id))
 				.findFirst()
 				.orElseThrow();
-			s3FileHandler.deleteFile(lectureFile.getKey());
+			s3FileHandler.deleteFile(lectureFile.getS3Key());
 			lectureFiles.remove(lectureFile);
 		});
 
@@ -100,21 +98,20 @@ public class LectureFileBoxFacade {
 		IOException {
 		// S3 파일 저장 경로 생성
 		List<String> filePaths = lectureFiles.stream()
-			.map(lectureFile -> lectureFileService.generateKey(lectureFile.getOriginalFilename()))
+			.map(lectureFile -> s3FileHandler.generateS3Key(lectureFile.getOriginalFilename()))
 			.toList();
 
 		int size = lectureFiles.size();
 
 		for (int i=0; i<size; i++) {
 			LectureFile lectureFile = LectureFile.builder().	// 강의 자료 파일 생성
-				lectureFileBox(lectureFileBox).
-				key(filePaths.get(i)).
-				originalName(lectureFiles.get(i).getOriginalFilename())
+				lectureFileBox(lectureFileBox)
+				.s3Key(filePaths.get(i))
+				.originalName(lectureFiles.get(i).getOriginalFilename())
 				.build();
 
 			s3FileHandler.uploadFile(lectureFiles.get(i), filePaths.get(i));	// 파일 업로드
 			lectureFileBox.addLectureFile(lectureFile);	// 연관 관계 매핑
-			lectureFileService.saveLectureFile(lectureFile);	// 강의 자료 파일 저장
 		}
 	}
 
