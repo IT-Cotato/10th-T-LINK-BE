@@ -1,6 +1,6 @@
 package org.cotato.tlinkserver.domain.homework.application.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.cotato.tlinkserver.domain.homework.Homework;
 
@@ -18,7 +18,7 @@ public record HomeworkResponse(
 			homework.getCreatedAt().toString(),
 			homework.getName(),
 			homework.getDeadline().toString(),
-			homework.getDeadline().isAfter(LocalDateTime.now())
+			homework.getDeadline().isAfter(LocalDate.now())
 		);
 	}
 }

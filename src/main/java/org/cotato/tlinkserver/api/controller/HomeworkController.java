@@ -3,10 +3,13 @@ package org.cotato.tlinkserver.api.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.cotato.tlinkserver.annotation.IdValidation;
+import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.HomeworkFacade;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkDetailResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
@@ -37,8 +40,9 @@ public class HomeworkController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworks);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PostMapping
-	public ResponseEntity<BaseResponse<?>> saveHomeworks(@PathVariable(value = "roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> saveHomeworks(@PathVariable(value = "roomId") @IdValidation Long roomId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestPart(value = "homeworkFiles") List<MultipartFile> homeworkFiles) throws IOException {
