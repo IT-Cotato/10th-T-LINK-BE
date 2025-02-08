@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
+import org.cotato.tlinkserver.annotation.UserId;
 import org.cotato.tlinkserver.api.facade.HomeworkFacade;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkDetailResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
@@ -43,15 +44,17 @@ public class HomeworkController {
 	@Permission(role = {Role.TEACHER})
 	@PostMapping
 	public ResponseEntity<BaseResponse<?>> saveHomeworks(@PathVariable(value = "roomId") @IdValidation Long roomId,
+		@UserId Long userId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestPart(value = "homeworkFiles") List<MultipartFile> homeworkFiles) throws IOException {
-		homeworkFacade.saveHomework(roomId, homeworkName, deadline, homeworkFiles);
+		homeworkFacade.saveHomework(userId, roomId, homeworkName, deadline, homeworkFiles);
 		return ApiResponseUtil.success(SuccessMessage.CREATED);
 	}
 
+	@Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
 	@GetMapping("/{homeworkId}")
-	public ResponseEntity<BaseResponse<?>> getHomeworkDetail(@PathVariable(value = "homeworkId") Long homeworkId) {
+	public ResponseEntity<BaseResponse<?>> getHomeworkDetail(@PathVariable(value = "homeworkId") @IdValidation Long homeworkId) {
 		HomeworkDetailResponse homeworkDetail = homeworkFacade.getHomework(homeworkId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworkDetail);
 	}
@@ -64,11 +67,12 @@ public class HomeworkController {
 
 	@PatchMapping("/{homeworkId}")
 	public ResponseEntity<BaseResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") Long homeworkId,
+		@UserId Long userId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestParam("removeHomeworkFiles") List<Long> removeHomeworkFiles,
 		@RequestPart(value = "addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
-		homeworkFacade.modifyHomework(homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
+		homeworkFacade.modifyHomework(userId, homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 

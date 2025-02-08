@@ -14,6 +14,8 @@ import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkM
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
+import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class HomeworkFacade {
 
 	private final HomeworkService homeworkService;
+	private final UserService userService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
 
@@ -36,8 +39,9 @@ public class HomeworkFacade {
 	}
 
 	@Transactional
-	public void saveHomework(final Long roomId, final String homeworkName, final String deadline, final List<MultipartFile> homeworks) throws
+	public void saveHomework(final Long userId, final Long roomId, final String homeworkName, final String deadline, final List<MultipartFile> homeworks) throws
 		IOException {
+		User user = userService.getValidUser(userId);
 		Room room = roomService.getRoom(roomId);
 		Homework homework = Homework.builder()
 			.room(room)
@@ -46,7 +50,7 @@ public class HomeworkFacade {
 			.build();
 
 		room.addHomework(homework);	// 과외 방과 숙제 간 연관 관계 매핑
-		this.saveHomeworkFiles(homeworks, homework);
+		this.saveHomeworkFiles(homeworks, homework, user);
 	}
 
 	@Transactional
@@ -59,8 +63,9 @@ public class HomeworkFacade {
 	}
 
 	@Transactional
-	public void modifyHomework(final Long homeworkId, final String homeworkName, final String deadline, final List<Long> removeHomeworkFiles,
+	public void modifyHomework(final Long userId, final Long homeworkId, final String homeworkName, final String deadline, final List<Long> removeHomeworkFiles,
 		final List<MultipartFile> addHomeworkFiles) throws IOException {
+		User user = userService.getValidUser(userId);
 		Homework homework = homeworkService.getHomework(homeworkId);
 		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
 
@@ -74,7 +79,7 @@ public class HomeworkFacade {
 			homeworkFiles.remove(homeworkFile);
 		});
 
-		this.saveHomeworkFiles(addHomeworkFiles, homework);
+		this.saveHomeworkFiles(addHomeworkFiles, homework, user);
 		homework.setName(homeworkName);
 		homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	}
@@ -133,7 +138,7 @@ public class HomeworkFacade {
 		return HomeworkModifyResponse.from(homework, homeworkFileModifys);
 	}
 
-	private void saveHomeworkFiles(final List<MultipartFile> homeworkFiles, final Homework homework) throws
+	private void saveHomeworkFiles(final List<MultipartFile> homeworkFiles, final Homework homework, User user) throws
 		IOException {
 		// S3 파일 저장 경로 생성
 		List<String> filePaths = homeworkFiles.stream()
@@ -150,6 +155,7 @@ public class HomeworkFacade {
 
 			s3FileHandler.uploadFile(homeworkFiles.get(i), filePaths.get(i));	// 숙제 파일 업로드
 			homework.addHomeworkFile(homeworkFile);	// 숙제와 숙제 파일 간 연관 관계 매핑
+			user.addHomeworkFile(homeworkFile);	// 숙제와 유저 간 연관 관계 매핑
 		}
 	}
 
