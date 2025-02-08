@@ -6,14 +6,13 @@ import java.util.List;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FileUrlsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,10 +73,11 @@ public class LectureFileBoxController {
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
+	@Permission(role = {Role.STUDENT, Role.TEACHER, Role.PARENT})
 	@GetMapping("/{lectureFileBoxId}/download")
-	public ResponseEntity<BaseResponse<?>> getLectureFiles(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
-		FilePathsResponse filePaths = lectureFileBoxFacade.getFilePaths(lectureFileBoxId);
-		return ApiResponseUtil.success(SuccessMessage.SUCCESS, filePaths);
+	public ResponseEntity<BaseResponse<?>> getLectureFileUrls(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
+		FileUrlsResponse fileUrls = lectureFileBoxFacade.getFilePaths(lectureFileBoxId);
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, fileUrls);
 	}
 
 }

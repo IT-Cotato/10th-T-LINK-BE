@@ -9,7 +9,7 @@ import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileService;
-import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
+import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FileUrlsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileResponse;
@@ -49,7 +49,7 @@ public class LectureFileBoxFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public FilePathsResponse getFilePaths(final Long lectureFileBoxId) {
+	public FileUrlsResponse getFilePaths(final Long lectureFileBoxId) {
 		List<String> keys = lectureFileService.getKeys(lectureFileBoxId);
 		List<String> urls = keys.stream().map(key -> {
 			try {
@@ -59,7 +59,7 @@ public class LectureFileBoxFacade {
 			}
 		}).toList();
 
-		return FilePathsResponse.from(urls);
+		return FileUrlsResponse.from(urls);
 	}
 
 	@Transactional
