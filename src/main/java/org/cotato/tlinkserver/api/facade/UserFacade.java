@@ -2,7 +2,9 @@ package org.cotato.tlinkserver.api.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.api.facade.dto.response.MyPageInfoDTO;
 import org.cotato.tlinkserver.auth.ReissueService;
+import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
@@ -26,5 +28,11 @@ public class UserFacade {
         if (!userService.existUserById(userId)) {
             throw new NotFoundException(ErrorMessage.NOT_FOUND);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public MyPageInfoDTO getMyPageInfo(long userId) {
+        User user = userService.findById(userId);
+        return MyPageInfoDTO.from(user);
     }
 }

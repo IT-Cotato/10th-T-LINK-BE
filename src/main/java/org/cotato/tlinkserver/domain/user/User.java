@@ -31,6 +31,8 @@ import lombok.Setter;
 @Setter
 public class User {
 
+	private static final String DEFAULT_STATUS_MESSAGE = "";
+
 	@Id
 	@Column(name = "user_id", updatable = false)
 	private Long id;
@@ -51,7 +53,7 @@ public class User {
 	@Column(name = "background_color", length = 10)
 	private String backgroundColor;
 
-	@Column(name = "status_message", length = 50)
+	@Column(name = "status_message", nullable = false, length = 50)
 	private String statusMessage;
 
 	@Enumerated(EnumType.STRING)
@@ -78,6 +80,7 @@ public class User {
 		this.backgroundColor = backgroundColor;
 		this.role = role;
 		this.gender = gender;
+		this.statusMessage = DEFAULT_STATUS_MESSAGE;
 	}
 
 	public static User create(AuthUser createAuthUser) {
