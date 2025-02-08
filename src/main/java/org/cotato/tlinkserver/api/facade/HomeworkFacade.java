@@ -17,6 +17,8 @@ import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.domain.user.constant.Role;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,15 +75,17 @@ public class HomeworkFacade {
 			HomeworkFile homeworkFile = homeworkFiles.stream()
 				.filter(file -> file.getId().equals(id))
 				.findFirst()
-				.orElseThrow();
+				.orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 
 			s3FileHandler.deleteFile(homeworkFile.getS3Key());
 			homeworkFiles.remove(homeworkFile);
 		});
 
 		this.saveHomeworkFiles(addHomeworkFiles, homework, user);
-		homework.setName(homeworkName);
-		homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+		if (user.getRole().equals(Role.TEACHER))
+			homework.setName(homeworkName);
+			homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	}
 
 	@Transactional(readOnly = true)
