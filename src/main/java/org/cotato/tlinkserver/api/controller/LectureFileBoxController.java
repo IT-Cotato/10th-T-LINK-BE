@@ -3,11 +3,13 @@ package org.cotato.tlinkserver.api.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.LectureFileBoxFacade;
 import org.cotato.tlinkserver.domain.lectureFile.application.LectureFileBoxService;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.FilePathsResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxDetailResponse;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
@@ -40,6 +42,7 @@ public class LectureFileBoxController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, lectureFileBoxes);
 	}
 
+	@Permission(role = {Role.TEACHER})
 	@PostMapping
 	public ResponseEntity<BaseResponse<?>> saveLectureFileBox(@PathVariable(value = "roomId") Long roomId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
