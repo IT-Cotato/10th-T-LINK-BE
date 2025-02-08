@@ -37,7 +37,8 @@ public class HomeworkFacade {
 
 	@Transactional(readOnly = true)
 	public HomeworksResponse getHomeworks(final Long roomId) {
-		return homeworkService.getHomeworks(roomId);
+		List<Homework> homeworks = homeworkService.getHomeworks(roomId);
+		return HomeworksResponse.from(homeworks);
 	}
 
 	@Transactional
