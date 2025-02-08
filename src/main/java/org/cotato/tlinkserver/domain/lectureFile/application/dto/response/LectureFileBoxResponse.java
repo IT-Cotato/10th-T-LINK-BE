@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 
 public record LectureFileBoxResponse(
-	Long id,
-	String name,
+	Long lectureFileBoxId,
+	String lectureFileBoxName,
 	String updateAt)
 {
 	public static LectureFileBoxResponse from(final LectureFileBox lectureFileBox) {
