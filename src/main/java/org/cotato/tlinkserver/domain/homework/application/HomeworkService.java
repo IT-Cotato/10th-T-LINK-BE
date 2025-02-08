@@ -3,7 +3,6 @@ package org.cotato.tlinkserver.domain.homework.application;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.Homework;
-import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
 import org.cotato.tlinkserver.domain.homework.infra.repository.HomeworkRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +20,8 @@ public class HomeworkService {
 		return homeworkRepository.findById(homeworkId).orElseThrow();
 	}
 
-	public HomeworksResponse getHomeworks(final Long roomId) {
-		List<Homework> homeworks = homeworkRepository.findHomeworksByRoomId(roomId);
-		return HomeworksResponse.from(homeworks);
+	public List<Homework> getHomeworks(final Long roomId) {
+		return homeworkRepository.findHomeworksByRoomId(roomId);
 	}
 
 	public void saveHomework(final Homework homework) {

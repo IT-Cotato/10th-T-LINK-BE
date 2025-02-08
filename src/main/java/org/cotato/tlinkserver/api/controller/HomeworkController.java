@@ -35,8 +35,9 @@ public class HomeworkController {
 
 	private final HomeworkFacade homeworkFacade;
 
+	@Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
 	@GetMapping
-	public ResponseEntity<BaseResponse<?>> getHomework(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getHomeworks(@PathVariable(value = "roomId") @IdValidation Long roomId) {
 		HomeworksResponse homeworks = homeworkFacade.getHomeworks(roomId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworks);
 	}
