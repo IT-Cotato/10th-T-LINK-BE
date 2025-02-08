@@ -3,13 +3,13 @@ package org.cotato.tlinkserver.api.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.cotato.tlinkserver.api.dto.response.DataResponse;
 import org.cotato.tlinkserver.api.facade.HomeworkFacade;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkDetailResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworkModifyResponse;
 import org.cotato.tlinkserver.domain.homework.application.dto.response.HomeworksResponse;
-import org.cotato.tlinkserver.global.util.SuccessMessage;
-import org.springframework.http.HttpStatus;
+import org.cotato.tlinkserver.global.common.BaseResponse;
+import org.cotato.tlinkserver.global.message.SuccessMessage;
+import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,46 +32,46 @@ public class HomeworkController {
 	private final HomeworkFacade homeworkFacade;
 
 	@GetMapping
-	public ResponseEntity<DataResponse<HomeworksResponse>> getHomework(@PathVariable(value = "roomId") Long roomId) {
+	public ResponseEntity<BaseResponse<?>> getHomework(@PathVariable(value = "roomId") Long roomId) {
 		HomeworksResponse homeworks = homeworkFacade.getHomeworks(roomId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), homeworks));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworks);
 	}
 
 	@PostMapping
-	public ResponseEntity<DataResponse<?>> saveHomeworks(@PathVariable(value = "roomId") Long roomId,
+	public ResponseEntity<BaseResponse<?>> saveHomeworks(@PathVariable(value = "roomId") Long roomId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestPart(value = "homeworkFiles") List<MultipartFile> homeworkFiles) throws IOException {
 		homeworkFacade.saveHomework(roomId, homeworkName, deadline, homeworkFiles);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.CREATED, SuccessMessage.CREATED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.CREATED);
 	}
 
 	@GetMapping("/{homeworkId}")
-	public ResponseEntity<DataResponse<HomeworkDetailResponse>> getHomeworkDetail(@PathVariable(value = "homeworkId") Long homeworkId) {
+	public ResponseEntity<BaseResponse<?>> getHomeworkDetail(@PathVariable(value = "homeworkId") Long homeworkId) {
 		HomeworkDetailResponse homeworkDetail = homeworkFacade.getHomework(homeworkId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), homeworkDetail));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworkDetail);
 	}
 
 	@DeleteMapping("/{homeworkId}")
-	public ResponseEntity<DataResponse<?>> deleteHomework(@PathVariable(value = "homeworkId") Long homeworkId) {
+	public ResponseEntity<BaseResponse<?>> deleteHomework(@PathVariable(value = "homeworkId") Long homeworkId) {
 		homeworkFacade.removeHomework(homeworkId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.DELETED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.DELETED);
 	}
 
 	@PatchMapping("/{homeworkId}")
-	public ResponseEntity<DataResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") Long homeworkId,
+	public ResponseEntity<BaseResponse<?>> modifyHomework(@PathVariable(value = "homeworkId") Long homeworkId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
 		@RequestParam("removeHomeworkFiles") List<Long> removeHomeworkFiles,
 		@RequestPart(value = "addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
 		homeworkFacade.modifyHomework(homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.MODIFIED.getDetailMessage(), null));
+		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
 	@GetMapping("/{homeworkId}/info")
-	public ResponseEntity<DataResponse<HomeworkModifyResponse>> getHomeworkModify(@PathVariable(value = "homeworkId") Long homeworkId) {
+	public ResponseEntity<BaseResponse<?>> getHomeworkModify(@PathVariable(value = "homeworkId") Long homeworkId) {
 		HomeworkModifyResponse homeworkModifys = homeworkFacade.getHomeworkModify(homeworkId);
-		return ResponseEntity.ok(DataResponse.of(HttpStatus.OK, SuccessMessage.SUCCESS.getDetailMessage(), homeworkModifys));
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworkModifys);
 	}
 
 }
