@@ -48,6 +48,7 @@ public class LectureFileBoxController {
 		return ApiResponseUtil.success(SuccessMessage.CREATED);
 	}
 
+	@Permission(role = {Role.TEACHER, Role.PARENT, Role.STUDENT})
 	@GetMapping("/{lectureFileBoxId}")
 	public ResponseEntity<BaseResponse<?>> getLectureFileBox(@PathVariable(value = "lectureFileBoxId") Long lectureFileBoxId) {
 		LectureFileBoxDetailResponse lectureFileBox = lectureFileBoxFacade.getLectureFileBox(lectureFileBoxId);
