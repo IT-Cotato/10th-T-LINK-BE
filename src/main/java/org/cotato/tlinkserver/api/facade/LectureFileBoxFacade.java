@@ -15,6 +15,8 @@ import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.Lectur
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +31,7 @@ public class LectureFileBoxFacade {
 	private final LectureFileService lectureFileService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
+	private final String DIRECTORY_PATH = "lectureFiles/";
 
 	@Transactional(readOnly = true)
 	public LectureFileBoxDetailResponse getLectureFileBox(final Long id) {
@@ -36,9 +39,15 @@ public class LectureFileBoxFacade {
 		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
 		List<LectureFileResponse> lectureFileResponses = lectureFiles.stream()
-			.map(file -> LectureFileResponse.from(file.getId(), file.getOriginalName(),
-				s3FileHandler.getFileUrl(file.getS3Key()).toString()))
-			.toList();
+			.map(file -> {
+				try {
+					return LectureFileResponse.from(file.getId(), file.getOriginalName(),
+						s3FileHandler.downloadFile(DIRECTORY_PATH + file.getS3Key()).getURL().toString()
+					);
+				} catch (IOException e) {
+					throw new NotFoundException(ErrorMessage.NOT_FOUND);
+				}
+			}).toList();
 
 		return LectureFileBoxDetailResponse.from(lectureFileBox, lectureFileResponses);
 	}
@@ -53,9 +62,9 @@ public class LectureFileBoxFacade {
 		List<String> keys = lectureFileService.getKeys(lectureFileBoxId);
 		List<String> urls = keys.stream().map(key -> {
 			try {
-				return s3FileHandler.downloadFile(key).getURL().toString();
+				return s3FileHandler.downloadFile(DIRECTORY_PATH + key).getURL().toString();
 			} catch (IOException e) {
-				throw new NoSuchElementException();
+				throw new NotFoundException(ErrorMessage.NOT_FOUND);
 			}
 		}).toList();
 
@@ -79,7 +88,7 @@ public class LectureFileBoxFacade {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
 		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
-		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(lectureFile.getS3Key()));
+		lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(DIRECTORY_PATH + lectureFile.getS3Key()));
 		lectureFileBox.getRoom().getLectureFileBoxes().remove(lectureFileBox);
 	}
 
@@ -94,7 +103,7 @@ public class LectureFileBoxFacade {
 				.filter(file -> file.getId().equals(id))
 				.findFirst()
 				.orElseThrow();
-			s3FileHandler.deleteFile(lectureFile.getS3Key());
+			s3FileHandler.deleteFile(DIRECTORY_PATH + lectureFile.getS3Key());
 			lectureFiles.remove(lectureFile);
 		});
 
@@ -118,7 +127,7 @@ public class LectureFileBoxFacade {
 				.originalName(lectureFiles.get(i).getOriginalFilename())
 				.build();
 
-			s3FileHandler.uploadFile(lectureFiles.get(i), filePaths.get(i));	// 파일 업로드
+			s3FileHandler.uploadFile(lectureFiles.get(i), DIRECTORY_PATH + filePaths.get(i));	// 파일 업로드
 			lectureFileBox.addLectureFile(lectureFile);	// 연관 관계 매핑
 		}
 	}
