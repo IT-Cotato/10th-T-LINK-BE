@@ -4,16 +4,18 @@ import java.time.format.DateTimeFormatter;
 
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 
-public record LectureFileBoxResponse(
-	Long lectureFileBoxId,
-	String lectureFileBoxName,
-	String updateAt)
+public record LectureFileBoxResponse
+	(
+		Long lectureFileBoxId,
+		String lectureFileBoxName,
+		String updateAt
+	)
 {
 	public static LectureFileBoxResponse from(final LectureFileBox lectureFileBox) {
 		return new LectureFileBoxResponse(
 			lectureFileBox.getId(),
 			lectureFileBox.getName(),
-			lectureFileBox.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+			lectureFileBox.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
 		);
 	}
 }
