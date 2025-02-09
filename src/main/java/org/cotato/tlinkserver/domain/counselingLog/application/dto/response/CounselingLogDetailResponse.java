@@ -1,5 +1,7 @@
 package org.cotato.tlinkserver.domain.counselingLog.application.dto.response;
 
+import java.time.format.DateTimeFormatter;
+
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 
 public record CounselingLogDetailResponse
@@ -19,7 +21,7 @@ public record CounselingLogDetailResponse
 			counselingLog.getContent(),
 			counselingLog.getEngagement().getInKorean(),
 			counselingLog.getHomeworkSubmitted(),
-			counselingLog.getUpdatedAt().toLocalDate().toString()
+			counselingLog.getUpdatedAt().toLocalDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
 		);
 	}
 }
