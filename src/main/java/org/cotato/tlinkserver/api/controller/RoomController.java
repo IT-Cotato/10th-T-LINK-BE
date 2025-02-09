@@ -1,10 +1,13 @@
 package org.cotato.tlinkserver.api.controller;
 
+import jakarta.validation.constraints.NotNull;
 import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.annotation.UserId;
+import org.cotato.tlinkserver.api.dto.response.RoomDetailResponse;
 import org.cotato.tlinkserver.api.dto.response.RoomInfoResponse;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
+import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomInfoDTO;
 import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
@@ -94,5 +97,15 @@ public class RoomController {
 	) {
 		RoomInfoDTO roomInfoDTO = roomFacade.getRoomInfo(userId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, RoomInfoResponse.from(roomInfoDTO));
+	}
+
+	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
+	@GetMapping("/{roomId}")
+	public ResponseEntity<BaseResponse<?>> viewRoomDetail(
+			@UserId Long userId,
+			@PathVariable @NotNull Long roomId
+	) {
+		RoomDetailDTO roomDetailDTO = roomFacade.getRoomDetail(userId, roomId);
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, RoomDetailResponse.from(roomDetailDTO));
 	}
 }

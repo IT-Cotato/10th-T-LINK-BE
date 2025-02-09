@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Optional;
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.bank.Bank;
+import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
@@ -116,5 +119,4 @@ public class Room {
 		lessonDays.add(lessonDay);
 		lessonDay.setRoom(this);
 	}
-
 }

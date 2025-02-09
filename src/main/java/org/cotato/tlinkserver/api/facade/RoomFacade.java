@@ -3,6 +3,7 @@ package org.cotato.tlinkserver.api.facade;
 import java.util.List;
 
 import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomInfoDTO;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
@@ -125,4 +126,10 @@ public class RoomFacade {
 		List<Registration> registrations = registrationService.getRegistrationsWithRoomInfo(userId);
 		return RoomInfoDTO.from(registrations);
     }
+
+	@Transactional(readOnly = true)
+	public RoomDetailDTO getRoomDetail(long userId, long roomId) {
+		Registration registration = registrationService.getRegistration(userId, roomId);
+		return RoomDetailDTO.from(registration);
+	}
 }
