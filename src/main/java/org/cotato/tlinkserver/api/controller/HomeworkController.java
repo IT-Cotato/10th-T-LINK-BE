@@ -81,8 +81,8 @@ public class HomeworkController {
 
 	@Permission(role = {Role.TEACHER, Role.STUDENT})
 	@GetMapping("/{homeworkId}/info")
-	public ResponseEntity<BaseResponse<?>> getHomeworkModify(@PathVariable(value = "homeworkId") @IdValidation Long homeworkId) {
-		HomeworkModifyResponse homeworkModifys = homeworkFacade.getHomeworkModify(homeworkId);
+	public ResponseEntity<BaseResponse<?>> getHomeworkModify(@PathVariable(value = "homeworkId") @IdValidation Long homeworkId, @UserId Long userId) {
+		HomeworkModifyResponse homeworkModifys = homeworkFacade.getHomeworkModify(homeworkId, userId);
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, homeworkModifys);
 	}
 
