@@ -33,6 +33,8 @@ public class S3FileHandler {
     // S3 파일 업로드
     public void uploadFile(final MultipartFile multipartFile, final String key) throws IOException {
         try (InputStream is = multipartFile.getInputStream()) {
+            log.info("File name : " + multipartFile.getOriginalFilename());
+            log.info("Key : " + key);
 			s3Operations.upload(bucket, key, is,
                 ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
         }
