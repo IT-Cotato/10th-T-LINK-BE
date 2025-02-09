@@ -1,13 +1,15 @@
 package org.cotato.tlinkserver.domain.homework.application.dto.response;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.cotato.tlinkserver.domain.homework.Homework;
 
 public record HomeworkDetailResponse
 	(
-		Long id,
-		String name,
+		Long homeworkId,
+		String homeworkName,
+		String deadline,
 		List<HomeworkFileResponse> teacherFiles,
 		List<HomeworkFileResponse> studentFiles
 	)
@@ -17,6 +19,7 @@ public record HomeworkDetailResponse
 		return new HomeworkDetailResponse(
 			homework.getId(),
 			homework.getName(),
+			homework.getDeadline().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
 			teacherFiles,
 			studentFiles
 		);

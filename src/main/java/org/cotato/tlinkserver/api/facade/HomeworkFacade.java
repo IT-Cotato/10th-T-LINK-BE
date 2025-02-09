@@ -49,7 +49,7 @@ public class HomeworkFacade {
 		Homework homework = Homework.builder()
 			.room(room)
 			.name(homeworkName)
-			.deadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+			.deadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy.MM.dd")))
 			.build();
 
 		room.addHomework(homework);	// 과외 방과 숙제 간 연관 관계 매핑
@@ -84,9 +84,10 @@ public class HomeworkFacade {
 
 		this.saveHomeworkFiles(addHomeworkFiles, homework, user);
 
-		if (user.getRole().equals(Role.TEACHER))
+		if (user.getRole().equals(Role.TEACHER)) {
 			homework.setName(homeworkName);
-			homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			homework.setDeadline(LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+		}
 	}
 
 	@Transactional(readOnly = true)
