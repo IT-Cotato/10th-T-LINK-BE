@@ -13,8 +13,6 @@ public record OnboardRequest(
         @NotBlank
         String phoneNumber,
         @NotNull
-        Gender gender,
-        @NotBlank
-        String backgroundColor
+        Gender gender
 ) {
 }

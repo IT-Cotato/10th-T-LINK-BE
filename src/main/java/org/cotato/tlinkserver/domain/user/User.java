@@ -50,9 +50,6 @@ public class User {
 	@Column(name = "profile_path", nullable = false, length = 250)
 	private String profilePath;
 
-	@Column(name = "background_color", length = 10)
-	private String backgroundColor;
-
 	@Column(name = "status_message", nullable = false, length = 50)
 	private String statusMessage;
 
@@ -71,13 +68,12 @@ public class User {
 	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
 	@Builder
-	public User(long id, SocialProvider provider, String username, String phoneNumber, String profilePath, String backgroundColor, Role role, Gender gender) {
+	public User(long id, SocialProvider provider, String username, String phoneNumber, String profilePath, Role role, Gender gender) {
 		this.id = id;
 		this.provider = provider;
 		this.username = username;
 		this.phoneNumber = phoneNumber;
 		this.profilePath = profilePath;
-		this.backgroundColor = backgroundColor;
 		this.statusMessage = "";
 		this.role = role;
 		this.gender = gender;
@@ -91,7 +87,6 @@ public class User {
 				null,
 				null,
 				createAuthUser.getSocialProfileUrl(),
-				null,
 				createAuthUser.getRole(),
 				null
 		);
@@ -101,7 +96,6 @@ public class User {
 		this.role = command.role();
 		this.username = command.username();
 		this.phoneNumber = command.phoneNumber();
-		this.backgroundColor = command.backgroundColor();
 		this.gender = command.gender();
 	}
 
