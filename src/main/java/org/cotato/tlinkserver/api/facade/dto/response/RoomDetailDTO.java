@@ -13,24 +13,24 @@ public record RoomDetailDTO(
         RoomDetailPermissionDTO permission,
         String shareCode
 ) {
-    public static RoomDetailDTO from(final Registration registration) {
+    public static RoomDetailDTO of(final Registration userRegistration, final String studentUsername) {
         Integer depositAt = null;
 
-        if (registration.isDeposit()) {
-            depositAt = registration.getRoom().getDepositAt();
+        if (userRegistration.isDeposit()) {
+            depositAt = userRegistration.getRoom().getDepositAt();
         }
 
         return new RoomDetailDTO(
-                registration.getId(),
-                registration.getRoomName(),
-                registration.getRoom().getStudentName(),
-                registration.getRoom().getSubject(),
-                registration.getRoom().getLessonDays().stream()
+                userRegistration.getId(),
+                userRegistration.getRoomName(),
+                studentUsername,
+                userRegistration.getRoom().getSubject(),
+                userRegistration.getRoom().getLessonDays().stream()
                         .map(RoomDetailLessonDayDTO::from)
                         .toList(),
                 depositAt,
-                RoomDetailPermissionDTO.from(registration),
-                registration.getRoom().getShareCode()
+                RoomDetailPermissionDTO.from(userRegistration),
+                userRegistration.getRoom().getShareCode()
         );
     }
 }

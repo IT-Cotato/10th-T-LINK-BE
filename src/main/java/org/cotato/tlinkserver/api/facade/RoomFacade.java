@@ -17,6 +17,7 @@ import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResp
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.domain.user.constant.Role;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.exception.UnauthorizedException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
@@ -129,7 +130,20 @@ public class RoomFacade {
 
 	@Transactional(readOnly = true)
 	public RoomDetailDTO getRoomDetail(long userId, long roomId) {
-		Registration registration = registrationService.getRegistration(userId, roomId);
-		return RoomDetailDTO.from(registration);
+		Room room = roomService.getRoom(roomId);
+		Registration userRegistration = getValidRegistration(room, userId);
+		String studentUsername = getStudentUsername(room);
+		return RoomDetailDTO.of(userRegistration, studentUsername);
 	}
+
+	private Registration getValidRegistration(final Room room, final long userId) {
+		return room.getRegistration(userId)
+				.orElseThrow(
+						() -> new NotFoundException(ErrorMessage.NOT_FOUND)
+				);
+	}
+
+	private String getStudentUsername(final Room room) {
+		return room.getStudentUsername().orElse(null);
+    }
 }
