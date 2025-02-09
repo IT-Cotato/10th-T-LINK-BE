@@ -28,7 +28,6 @@ public class S3FileHandler {
 
     @Value("${spring.cloud.aws.s3.bucket-name}")
     private String bucket;
-    private final String DIRECTORY_PATH = "/uploads/";
     private final Duration duration = Duration.ofMinutes(10L);  // URL 지속 시간
 
     // S3 파일 업로드
@@ -55,7 +54,7 @@ public class S3FileHandler {
 
     // S3 파일 조회 URL 반환
     public URL getFileUrl(final String key) {
-        return s3Operations.createSignedGetURL(bucket, DIRECTORY_PATH + key, duration);
+        return s3Operations.createSignedGetURL(bucket, key, duration);
     }
 
     public List<URL> getFileUrls(final List<String> keys) {

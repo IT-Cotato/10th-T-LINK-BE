@@ -19,14 +19,14 @@ public class BankFacade {
 
 	private final BankService bankService;
 	private final S3FileHandler s3FileHandler;
-	private final String FOLDER_NAME = "bank-logo/";
+	private final String DIRECTORY_NAME = "bank-logo/";
 	private final String FILE_EXTENSION = ".png";
 
 	@Permission(role = {Role.TEACHER})
 	@Transactional(readOnly = true)
 	public BanksResponse getBanks() {
 		List<BankResponse> banks = bankService.getBanks().stream().map(bank -> {
-			String bankUrl = s3FileHandler.getFileUrl(FOLDER_NAME + bank.getName() + FILE_EXTENSION).toString();
+			String bankUrl = s3FileHandler.getFileUrl(DIRECTORY_NAME + bank.getName() + FILE_EXTENSION).toString();
 			return BankResponse.from(bank, bankUrl);
 		}).toList();
 
