@@ -23,10 +23,10 @@ public record HomeworkResponse(
 	public static HomeworkResponse from(final Homework homework) {
 		return new HomeworkResponse(
 			homework.getId(),
-			homework.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
 			homework.getName(),
+			homework.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
 			homework.getDeadline().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
-			homework.getDeadline().isAfter(LocalDate.now())
+			LocalDate.now().isAfter(homework.getDeadline())
 		);
 	}
 }
