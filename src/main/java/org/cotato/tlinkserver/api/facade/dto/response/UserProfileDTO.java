@@ -8,7 +8,6 @@ public record UserProfileDTO(
         String statusMessage,
         String phoneNumber,
         String profileImageUrl,
-        String backgroundColor,
         Role role
 ) {
     public static UserProfileDTO from(final User user) {
@@ -17,7 +16,6 @@ public record UserProfileDTO(
                 user.getStatusMessage(),
                 user.getPhoneNumber(),
                 user.getProfilePath(),
-                user.getBackgroundColor(),
                 user.getRole()
         );
     }

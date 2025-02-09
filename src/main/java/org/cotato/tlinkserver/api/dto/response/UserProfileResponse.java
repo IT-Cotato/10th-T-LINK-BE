@@ -8,7 +8,6 @@ public record UserProfileResponse(
         String statusMessage,
         String phoneNumber,
         String profileImageUrl,
-        String backgroundColor,
         Role role
 ) {
     public static UserProfileResponse from(UserProfileDTO userProfileDTO) {
@@ -17,7 +16,6 @@ public record UserProfileResponse(
                 userProfileDTO.statusMessage(),
                 userProfileDTO.phoneNumber(),
                 userProfileDTO.profileImageUrl(),
-                userProfileDTO.backgroundColor(),
                 userProfileDTO.role()
         );
     }

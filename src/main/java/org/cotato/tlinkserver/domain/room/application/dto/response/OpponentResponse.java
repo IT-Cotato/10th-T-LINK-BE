@@ -9,8 +9,7 @@ public record OpponentResponse
 	(
 		Long id,
 		String name,
-		String gender,
-		String backgroundColor
+		String gender
 	)
 {
 	public static OpponentResponse from(final User user, final String name) {
@@ -22,7 +21,6 @@ public record OpponentResponse
 			.id(user.getId())
 			.name(name)
 			.gender(user.getGender().getInKorean())
-			.backgroundColor(user.getBackgroundColor())
 			.build();
 	}
 }
