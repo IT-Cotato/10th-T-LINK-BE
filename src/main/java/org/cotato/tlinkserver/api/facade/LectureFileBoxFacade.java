@@ -40,7 +40,7 @@ public class LectureFileBoxFacade {
 				s3FileHandler.getFileUrl(file.getS3Key()).toString()))
 			.toList();
 
-		return LectureFileBoxDetailResponse.from(lectureFileBox.getId(), lectureFileBox.getName(), lectureFileResponses);
+		return LectureFileBoxDetailResponse.from(lectureFileBox, lectureFileResponses);
 	}
 
 	@Transactional(readOnly = true)
