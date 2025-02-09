@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.domain.room.application.dto.response;
 
 import java.util.List;
 
+import org.cotato.tlinkserver.api.dto.response.RoomLessonDayResponse;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.user.User;
@@ -15,7 +16,7 @@ public record RoomResponse
 		Long roomId,
 		String roomName,
 		String subject,
-		List<String> lessonDays,
+		List<RoomLessonDayResponse> lessonDays,
 		OpponentResponse opponent
 	)
 {
@@ -28,7 +29,7 @@ public record RoomResponse
 				.roomId(room.getId())
 				.roomName(roomName)
 				.subject(room.getSubject())
-				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
 				.build();
 		}
 
@@ -37,7 +38,7 @@ public record RoomResponse
 				.roomId(room.getId())
 				.roomName(registration.getRoomName())
 				.subject(room.getSubject())
-				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
 				.opponent(OpponentResponse.from(opponent, opponent.getUsername()))
 				.build();
 		}
@@ -46,7 +47,7 @@ public record RoomResponse
 				.roomId(room.getId())
 				.roomName(registration.getRoomName())
 				.subject(room.getSubject())
-				.lessonDays(room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList())
+				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
 				.opponent(OpponentResponse.from(opponent, room.getStudentName()))
 				.build();
 		}
