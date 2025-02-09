@@ -9,7 +9,8 @@ import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RegistrationService;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
-import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomSaveRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
@@ -34,9 +35,9 @@ public class RoomFacade {
 	private final UserService userService;
 
 	@Transactional
-	public Long saveRoom(final Long teacherId, final RoomRequest roomRequest) {
+	public Long saveRoom(final Long teacherId, final RoomSaveRequest roomSaveRequest) {
 		User teacher = userService.getValidUser(teacherId);
-		Room room = roomRequest.save(teacher);
+		Room room = roomSaveRequest.save(teacher);
 		return roomService.saveRoom(room);
 	}
 
@@ -74,7 +75,7 @@ public class RoomFacade {
 	}
 
 	@Transactional
-	public void modifyRoom(final Long userId, final Long roomId, final RoomRequest roomRequest) {
+	public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
 		User user = userService.getValidUser(userId);
 		Room room = roomService.getRoom(roomId);
 		Registration registration = registrationService.getRegistration(userId, roomId);
@@ -82,10 +83,10 @@ public class RoomFacade {
 		if (user.getRole().equals(Role.TEACHER)) {
 			Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
 			Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
-			roomRequest.modify(room, registration, parentRegistration, studentRegistration);
+			roomModifyRequest.modify(room, registration, parentRegistration, studentRegistration);
 		}
 		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
-			roomRequest.modify(registration);
+			roomModifyRequest.modify(registration);
 		}
 	}
 

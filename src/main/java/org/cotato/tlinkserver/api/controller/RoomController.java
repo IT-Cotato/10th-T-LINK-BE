@@ -9,7 +9,8 @@ import org.cotato.tlinkserver.api.dto.response.RoomInfoResponse;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomInfoDTO;
-import org.cotato.tlinkserver.domain.room.application.dto.request.RoomRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomModifyRequest;
+import org.cotato.tlinkserver.domain.room.application.dto.request.RoomSaveRequest;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomModifyResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.RoomsResponse;
 import org.cotato.tlinkserver.domain.room.application.dto.response.ShareCodeResponse;
@@ -60,8 +61,8 @@ public class RoomController {
 
 	@Permission(role = {Role.TEACHER})
 	@PostMapping
-	public ResponseEntity<BaseResponse<?>> saveRoom(@UserId Long userId, @RequestBody RoomRequest roomRequest) {
-		Long roomId = roomFacade.saveRoom(userId, roomRequest);
+	public ResponseEntity<BaseResponse<?>> saveRoom(@UserId Long userId, @RequestBody RoomSaveRequest roomSaveRequest) {
+		Long roomId = roomFacade.saveRoom(userId, roomSaveRequest);
 		return ApiResponseUtil.success(SuccessMessage.CREATED, roomId);
 	}
 
@@ -78,8 +79,8 @@ public class RoomController {
 	@Permission(role = {Role.STUDENT, Role.PARENT, Role.TEACHER})
 	@PatchMapping("/{roomId}")
 	public ResponseEntity<BaseResponse<?>> modifyRoom(@UserId Long userId, @PathVariable("roomId") @IdValidation Long roomId,
-		@RequestBody RoomRequest roomRequest) {
-		roomFacade.modifyRoom(userId, roomId, roomRequest);
+		@RequestBody RoomModifyRequest roomModifyRequest) {
+		roomFacade.modifyRoom(userId, roomId, roomModifyRequest);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
 
