@@ -127,9 +127,10 @@ public class HomeworkFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public HomeworkModifyResponse getHomeworkModify(final Long homeworkId) {
+	public HomeworkModifyResponse getHomeworkModify(final Long homeworkId, final Long userId) {
+		User user = userService.getValidUser(userId);
 		Homework homework = homeworkService.getHomework(homeworkId);
-		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
+		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles().stream().filter(file -> file.getUser().equals(user)).toList();
 		List<HomeworkFileResponse> homeworkFileModifys = homeworkFiles.stream().map(file -> {
 			try {
 				return HomeworkFileResponse.from(
