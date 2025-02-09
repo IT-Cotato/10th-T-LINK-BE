@@ -119,4 +119,17 @@ public class Room {
 		lessonDays.add(lessonDay);
 		lessonDay.setRoom(this);
 	}
+
+	public Optional<Registration> getRegistration(long userId) {
+		return registrations.stream()
+				.filter(registration -> registration.getUser().getId() == userId)
+				.findFirst();
+	}
+
+	public Optional<String> getStudentUsername() {
+		return registrations.stream()
+				.filter(registration -> registration.getRole() == Role.STUDENT && registration.getUser() != null)
+				.map(registration -> registration.getUser().getUsername())
+				.findFirst();
+	}
 }
