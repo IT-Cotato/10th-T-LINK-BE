@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.domain.counselingLog.constant;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 import org.cotato.tlinkserver.global.exception.TLinkException;
@@ -15,6 +16,7 @@ public enum Engagement {
 	MIDDLE("중"),
 	LOWER("하");
 
+	@JsonValue
 	private final String inKorean;
 
 	Engagement(String inKorean) {

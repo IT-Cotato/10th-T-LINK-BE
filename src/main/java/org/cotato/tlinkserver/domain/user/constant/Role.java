@@ -1,6 +1,7 @@
 package org.cotato.tlinkserver.domain.user.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import lombok.Getter;
 import org.cotato.tlinkserver.global.exception.TLinkException;
@@ -13,6 +14,7 @@ public enum Role {
 	PARENT("학부모"),
 	STUDENT("학생");
 
+	@JsonValue
 	private final String inKorean;
 
 	Role(String inKorean) {
