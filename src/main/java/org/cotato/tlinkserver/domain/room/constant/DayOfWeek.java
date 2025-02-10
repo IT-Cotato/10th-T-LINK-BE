@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.domain.room.constant;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 import org.cotato.tlinkserver.global.exception.TLinkException;
@@ -19,6 +20,7 @@ public enum DayOfWeek {
 	SATURDAY("토"),
 	SUNDAY("일");
 
+	@JsonValue
 	private final String inKorean;
 
 	DayOfWeek(String inKorean) {
