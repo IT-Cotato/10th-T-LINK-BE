@@ -68,8 +68,8 @@ public class LectureFileBoxController {
 	@PatchMapping("/{lectureFileBoxId}")
 	public ResponseEntity<BaseResponse<?>> modifyLectureFileBox(@PathVariable(value = "lectureFileBoxId") @IdValidation Long lectureFileBoxId,
 		@RequestParam("lectureFileBoxName") String lectureFileBoxName,
-		@RequestPart(value = "addLectureFiles") List<MultipartFile> addLectureFiles,
-		@RequestParam("removeLectureFiles") List<Long> removeLectureFiles) throws IOException {
+		@RequestPart(value = "addLectureFiles", required = false) List<MultipartFile> addLectureFiles,
+		@RequestParam(value = "removeLectureFiles", required = false) List<Long> removeLectureFiles) throws IOException {
 		lectureFileBoxFacade.modifyLectureFileBox(lectureFileBoxId, lectureFileBoxName, addLectureFiles, removeLectureFiles);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}
