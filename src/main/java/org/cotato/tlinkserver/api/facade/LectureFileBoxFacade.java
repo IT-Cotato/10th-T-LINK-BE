@@ -2,7 +2,6 @@ package org.cotato.tlinkserver.api.facade;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.cotato.tlinkserver.annotation.Facade;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFile;
@@ -98,16 +97,21 @@ public class LectureFileBoxFacade {
 		LectureFileBox lectureFileBox = lectureFileBoxService.getLectureFileBox(lectureFileBoxId);
 		List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
-		removeLectureFiles.forEach(id -> {
-			LectureFile lectureFile = lectureFiles.stream()
-				.filter(file -> file.getId().equals(id))
-				.findFirst()
-				.orElseThrow();
-			s3FileHandler.deleteFile(DIRECTORY_PATH + lectureFile.getS3Key());
-			lectureFiles.remove(lectureFile);
-		});
+		if (removeLectureFiles != null) {
+			removeLectureFiles.forEach(id -> {
+				LectureFile lectureFile = lectureFiles.stream()
+					.filter(file -> file.getId().equals(id))
+					.findFirst()
+					.orElseThrow();
+				s3FileHandler.deleteFile(DIRECTORY_PATH + lectureFile.getS3Key());
+				lectureFiles.remove(lectureFile);
+			});
+		}
 
-		this.saveLectureFiles(addLectureFiles, lectureFileBox);
+		if (addLectureFiles != null) {
+			this.saveLectureFiles(addLectureFiles, lectureFileBox);
+		}
+
 		lectureFileBox.setName(lectureFileBoxName);
 	}
 
