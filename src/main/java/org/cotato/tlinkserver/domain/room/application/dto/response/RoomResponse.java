@@ -36,7 +36,7 @@ public record RoomResponse
 		if (opponent.getRole().equals(Role.TEACHER)) {
 			return RoomResponse.builder()
 				.roomId(room.getId())
-				.roomName(registration.getRoomName())
+				.roomName(roomName)
 				.subject(room.getSubject())
 				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
 				.opponent(OpponentResponse.from(opponent, opponent.getUsername()))
@@ -45,7 +45,7 @@ public record RoomResponse
 		else {
 			return RoomResponse.builder()
 				.roomId(room.getId())
-				.roomName(registration.getRoomName())
+				.roomName(roomName)
 				.subject(room.getSubject())
 				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
 				.opponent(OpponentResponse.from(opponent, room.getStudentName()))
