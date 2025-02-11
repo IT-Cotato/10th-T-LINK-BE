@@ -73,8 +73,8 @@ public class HomeworkController {
 		@UserId Long userId,
 		@RequestParam("homeworkName") String homeworkName,
 		@RequestParam("deadline") String deadline,
-		@RequestParam("removeHomeworkFiles") List<Long> removeHomeworkFiles,
-		@RequestPart("addHomeworkFiles") List<MultipartFile> addHomeworkFiles) throws IOException {
+		@RequestParam(value = "removeHomeworkFiles", required = false) List<Long> removeHomeworkFiles,
+		@RequestPart(value = "addHomeworkFiles", required = false) List<MultipartFile> addHomeworkFiles) throws IOException {
 		homeworkFacade.modifyHomework(userId, homeworkId, homeworkName, deadline, removeHomeworkFiles, addHomeworkFiles);
 		return ApiResponseUtil.success(SuccessMessage.MODIFIED);
 	}

@@ -73,17 +73,21 @@ public class HomeworkFacade {
 		Homework homework = homeworkService.getHomework(homeworkId);
 		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
 
-		removeHomeworkFiles.forEach(id -> {
-			HomeworkFile homeworkFile = homeworkFiles.stream()
-				.filter(file -> file.getId().equals(id))
-				.findFirst()
-				.orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+		if (removeHomeworkFiles != null) {
+			removeHomeworkFiles.forEach(id -> {
+				HomeworkFile homeworkFile = homeworkFiles.stream()
+					.filter(file -> file.getId().equals(id))
+					.findFirst()
+					.orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 
-			s3FileHandler.deleteFile(DIRECTORY_PATH + homeworkFile.getS3Key());
-			homeworkFiles.remove(homeworkFile);
-		});
+				s3FileHandler.deleteFile(DIRECTORY_PATH + homeworkFile.getS3Key());
+				homeworkFiles.remove(homeworkFile);
+			});
+		}
 
-		this.saveHomeworkFiles(addHomeworkFiles, homework, user);
+		if (addHomeworkFiles != null) {
+			this.saveHomeworkFiles(addHomeworkFiles, homework, user);
+		}
 
 		if (user.getRole().equals(Role.TEACHER)) {
 			homework.setName(homeworkName);
