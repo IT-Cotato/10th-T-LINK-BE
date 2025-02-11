@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.annotation.UserId;
+import org.cotato.tlinkserver.api.dto.RoomJoinResponse;
 import org.cotato.tlinkserver.api.dto.response.RoomDetailResponse;
 import org.cotato.tlinkserver.api.dto.response.RoomInfoResponse;
 import org.cotato.tlinkserver.api.facade.RoomFacade;
@@ -57,6 +58,13 @@ public class RoomController {
 	public ResponseEntity<BaseResponse<?>> getShareCode(@PathVariable("roomId") @IdValidation Long roomId) {
 		ShareCodeResponse shareCode = roomFacade.getShareCode(roomId);
 		return ApiResponseUtil.success(SuccessMessage.CREATED, shareCode);
+	}
+
+	@Permission(role = {Role.STUDENT, Role.PARENT})
+	@GetMapping("/code/{shareCode}")
+	public ResponseEntity<BaseResponse<?>> getInviter(@PathVariable("shareCode") String shareCode) {
+		RoomJoinResponse inviter = roomFacade.getInviter(shareCode);
+		return ApiResponseUtil.success(SuccessMessage.SUCCESS, inviter);
 	}
 
 	@Permission(role = {Role.TEACHER})
