@@ -9,10 +9,10 @@ import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum Role {
-	ONBOARDING("온보딩"),
-	TEACHER("선생님"),
-	PARENT("학부모"),
-	STUDENT("학생");
+	ONBOARDING("ONBOARDING"),
+	TEACHER("TEACHER"),
+	PARENT("PARENT"),
+	STUDENT("STUDENT");
 
 	@JsonValue
 	private final String inKorean;
