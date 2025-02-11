@@ -3,6 +3,7 @@ package org.cotato.tlinkserver.api.facade;
 import java.util.List;
 
 import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.api.dto.RoomJoinResponse;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomInfoDTO;
 import org.cotato.tlinkserver.domain.room.Registration;
@@ -147,4 +148,11 @@ public class RoomFacade {
 	private String getStudentUsername(final Room room) {
 		return room.getStudentUsername().orElse(null);
     }
+
+	public RoomJoinResponse getInviter(String shareCode) {
+		Room room = roomService.getRoom(shareCode);
+		String teacherName = registrationService.getRegistration(room.getId(), Role.TEACHER).getUser().getUsername();
+		return RoomJoinResponse.from(teacherName);
+
+	}
 }
