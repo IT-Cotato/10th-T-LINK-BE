@@ -46,7 +46,7 @@ public class RoomController {
 		return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomsAndOpponents);
 	}
 
-	@Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+	@Permission(role = {Role.TEACHER})
 	@GetMapping("/{roomId}/info")
 	public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") @IdValidation Long roomId) {
 		RoomModifyResponse roomModify = roomFacade.getRoomModify(roomId);
