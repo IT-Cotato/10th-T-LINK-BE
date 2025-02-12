@@ -36,7 +36,7 @@ public class HomeworkFile {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@Column(name = "original_name", nullable = false, length = 30)
+	@Column(name = "original_name", nullable = false, length = 50)
 	private String originalName;
 
 	@Column(name = "s3_key", length = 250)
