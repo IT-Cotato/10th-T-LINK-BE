@@ -31,7 +31,7 @@ public class LectureFile {
 	@JoinColumn(name = "lecture_file_box_id")
 	private LectureFileBox lectureFileBox;
 
-	@Column(name = "original_name", nullable = false, length = 30)
+	@Column(name = "original_name", nullable = false, length = 50)
 	private String originalName;
 
 	@Column(name = "s3_key", nullable = false, length = 250)
