@@ -122,7 +122,7 @@ public class Room {
 
 	public Optional<Registration> getRegistration(long userId) {
 		return registrations.stream()
-				.filter(registration -> registration.getUser().getId() == userId)
+				.filter(registration -> registration.getUser() != null && registration.getUser().getId() == userId)
 				.findFirst();
 	}
 
