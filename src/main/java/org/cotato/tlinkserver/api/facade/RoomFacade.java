@@ -93,8 +93,9 @@ public class RoomFacade {
 
 	@Transactional
 	public void removeRoom(final Long userId, final Long roomId) {
-		registrationService.getRegistration(userId, roomId);
-		roomService.removeRoom(roomId);
+		Registration registration = registrationService.getRegistration(userId, roomId);
+		Room room = registration.getRoom();
+		roomService.removeRoom(room);
 	}
 
 	@Transactional
