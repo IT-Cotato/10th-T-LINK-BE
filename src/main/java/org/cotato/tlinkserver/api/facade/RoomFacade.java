@@ -149,10 +149,10 @@ public class RoomFacade {
 		return room.getStudentUsername().orElse(null);
     }
 
+	@Transactional(readOnly = true)
 	public RoomJoinResponse getInviter(String shareCode) {
 		Room room = roomService.getRoom(shareCode);
 		String teacherName = registrationService.getRegistration(room.getId(), Role.TEACHER).getUser().getUsername();
 		return RoomJoinResponse.from(teacherName);
-
 	}
 }
