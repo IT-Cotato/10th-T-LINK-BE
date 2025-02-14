@@ -3,7 +3,7 @@ package org.cotato.tlinkserver.api.dto.response;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailPermissionDTO;
 
 public record RoomDetailPermissionResponse(
-        boolean lectureFiles,
+        boolean lectureFile,
         boolean homework,
         boolean gradeStatistic,
         boolean counselingLog,
