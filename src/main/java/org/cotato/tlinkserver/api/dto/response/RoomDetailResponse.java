@@ -2,8 +2,6 @@ package org.cotato.tlinkserver.api.dto.response;
 
 import java.util.List;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
-import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailLessonDayDTO;
-import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailPermissionDTO;
 
 public record RoomDetailResponse(
         long roomId,
