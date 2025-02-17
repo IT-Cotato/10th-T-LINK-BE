@@ -61,7 +61,7 @@ public class User {
 	@Column(name = "gender", length = 2)
 	private Gender gender;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "user")
 	private List<Registration> registrations = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
