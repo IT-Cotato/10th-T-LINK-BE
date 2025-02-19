@@ -10,6 +10,8 @@ import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.Save
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamRequest;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxResponse;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxesResponse;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamResponse;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamsResponse;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +48,11 @@ public class GradeStatisticFacade {
         ExamBox examBox = gradeStatisticService.getExamBox(examBoxId);
         Exam exam = saveExamRequest.toEntity();
         examBox.addExam(exam);
+    }
+
+    @Transactional(readOnly = true)
+    public ExamsResponse getExams(Long examBoxId) {
+        List<Exam> exams = gradeStatisticService.getExamBox(examBoxId).getExams();
+        return ExamsResponse.from(exams.stream().map(ExamResponse::from).toList());
     }
 }
