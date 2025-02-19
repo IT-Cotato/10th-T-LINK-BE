@@ -34,7 +34,7 @@ public class Exam {
     private Integer grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_box_id")
+    @JoinColumn(name = "exam_box_id", nullable = false)
     private ExamBox examBox;
 
     @Builder

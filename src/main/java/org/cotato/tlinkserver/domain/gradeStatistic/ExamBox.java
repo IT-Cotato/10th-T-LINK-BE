@@ -36,7 +36,7 @@ public class ExamBox {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
     @OneToMany(mappedBy = "examBox", cascade = CascadeType.ALL, orphanRemoval = true)
