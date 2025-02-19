@@ -5,6 +5,7 @@ import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.GradeStatisticFacade;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamBoxRequest;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamRequest;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxesResponse;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
@@ -48,6 +49,14 @@ public class GradeStatisticController {
                                                          @PathVariable("examBoxId") @IdValidation Long examBoxId) {
         gradeStatisticFacade.removeExamBox(roomId, examBoxId);
         return ApiResponseUtil.success(SuccessMessage.DELETED);
+    }
+
+    @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+    @PostMapping("/{examBoxId}")
+    public ResponseEntity<BaseResponse<?>> saveExam(@RequestBody @Validated SaveExamRequest saveExamRequest,
+                                                    @PathVariable("examBoxId") @IdValidation Long examBoxId) {
+        gradeStatisticFacade.saveExam(saveExamRequest, examBoxId);
+        return ApiResponseUtil.success(SuccessMessage.CREATED);
     }
 
 }

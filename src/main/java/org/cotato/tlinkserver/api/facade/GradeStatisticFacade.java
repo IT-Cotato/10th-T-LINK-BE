@@ -3,9 +3,11 @@ package org.cotato.tlinkserver.api.facade;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.annotation.Facade;
+import org.cotato.tlinkserver.domain.gradeStatistic.Exam;
 import org.cotato.tlinkserver.domain.gradeStatistic.ExamBox;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.GradeStatisticService;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamBoxRequest;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamRequest;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxResponse;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxesResponse;
 import org.cotato.tlinkserver.domain.room.Room;
@@ -37,5 +39,12 @@ public class GradeStatisticFacade {
         Room room = roomService.getRoom(roomId);
         ExamBox examBox = gradeStatisticService.getExamBox(examBoxId);
         room.getExamBoxes().remove(examBox);
+    }
+
+    @Transactional
+    public void saveExam(final SaveExamRequest saveExamRequest, final Long examBoxId) {
+        ExamBox examBox = gradeStatisticService.getExamBox(examBoxId);
+        Exam exam = saveExamRequest.toEntity();
+        examBox.addExam(exam);
     }
 }
