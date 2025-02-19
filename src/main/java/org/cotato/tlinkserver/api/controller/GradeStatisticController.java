@@ -7,6 +7,7 @@ import org.cotato.tlinkserver.api.facade.GradeStatisticFacade;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamBoxRequest;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamRequest;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxesResponse;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamsResponse;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
@@ -57,6 +58,13 @@ public class GradeStatisticController {
                                                     @PathVariable("examBoxId") @IdValidation Long examBoxId) {
         gradeStatisticFacade.saveExam(saveExamRequest, examBoxId);
         return ApiResponseUtil.success(SuccessMessage.CREATED);
+    }
+
+    @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+    @GetMapping("/{examBoxId}")
+    public ResponseEntity<BaseResponse<?>> getExams(@PathVariable("examBoxId") @IdValidation Long examBoxId) {
+        ExamsResponse exams = gradeStatisticFacade.getExams(examBoxId);
+        return ApiResponseUtil.success(SuccessMessage.SUCCESS, exams);
     }
 
 }
