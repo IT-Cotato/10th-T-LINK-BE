@@ -67,4 +67,12 @@ public class GradeStatisticController {
         return ApiResponseUtil.success(SuccessMessage.SUCCESS, exams);
     }
 
+    @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+    @DeleteMapping("/{examBoxId}/exams/{examId}")
+    public ResponseEntity<BaseResponse<?>> removeExam(@PathVariable("examBoxId") @IdValidation Long examBoxId,
+                                                         @PathVariable("examId") @IdValidation Long examId) {
+        gradeStatisticFacade.removeExam(examBoxId, examId);
+        return ApiResponseUtil.success(SuccessMessage.DELETED);
+    }
+
 }
