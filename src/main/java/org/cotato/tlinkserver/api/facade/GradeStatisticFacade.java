@@ -31,4 +31,11 @@ public class GradeStatisticFacade {
         List<ExamBox> examBoxes = gradeStatisticService.getExamBoxes(roomId);
         return ExamBoxesResponse.from(examBoxes.stream().map(ExamBoxResponse::from).toList());
     }
+
+    @Transactional
+    public void removeExamBox(final Long roomId, final Long examBoxId) {
+        Room room = roomService.getRoom(roomId);
+        ExamBox examBox = gradeStatisticService.getExamBox(examBoxId);
+        room.getExamBoxes().remove(examBox);
+    }
 }
