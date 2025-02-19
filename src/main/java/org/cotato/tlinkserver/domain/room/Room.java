@@ -6,10 +6,10 @@ import java.util.List;
 
 import java.util.Optional;
 import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
+import org.cotato.tlinkserver.domain.gradeStatistic.ExamBox;
 import org.cotato.tlinkserver.domain.homework.Homework;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.bank.Bank;
-import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -82,6 +82,9 @@ public class Room {
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LessonDay> lessonDays = new ArrayList<>();
 
+	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ExamBox> examBoxes = new ArrayList<>();
+
 	@Builder
 	public Room(String studentName, String subject, Bank bank,
 		String accountNumber, int depositAt, int depositAmount, String shareCode) {
@@ -119,6 +122,12 @@ public class Room {
 		lessonDays.add(lessonDay);
 		lessonDay.setRoom(this);
 	}
+
+	public void addExamBox(ExamBox examBox) {
+		examBoxes.add(examBox);
+		examBox.setRoom(this);
+	}
+
 
 	public Optional<Registration> getRegistration(long userId) {
 		return registrations.stream()
