@@ -2,8 +2,11 @@ package org.cotato.tlinkserver.domain.gradeStatistic.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.cotato.tlinkserver.domain.gradeStatistic.Exam;
 import org.cotato.tlinkserver.domain.gradeStatistic.ExamBox;
 import org.cotato.tlinkserver.domain.gradeStatistic.infra.repository.ExamBoxRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +14,10 @@ import org.springframework.stereotype.Service;
 public class GradeStatisticService {
 
     private final ExamBoxRepository examBoxRepository;
+
+    public ExamBox getExamBox(Long examBoxId) {
+        return examBoxRepository.findById(examBoxId).orElseThrow(()-> new NotFoundException(ErrorMessage.NOT_FOUND));
+    }
 
     public List<ExamBox> getExamBoxes(Long roomId) {
         return examBoxRepository.findExamBoxesByRoomId(roomId);

@@ -12,6 +12,7 @@ import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,14 @@ public class GradeStatisticController {
     public ResponseEntity<BaseResponse<?>> getExamBoxes(@PathVariable("roomId") @IdValidation Long roomId) {
         ExamBoxesResponse examBoxes = gradeStatisticFacade.getExamBoxes(roomId);
         return ApiResponseUtil.success(SuccessMessage.SUCCESS, examBoxes);
+    }
+
+    @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+    @DeleteMapping("/{examBoxId}")
+    public ResponseEntity<BaseResponse<?>> removeExamBox(@PathVariable("roomId") @IdValidation Long roomId,
+                                                         @PathVariable("examBoxId") @IdValidation Long examBoxId) {
+        gradeStatisticFacade.removeExamBox(roomId, examBoxId);
+        return ApiResponseUtil.success(SuccessMessage.DELETED);
     }
 
 }
