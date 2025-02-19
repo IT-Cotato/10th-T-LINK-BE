@@ -5,12 +5,14 @@ import org.cotato.tlinkserver.annotation.IdValidation;
 import org.cotato.tlinkserver.annotation.Permission;
 import org.cotato.tlinkserver.api.facade.GradeStatisticFacade;
 import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.request.SaveExamBoxRequest;
+import org.cotato.tlinkserver.domain.gradeStatistic.application.dto.response.ExamBoxesResponse;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.common.BaseResponse;
 import org.cotato.tlinkserver.global.message.SuccessMessage;
 import org.cotato.tlinkserver.global.util.ApiResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,13 @@ public class GradeStatisticController {
         @PathVariable("roomId") @IdValidation Long roomId) {
         gradeStatisticFacade.saveExamBox(saveExamBoxRequest, roomId);
         return ApiResponseUtil.success(SuccessMessage.CREATED);
+    }
+
+    @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
+    @GetMapping
+    public ResponseEntity<BaseResponse<?>> getExamBoxes(@PathVariable("roomId") @IdValidation Long roomId) {
+        ExamBoxesResponse examBoxes = gradeStatisticFacade.getExamBoxes(roomId);
+        return ApiResponseUtil.success(SuccessMessage.SUCCESS, examBoxes);
     }
 
 }
