@@ -5,26 +5,17 @@ import java.util.List;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record RoomModifyResponse
 	(
-		@NotNull
 		Long roomId,
-		@NotBlank
 		String roomName,
-		@NotBlank
 		String studentName,
-		@NotBlank
 		String subject,
-		@NotNull
 		List<LessonDayModifyResponse> lessonDays,
-		@NotNull
 		PermissionResponse parentPermission,
-		@NotNull
 		PermissionResponse studentPermission
 	)
 {

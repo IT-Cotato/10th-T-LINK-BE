@@ -5,17 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 import org.cotato.tlinkserver.domain.homework.Homework;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 public record HomeworkResponse(
-	@NotNull
 	Long homeworkId,
-	@NotBlank
 	String homeworkName,
-	@NotBlank
 	String createdAt,
-	@NotBlank
 	String deadline,
 	boolean passed
 )

@@ -4,16 +4,12 @@ import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.user.User;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record RoomDataResponse
 	(
-		@NotNull
 		Room room,
-		@NotBlank
 		String roomName,
 		User user
 	)
