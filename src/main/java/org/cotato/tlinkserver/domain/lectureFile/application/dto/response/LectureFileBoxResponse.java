@@ -8,7 +8,7 @@ public record LectureFileBoxResponse
 	(
 		Long lectureFileBoxId,
 		String lectureFileBoxName,
-		String updateAt
+		String updatedAt
 	)
 {
 	public static LectureFileBoxResponse from(final LectureFileBox lectureFileBox) {
