@@ -1,5 +1,6 @@
 package org.cotato.tlinkserver.domain.room;
 
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,7 +51,7 @@ public class Room {
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "account_bank_id")
 	private Bank bank;
 
