@@ -17,6 +17,7 @@ import org.cotato.tlinkserver.domain.room.application.RoomService;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
 import org.cotato.tlinkserver.domain.user.constant.Role;
+import org.cotato.tlinkserver.global.common.constant.FolderPath;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.S3FileHandler;
@@ -34,7 +35,6 @@ public class HomeworkFacade {
 	private final UserService userService;
 	private final RoomService roomService;
 	private final S3FileHandler s3FileHandler;
-	private final String DIRECTORY_PATH = "homeworkFiles/";
 
 	@Transactional(readOnly = true)
 	public HomeworksResponse getHomeworks(final Long roomId) {
@@ -62,7 +62,7 @@ public class HomeworkFacade {
 		Homework homework = homeworkService.getHomework(homeworkId);
 		List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
 
-		homeworkFiles.forEach(homeworkFile -> s3FileHandler.deleteFile(DIRECTORY_PATH + homeworkFile.getS3Key()));
+		homeworkFiles.forEach(homeworkFile -> s3FileHandler.deleteFile(FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getS3Key())));
 		homework.getRoom().getHomeworks().remove(homework);
 	}
 
@@ -80,7 +80,7 @@ public class HomeworkFacade {
 					.findFirst()
 					.orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 
-				s3FileHandler.deleteFile(DIRECTORY_PATH + homeworkFile.getS3Key());
+				s3FileHandler.deleteFile(FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getS3Key()));
 				homeworkFiles.remove(homeworkFile);
 			});
 		}
@@ -107,7 +107,7 @@ public class HomeworkFacade {
 					return HomeworkFileResponse.from(
 						teacherFile.getId(),
 						teacherFile.getOriginalName(),
-						s3FileHandler.downloadFile(DIRECTORY_PATH + teacherFile.getS3Key()).getURL().toString()
+						s3FileHandler.downloadFile(FolderPath.generate(FolderPath.HOMEWORK, teacherFile.getS3Key())).getURL().toString()
 					);
 				} catch (IOException e) {
 					throw new NotFoundException(ErrorMessage.NOT_FOUND);
@@ -121,7 +121,7 @@ public class HomeworkFacade {
 					return HomeworkFileResponse.from(
 						studentFile.getId(),
 						studentFile.getOriginalName(),
-						s3FileHandler.downloadFile(DIRECTORY_PATH + studentFile.getS3Key()).getURL().toString()
+						s3FileHandler.downloadFile(FolderPath.generate(FolderPath.HOMEWORK, studentFile.getS3Key())).getURL().toString()
 					);
 				} catch (IOException e) {
 					throw new NotFoundException(ErrorMessage.NOT_FOUND);
@@ -141,7 +141,7 @@ public class HomeworkFacade {
 				return HomeworkFileResponse.from(
 					file.getId(),
 					file.getOriginalName(),
-					s3FileHandler.downloadFile(DIRECTORY_PATH + file.getS3Key()).getURL().toString());
+					s3FileHandler.downloadFile(FolderPath.generate(FolderPath.HOMEWORK, file.getS3Key())).getURL().toString());
 			} catch (IOException e) {
 				throw new NotFoundException(ErrorMessage.NOT_FOUND);
 			}
@@ -165,7 +165,7 @@ public class HomeworkFacade {
 				originalName(homeworkFiles.get(i).getOriginalFilename())
 				.build();
 
-			s3FileHandler.uploadFile(homeworkFiles.get(i), DIRECTORY_PATH + filePaths.get(i));	// 숙제 파일 업로드
+			s3FileHandler.uploadFile(homeworkFiles.get(i), FolderPath.generate(FolderPath.HOMEWORK, filePaths.get(i)));	// 숙제 파일 업로드
 			homework.addHomeworkFile(homeworkFile);	// 숙제와 숙제 파일 간 연관 관계 매핑
 			user.addHomeworkFile(homeworkFile);	// 숙제와 유저 간 연관 관계 매핑
 		}
