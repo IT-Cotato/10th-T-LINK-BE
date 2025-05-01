@@ -28,7 +28,6 @@ public class LessonDay {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lesson_day_id", updatable = false)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

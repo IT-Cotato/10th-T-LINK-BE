@@ -34,7 +34,6 @@ public class CounselingLog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "counseling_log_id", updatable = false)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

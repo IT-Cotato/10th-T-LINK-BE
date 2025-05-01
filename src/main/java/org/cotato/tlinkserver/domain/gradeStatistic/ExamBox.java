@@ -29,7 +29,6 @@ public class ExamBox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exam_box_id", updatable = false)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 30)

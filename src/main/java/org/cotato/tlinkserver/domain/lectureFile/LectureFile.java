@@ -24,7 +24,6 @@ public class LectureFile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lecture_file_id", updatable = false)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

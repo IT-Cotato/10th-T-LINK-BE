@@ -24,7 +24,6 @@ public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exam_id", updatable = false)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 30)

@@ -31,7 +31,6 @@ public class Registration {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "registration_id", updatable = false)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

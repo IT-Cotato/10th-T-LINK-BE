@@ -22,7 +22,6 @@ public class Bank {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "bank_id", updatable = false)
 	private Long id;
 
 	@Column(name = "bank_name", nullable = false, length = 20)

@@ -34,7 +34,6 @@ public class User {
 	private static final String DEFAULT_STATUS_MESSAGE = "";
 
 	@Id
-	@Column(name = "user_id", updatable = false)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
@@ -74,7 +73,6 @@ public class User {
 		this.username = username;
 		this.phoneNumber = phoneNumber;
 		this.profilePath = profilePath;
-		this.statusMessage = "";
 		this.role = role;
 		this.gender = gender;
 		this.statusMessage = DEFAULT_STATUS_MESSAGE;

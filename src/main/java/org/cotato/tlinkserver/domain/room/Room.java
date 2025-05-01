@@ -38,7 +38,6 @@ public class Room {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "room_id", updatable = false)
 	private Long id;
 
 	@Column(name = "student_name", nullable = false, length = 20)
