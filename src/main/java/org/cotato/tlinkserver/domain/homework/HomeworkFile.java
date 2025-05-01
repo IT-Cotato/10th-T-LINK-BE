@@ -1,7 +1,5 @@
 package org.cotato.tlinkserver.domain.homework;
 
-import org.cotato.tlinkserver.domain.user.User;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,35 +14,36 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cotato.tlinkserver.domain.user.User;
 
 @Entity
 @Table(name = "homework_files")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
+@Setter
 public class HomeworkFile {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "homework_id")
-	private Homework homework;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "homework_id")
+    private Homework homework;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@Column(name = "original_name", nullable = false, length = 50)
-	private String originalName;
+    @Column(name = "original_name", nullable = false, length = 50)
+    private String originalName;
 
-	@Column(name = "s3_key", length = 250)
-	private String s3Key;
+    @Column(name = "file_path", length = 250)
+    private String filePath;
 
-	@Builder
-	public HomeworkFile(String originalName, String s3Key) {
-		this.originalName = originalName;
-		this.s3Key = s3Key;
-	}
-	
+    @Builder
+    public HomeworkFile(String originalName, String filePath) {
+        this.originalName = originalName;
+        this.filePath = filePath;
+    }
 }

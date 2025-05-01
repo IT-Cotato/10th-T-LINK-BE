@@ -1,8 +1,5 @@
 package org.cotato.tlinkserver.domain.room;
 
-import org.cotato.tlinkserver.domain.user.User;
-import org.cotato.tlinkserver.domain.user.constant.Role;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,8 +16,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 @Entity
 @Table(name = "registrations")
@@ -29,51 +26,28 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 public class Registration {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@OnDelete(action = OnDeleteAction.SET_NULL)
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "room_id")
-	private Room room;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role", nullable = false, length = 10)
-	private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private Role role;
 
-	@Column(name = "room_name", nullable = false, length = 50)
-	private String roomName;
+    @Column(nullable = false, length = 50)
+    private String roomName;
 
-	@Column(name = "lecture_file")
-	private boolean lectureFile;
-
-	@Column(name = "homework")
-	private boolean homework;
-
-	@Column(name = "grade_statistic")
-	private boolean gradeStatistic;
-
-	@Column(name = "counseling_log")
-	private boolean counselingLog;
-
-	@Column(name = "deposit")
-	private boolean deposit;
-
-	@Builder
-	public Registration(Role role, String roomName, boolean lectureFile, boolean homework, boolean gradeStatistic,
-		boolean counselingLog, boolean deposit) {
-		this.role = role;
-		this.roomName = roomName;
-		this.lectureFile = lectureFile;
-		this.homework = homework;
-		this.gradeStatistic = gradeStatistic;
-		this.counselingLog = counselingLog;
-		this.deposit = deposit;
-	}
-
+    @Builder
+    public Registration(Role role, String roomName) {
+        this.role = role;
+        this.roomName = roomName;
+    }
 }

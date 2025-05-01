@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record ExamBoxesResponse(
-    List<ExamBoxResponse> examBox
+        List<ExamBoxResponse> examBox
 ) {
     public static ExamBoxesResponse from(List<ExamBoxResponse> examBox) {
         return ExamBoxesResponse.builder().examBox(examBox).build();

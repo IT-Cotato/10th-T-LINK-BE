@@ -38,9 +38,9 @@ public class LoginService {
 
     private AuthUser loadOrCreateUser(LoginCommand command, SocialInfoResult socialUserInfo) {
         AuthUser retrievedAuthUser = userRepository.findByIdAndProvider(
-                socialUserInfo.id(),
-                command.provider()
-        )
+                        socialUserInfo.id(),
+                        command.provider()
+                )
                 .map(AuthUser::toAuthUser)
                 .orElse(null);
 

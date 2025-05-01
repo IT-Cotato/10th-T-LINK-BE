@@ -31,7 +31,7 @@ public class ExamBox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

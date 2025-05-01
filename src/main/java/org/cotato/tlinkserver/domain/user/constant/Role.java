@@ -9,25 +9,25 @@ import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum Role {
-	ONBOARDING("ONBOARDING"),
-	TEACHER("TEACHER"),
-	PARENT("PARENT"),
-	STUDENT("STUDENT");
+    ONBOARDING("ONBOARDING"),
+    TEACHER("TEACHER"),
+    PARENT("PARENT"),
+    STUDENT("STUDENT");
 
-	@JsonValue
-	private final String inKorean;
+    @JsonValue
+    private final String inKorean;
 
-	Role(String inKorean) {
-		this.inKorean = inKorean;
-	}
+    Role(String inKorean) {
+        this.inKorean = inKorean;
+    }
 
-	@JsonCreator
-	public static Role from(final String input) {
-		return Arrays.stream(Role.values())
-				.filter(role -> role.inKorean.equals(input))
-				.findFirst()
-				.orElseThrow(
-						() -> new TLinkException(ErrorMessage.BAD_REQUEST)
-				);
-	}
+    @JsonCreator
+    public static Role from(final String input) {
+        return Arrays.stream(Role.values())
+                .filter(role -> role.inKorean.equals(input))
+                .findFirst()
+                .orElseThrow(
+                        () -> new TLinkException(ErrorMessage.BAD_REQUEST)
+                );
+    }
 }

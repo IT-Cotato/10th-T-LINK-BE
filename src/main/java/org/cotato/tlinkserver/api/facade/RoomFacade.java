@@ -1,7 +1,7 @@
 package org.cotato.tlinkserver.api.facade;
 
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.annotation.Facade;
 import org.cotato.tlinkserver.api.dto.RoomJoinResponse;
 import org.cotato.tlinkserver.api.facade.dto.response.RoomDetailDTO;
@@ -25,135 +25,133 @@ import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.cotato.tlinkserver.global.util.RandomUtil;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
-
 @Facade
 @RequiredArgsConstructor
 public class RoomFacade {
 
-	private final RoomService roomService;
-	private final RegistrationService registrationService;
-	private final UserService userService;
+    private final RoomService roomService;
+    private final RegistrationService registrationService;
+    private final UserService userService;
 
-	@Transactional
-	public Long saveRoom(final Long teacherId, final RoomSaveRequest roomSaveRequest) {
-		User teacher = userService.getValidUser(teacherId);
-		Room room = roomSaveRequest.save(teacher);
-		return roomService.saveRoom(room);
-	}
+    @Transactional
+    public Long saveRoom(final Long teacherId, final RoomSaveRequest roomSaveRequest) {
+        User teacher = userService.getValidUser(teacherId);
+        Room room = roomSaveRequest.save(teacher);
+        return roomService.saveRoom(room);
+    }
 
-	@Transactional(readOnly = true)
-	public RoomsResponse getRooms(final Long userId) {
-		User user = userService.getValidUser(userId);
-		List<Room> userRooms = registrationService.getRegistrations(userId).stream().map(Registration::getRoom).toList();
+    @Transactional(readOnly = true)
+    public RoomsResponse getRooms(final Long userId) {
+        User user = userService.getValidUser(userId);
+        List<Room> userRooms = registrationService.getRegistrations(userId).stream().map(Registration::getRoom)
+                .toList();
 
-		if (user.getRole().equals(Role.TEACHER)) {
-			return RoomsResponse.from(userRooms.stream()
-				.map(room -> {
-					String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
-					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.STUDENT);
-					return RoomResponse.from(opponentRegistration, roomName);
-				})
-				.toList());
-		}
-		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
-			return RoomsResponse.from(userRooms.stream()
-				.map(room -> {
-					String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
-					Registration opponentRegistration = registrationService.getRegistration(room.getId(), Role.TEACHER);
-					return RoomResponse.from(opponentRegistration, roomName);
-				})
-				.toList());
-		}
-		else {
-			throw new UnauthorizedException(ErrorMessage.UNAUTHORIZED);
-		}
-	}
+        if (user.getRole().equals(Role.TEACHER)) {
+            return RoomsResponse.from(userRooms.stream()
+                    .map(room -> {
+                        String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
+                        Registration opponentRegistration = registrationService.getRegistration(room.getId(),
+                                Role.STUDENT);
+                        return RoomResponse.from(opponentRegistration, roomName);
+                    })
+                    .toList());
+        } else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
+            return RoomsResponse.from(userRooms.stream()
+                    .map(room -> {
+                        String roomName = registrationService.getRegistration(userId, room.getId()).getRoomName();
+                        Registration opponentRegistration = registrationService.getRegistration(room.getId(),
+                                Role.TEACHER);
+                        return RoomResponse.from(opponentRegistration, roomName);
+                    })
+                    .toList());
+        } else {
+            throw new UnauthorizedException(ErrorMessage.UNAUTHORIZED);
+        }
+    }
 
-	@Transactional(readOnly = true)
-	public RoomModifyResponse getRoomModify(final Long roomId) {
-		return registrationService.getRoomModify(roomId);
-	}
+    @Transactional(readOnly = true)
+    public RoomModifyResponse getRoomModify(final Long roomId) {
+        return registrationService.getRoomModify(roomId);
+    }
 
-	@Transactional
-	public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
-		User user = userService.getValidUser(userId);
-		Room room = roomService.getRoom(roomId);
-		Registration registration = registrationService.getRegistration(userId, roomId);
+    @Transactional
+    public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
+        User user = userService.getValidUser(userId);
+        Room room = roomService.getRoom(roomId);
+        Registration registration = registrationService.getRegistration(userId, roomId);
 
-		if (user.getRole().equals(Role.TEACHER)) {
-			Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
-			Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
-			roomModifyRequest.modify(room, registration, parentRegistration, studentRegistration);
-		}
-		else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
-			roomModifyRequest.modify(registration);
-		}
-	}
+        if (user.getRole().equals(Role.TEACHER)) {
+            Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
+            Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
+            roomModifyRequest.modify(room, registration, parentRegistration, studentRegistration);
+        } else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
+            roomModifyRequest.modify(registration);
+        }
+    }
 
-	@Transactional
-	public void removeRoom(final Long userId, final Long roomId) {
-		Registration registration = registrationService.getRegistration(userId, roomId);
-		Room room = registration.getRoom();
-		roomService.removeRoom(room);
-	}
+    @Transactional
+    public void removeRoom(final Long userId, final Long roomId) {
+        Registration registration = registrationService.getRegistration(userId, roomId);
+        Room room = registration.getRoom();
+        roomService.removeRoom(room);
+    }
 
-	@Transactional
-	public ShareCodeResponse getShareCode(final Long roomId) {
-		String shareCode = RandomUtil.generateRandomCode('0', 'z', 10);
-		Room room = roomService.getRoom(roomId);
-		room.setShareCode(shareCode);
-		return ShareCodeResponse.from(shareCode);
-	}
+    @Transactional
+    public ShareCodeResponse getShareCode(final Long roomId) {
+        String shareCode = RandomUtil.generateRandomCode('0', 'z', 10);
+        Room room = roomService.getRoom(roomId);
+        room.setShareCode(shareCode);
+        return ShareCodeResponse.from(shareCode);
+    }
 
-	@Transactional
-	public int joinRoom(final Long userId, final String shareCode) {
-		User user = userService.getValidUser(userId);
-		Room room = roomService.getRoom(shareCode);
+    @Transactional
+    public int joinRoom(final Long userId, final String shareCode) {
+        User user = userService.getValidUser(userId);
+        Room room = roomService.getRoom(shareCode);
 
-		Registration registration = registrationService.getRegistration(room.getId(), user.getRole());
+        Registration registration = registrationService.getRegistration(room.getId(), user.getRole());
 
-		if (registration.getUser() == null) {
-			registration.setUser(user);
-			user.addRegistration(registration);
-			return 1;
-		} else if (registration.getUser().equals(user)) {
-			return 0;
-		} else {
-			return -1;
-		}
+        if (registration.getUser() == null) {
+            registration.setUser(user);
+            user.addRegistration(registration);
+            return 1;
+        } else if (registration.getUser().equals(user)) {
+            return 0;
+        } else {
+            return -1;
+        }
 
-	}
+    }
 
-	@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RoomInfoDTO getRoomInfo(long userId) {
-		List<Registration> registrations = registrationService.getRegistrationsWithRoomInfo(userId);
-		return RoomInfoDTO.from(registrations);
+        List<Registration> registrations = registrationService.getRegistrationsWithRoomInfo(userId);
+        return RoomInfoDTO.from(registrations);
     }
 
-	@Transactional(readOnly = true)
-	public RoomDetailDTO getRoomDetail(long userId, long roomId) {
-		Room room = roomService.getRoom(roomId);
-		Registration userRegistration = getValidRegistration(room, userId);
-		String studentUsername = getStudentUsername(room);
-		return RoomDetailDTO.of(userRegistration, studentUsername);
-	}
-
-	private Registration getValidRegistration(final Room room, final long userId) {
-		return room.getRegistration(userId)
-				.orElseThrow(
-						() -> new NotFoundException(ErrorMessage.NOT_FOUND)
-				);
-	}
-
-	private String getStudentUsername(final Room room) {
-		return room.getStudentUsername().orElse(null);
+    @Transactional(readOnly = true)
+    public RoomDetailDTO getRoomDetail(long userId, long roomId) {
+        Room room = roomService.getRoom(roomId);
+        Registration userRegistration = getValidRegistration(room, userId);
+        String studentUsername = getStudentUsername(room);
+        return RoomDetailDTO.of(userRegistration, studentUsername);
     }
 
-	@Transactional(readOnly = true)
-	public RoomJoinResponse getInviter(String shareCode) {
-		Room room = roomService.getRoom(shareCode);
-		Registration registration = registrationService.getRegistration(room.getId(), Role.TEACHER);
-		return RoomJoinResponse.from(registration);
-	}
+    private Registration getValidRegistration(final Room room, final long userId) {
+        return room.getRegistration(userId)
+                .orElseThrow(
+                        () -> new NotFoundException(ErrorMessage.NOT_FOUND)
+                );
+    }
+
+    private String getStudentUsername(final Room room) {
+        return room.getStudentUsername().orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public RoomJoinResponse getInviter(String shareCode) {
+        Room room = roomService.getRoom(shareCode);
+        Registration registration = registrationService.getRegistration(room.getId(), Role.TEACHER);
+        return RoomJoinResponse.from(registration);
+    }
 }

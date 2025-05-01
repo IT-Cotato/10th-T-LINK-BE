@@ -12,7 +12,6 @@ import org.cotato.tlinkserver.auth.command.OnboardCommand;
 import org.cotato.tlinkserver.auth.dto.LoginResult;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Facade

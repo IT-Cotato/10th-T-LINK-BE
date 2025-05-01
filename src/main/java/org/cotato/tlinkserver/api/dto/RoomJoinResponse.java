@@ -10,24 +10,24 @@ import org.cotato.tlinkserver.domain.user.User;
 
 @Builder
 public record RoomJoinResponse
-	(
-			Long roomId,
-			String roomName,
-			String subject,
-			List<RoomLessonDayResponse> lessonDays,
-			OpponentResponse opponent
-	)
-{
-	public static RoomJoinResponse from(Registration registration) {
-		Room room = registration.getRoom();
-		User opponent = registration.getUser();
+        (
+                Long roomId,
+                String roomName,
+                String subject,
+                List<RoomLessonDayResponse> lessonDays,
+                OpponentResponse opponent
+        ) {
+    public static RoomJoinResponse from(Registration registration) {
+        Room room = registration.getRoom();
+        User opponent = registration.getUser();
 
-		return RoomJoinResponse.builder()
-				.roomId(room.getId())
-				.roomName(registration.getRoomName())
-				.subject(room.getSubject())
-				.lessonDays(room.getLessonDays().stream().map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
-				.opponent(OpponentResponse.from(opponent, opponent.getUsername()))
-				.build();
-	}
+        return RoomJoinResponse.builder()
+                .roomId(room.getId())
+                .roomName(registration.getRoomName())
+                .subject(room.getSubject())
+                .lessonDays(room.getLessonDays().stream()
+                        .map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean())).toList())
+                .opponent(OpponentResponse.from(opponent, opponent.getUsername()))
+                .build();
+    }
 }

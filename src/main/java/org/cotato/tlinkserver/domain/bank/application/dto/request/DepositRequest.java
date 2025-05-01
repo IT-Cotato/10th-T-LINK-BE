@@ -4,14 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record DepositRequest
-	(
-		@NotNull
-		Long bankId,
-		@NotBlank
-		String accountNumber,
-		int depositAt,
-		int depositAmount
-	)
-{
+        (
+                @NotNull
+                Long bankId,
+                @NotBlank
+                String accountNumber,
+                int depositAt,
+                int depositAmount
+        ) {
 
 }

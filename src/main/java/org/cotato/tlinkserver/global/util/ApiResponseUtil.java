@@ -23,6 +23,6 @@ public interface ApiResponseUtil {
 
     static <T> ResponseEntity<BaseResponse<?>> failure(ErrorMessage errorMessage, T data) {
         return ResponseEntity.status(errorMessage.getHttpStatus())
-            .body(BaseResponse.of(errorMessage, data));
+                .body(BaseResponse.of(errorMessage, data));
     }
 }
