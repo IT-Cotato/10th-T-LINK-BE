@@ -141,7 +141,6 @@ public class Room {
         examBox.setRoom(this);
     }
 
-
     public Optional<Registration> getRegistration(long userId) {
         return registrations.stream()
                 .filter(registration -> registration.getUser() != null && registration.getUser().getId() == userId)

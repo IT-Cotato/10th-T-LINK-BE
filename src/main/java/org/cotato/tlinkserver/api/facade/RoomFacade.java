@@ -34,10 +34,9 @@ public class RoomFacade {
     private final UserService userService;
 
     @Transactional
-    public Long saveRoom(final Long teacherId, final RoomSaveRequest roomSaveRequest) {
+    public Long saveRoom(final Long teacherId, final RoomSaveRequest request) {
         User teacher = userService.getValidUser(teacherId);
-        Room room = roomSaveRequest.save(teacher);
-        return roomService.saveRoom(room);
+        return roomService.saveRoom(teacher, request);
     }
 
     @Transactional(readOnly = true)
@@ -70,22 +69,21 @@ public class RoomFacade {
     }
 
     @Transactional(readOnly = true)
-    public RoomModifyResponse getRoomModify(final Long roomId) {
-        return registrationService.getRoomModify(roomId);
+    public RoomModifyResponse getRoomModify(final Long roomId, final Long userId) {
+        return roomService.getRoomModify(roomId, userId);
     }
 
     @Transactional
-    public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest roomModifyRequest) {
+    public void modifyRoom(final Long userId, final Long roomId, final RoomModifyRequest request) {
         User user = userService.getValidUser(userId);
         Room room = roomService.getRoom(roomId);
         Registration registration = registrationService.getRegistration(userId, roomId);
 
         if (user.getRole().equals(Role.TEACHER)) {
-            Registration parentRegistration = registrationService.getRegistration(roomId, Role.PARENT);
-            Registration studentRegistration = registrationService.getRegistration(roomId, Role.STUDENT);
-            roomModifyRequest.modify(room, registration, parentRegistration, studentRegistration);
+            roomService.modify(room, registration, request);
+
         } else if (user.getRole().equals(Role.STUDENT) || user.getRole().equals(Role.PARENT)) {
-            roomModifyRequest.modify(registration);
+            roomService.modify(registration, request);
         }
     }
 
@@ -120,7 +118,6 @@ public class RoomFacade {
         } else {
             return -1;
         }
-
     }
 
     @Transactional(readOnly = true)

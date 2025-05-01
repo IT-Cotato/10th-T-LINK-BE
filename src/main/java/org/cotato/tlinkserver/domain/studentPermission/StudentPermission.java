@@ -6,11 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "student_permissions")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 public class StudentPermission {
@@ -33,4 +36,13 @@ public class StudentPermission {
 
     @Column(nullable = false)
     private boolean deposit;
+
+    public StudentPermission(boolean lectureFile, boolean homework, boolean gradeStatistic, boolean counselingLog,
+                             boolean deposit) {
+        this.lectureFile = lectureFile;
+        this.homework = homework;
+        this.gradeStatistic = gradeStatistic;
+        this.counselingLog = counselingLog;
+        this.deposit = deposit;
+    }
 }
