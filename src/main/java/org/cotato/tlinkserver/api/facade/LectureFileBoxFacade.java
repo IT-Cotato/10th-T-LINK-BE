@@ -39,7 +39,7 @@ public class LectureFileBoxFacade {
                 .map(file -> {
                     try {
                         return LectureFileResponse.from(file.getId(), file.getOriginalName(),
-                                s3FileHandler.downloadFile(FolderPath.generate(FolderPath.LECTURE, file.getS3Key()))
+                                s3FileHandler.downloadFile(FolderPath.generate(FolderPath.LECTURE, file.getFilePath()))
                                         .getURL().toString()
                         );
                     } catch (IOException e) {
@@ -88,7 +88,7 @@ public class LectureFileBoxFacade {
         List<LectureFile> lectureFiles = lectureFileBox.getLectureFiles();
 
         lectureFiles.forEach(lectureFile -> s3FileHandler.deleteFile(
-                FolderPath.generate(FolderPath.LECTURE, lectureFile.getS3Key())));
+                FolderPath.generate(FolderPath.LECTURE, lectureFile.getFilePath())));
         lectureFileBox.getRoom().getLectureFileBoxes().remove(lectureFileBox);
     }
 
@@ -105,7 +105,7 @@ public class LectureFileBoxFacade {
                         .filter(file -> file.getId().equals(id))
                         .findFirst()
                         .orElseThrow();
-                s3FileHandler.deleteFile(FolderPath.generate(FolderPath.LECTURE, lectureFile.getS3Key()));
+                s3FileHandler.deleteFile(FolderPath.generate(FolderPath.LECTURE, lectureFile.getFilePath()));
                 lectureFiles.remove(lectureFile);
             });
         }
@@ -129,7 +129,7 @@ public class LectureFileBoxFacade {
         for (int i = 0; i < size; i++) {
             LectureFile lectureFile = LectureFile.builder().    // 강의 자료 파일 생성
                     lectureFileBox(lectureFileBox)
-                    .s3Key(filePaths.get(i))
+                    .filePath(filePaths.get(i))
                     .originalName(lectureFiles.get(i).getOriginalFilename())
                     .build();
 

@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Entity
 @Table(name = "registrations")
@@ -49,5 +51,65 @@ public class Registration {
     public Registration(Role role, String roomName) {
         this.role = role;
         this.roomName = roomName;
+    }
+
+    public boolean getLectureFilePermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isLectureFile();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isLectureFile();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getHomeworkPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isHomework();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isHomework();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getGradeStatisticPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isGradeStatistic();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isGradeStatistic();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getCounselingLogPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isCounselingLog();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isCounselingLog();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getDepositPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isDeposit();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isDeposit();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
     }
 }

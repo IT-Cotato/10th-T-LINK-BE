@@ -62,7 +62,7 @@ public class HomeworkFacade {
         List<HomeworkFile> homeworkFiles = homework.getHomeworkFiles();
 
         homeworkFiles.forEach(homeworkFile -> s3FileHandler.deleteFile(
-                FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getS3Key())));
+                FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getFilePath())));
         homework.getRoom().getHomeworks().remove(homework);
     }
 
@@ -81,7 +81,7 @@ public class HomeworkFacade {
                         .findFirst()
                         .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
 
-                s3FileHandler.deleteFile(FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getS3Key()));
+                s3FileHandler.deleteFile(FolderPath.generate(FolderPath.HOMEWORK, homeworkFile.getFilePath()));
                 homeworkFiles.remove(homeworkFile);
             });
         }
@@ -109,7 +109,7 @@ public class HomeworkFacade {
                                 teacherFile.getId(),
                                 teacherFile.getOriginalName(),
                                 s3FileHandler.downloadFile(
-                                                FolderPath.generate(FolderPath.HOMEWORK, teacherFile.getS3Key())).getURL()
+                                                FolderPath.generate(FolderPath.HOMEWORK, teacherFile.getFilePath())).getURL()
                                         .toString()
                         );
                     } catch (IOException e) {
@@ -125,7 +125,7 @@ public class HomeworkFacade {
                                 studentFile.getId(),
                                 studentFile.getOriginalName(),
                                 s3FileHandler.downloadFile(
-                                                FolderPath.generate(FolderPath.HOMEWORK, studentFile.getS3Key())).getURL()
+                                                FolderPath.generate(FolderPath.HOMEWORK, studentFile.getFilePath())).getURL()
                                         .toString()
                         );
                     } catch (IOException e) {
@@ -147,7 +147,7 @@ public class HomeworkFacade {
                 return HomeworkFileResponse.from(
                         file.getId(),
                         file.getOriginalName(),
-                        s3FileHandler.downloadFile(FolderPath.generate(FolderPath.HOMEWORK, file.getS3Key())).getURL()
+                        s3FileHandler.downloadFile(FolderPath.generate(FolderPath.HOMEWORK, file.getFilePath())).getURL()
                                 .toString());
             } catch (IOException e) {
                 throw new NotFoundException(ErrorMessage.NOT_FOUND);
@@ -168,7 +168,7 @@ public class HomeworkFacade {
 
         for (int i = 0; i < size; i++) {
             HomeworkFile homeworkFile = HomeworkFile.builder().    // 숙제 파일 생성
-                    s3Key(filePaths.get(i)).
+                    filePath(filePaths.get(i)).
                     originalName(homeworkFiles.get(i).getOriginalFilename())
                     .build();
 

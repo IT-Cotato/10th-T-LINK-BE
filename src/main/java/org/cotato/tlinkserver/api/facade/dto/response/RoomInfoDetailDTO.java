@@ -2,6 +2,7 @@ package org.cotato.tlinkserver.api.facade.dto.response;
 
 import java.util.List;
 import org.cotato.tlinkserver.domain.room.Registration;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 public record RoomInfoDetailDTO(
         String roomName,
@@ -11,7 +12,7 @@ public record RoomInfoDetailDTO(
 ) {
     public static RoomInfoDetailDTO from(final Registration registration) {
         Integer deposit = null;
-        if (registration.isDeposit()) {
+        if (registration.getDepositPermission()) {
             deposit = registration.getRoom().getDepositAt();
         }
 

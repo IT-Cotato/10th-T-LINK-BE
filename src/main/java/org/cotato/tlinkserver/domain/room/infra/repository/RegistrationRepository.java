@@ -18,6 +18,10 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     List<Registration> findRegistrationsByRoomId(Long roomId);
 
-    @Query("SELECT r FROM Registration r JOIN FETCH r.room rr JOIN FETCH rr.lessonDays WHERE r.user.id = :userId")
+    @Query(
+            "SELECT r"
+            + " FROM Registration r"
+            + " JOIN FETCH r.room rr JOIN FETCH rr.lessonDays JOIN FETCH rr.studentPermission JOIN FETCH rr.parentPermission"
+            + " WHERE r.user.id = :userId")
     List<Registration> findFetchRegistrationsByUserId(@Param("userId") long userId);
 }
