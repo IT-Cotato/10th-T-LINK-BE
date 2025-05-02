@@ -15,7 +15,7 @@ public record UserProfileDTO(
                 user.getUsername(),
                 user.getStatusMessage(),
                 user.getPhoneNumber(),
-                user.getProfilePath(),
+                user.getProfileUrl(),
                 user.getRole()
         );
     }

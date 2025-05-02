@@ -18,7 +18,8 @@ public class GradeStatisticService {
     private final ExamRepository examRepository;
 
     public ExamBox getExamBox(Long examBoxId) {
-        return examBoxRepository.findById(examBoxId).orElseThrow(()-> new NotFoundException(ErrorMessage.NOT_FOUND));
+        return examBoxRepository.findById(examBoxId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_EXAM));
     }
 
     public List<ExamBox> getExamBoxes(Long roomId) {
@@ -26,7 +27,8 @@ public class GradeStatisticService {
     }
 
     public Exam getExam(Long examId) {
-        return examRepository.findById(examId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+        return examRepository.findById(examId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_GRADE));
     }
 
 }

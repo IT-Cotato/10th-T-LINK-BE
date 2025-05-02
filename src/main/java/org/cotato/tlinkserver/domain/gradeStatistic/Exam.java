@@ -24,21 +24,20 @@ public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exam_id", updatable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(name = "grade", nullable = false)
-    private Integer grade;
+    @Column(nullable = false)
+    private int grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_box_id", nullable = false)
     private ExamBox examBox;
 
     @Builder
-    public Exam(String name, Integer grade) {
+    public Exam(String name, int grade) {
         this.name = name;
         this.grade = grade;
     }

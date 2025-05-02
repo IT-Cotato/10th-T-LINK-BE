@@ -10,9 +10,9 @@ import org.cotato.tlinkserver.auth.Token;
 import org.cotato.tlinkserver.auth.command.LoginCommand;
 import org.cotato.tlinkserver.auth.command.OnboardCommand;
 import org.cotato.tlinkserver.auth.dto.LoginResult;
+import org.cotato.tlinkserver.domain.user.AuthUser;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.application.UserService;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Facade
@@ -27,7 +27,9 @@ public class AuthFacade {
 
     @Transactional
     public LoginResult login(LoginCommand loginCommand) {
-        return loginService.login(loginCommand);
+        AuthUser authUser = loginService.getAuthUser(loginCommand);
+        Token token = loginService.getToken(authUser);
+        return loginService.getLoginResult(token, authUser.getSocialId(), authUser.getSocialProvider());
     }
 
     @Transactional

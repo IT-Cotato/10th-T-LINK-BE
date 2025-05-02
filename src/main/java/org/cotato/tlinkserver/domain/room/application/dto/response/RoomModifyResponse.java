@@ -1,33 +1,31 @@
 package org.cotato.tlinkserver.domain.room.application.dto.response;
 
 import java.util.List;
-
+import lombok.Builder;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
-
-import lombok.Builder;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Builder
 public record RoomModifyResponse
-	(
-		Long roomId,
-		String roomName,
-		String studentName,
-		String subject,
-		List<LessonDayModifyResponse> lessonDays,
-		PermissionResponse parentPermission,
-		PermissionResponse studentPermission
-	)
-{
-	public static RoomModifyResponse from(final Room room, final String roomName, final Registration parentRegistration, final Registration studentRegistration) {
-		return RoomModifyResponse.builder()
-			.roomId(room.getId())
-			.roomName(roomName)
-			.studentName(room.getStudentName())
-			.subject(room.getSubject())
-			.lessonDays(room.getLessonDays().stream().map(LessonDayModifyResponse::from).toList())
-			.parentPermission(PermissionResponse.from(parentRegistration))
-			.studentPermission(PermissionResponse.from(studentRegistration))
-			.build();
-	}
+        (
+                Long roomId,
+                String roomName,
+                String studentName,
+                String subject,
+                List<String> lessonDays,
+                StudentPermissionResponse studentPermission,
+                ParentPermissionResponse parentPermission
+        ) {
+    public static RoomModifyResponse from(Room room, Long userId) {
+        Registration registration = room.getRegistration(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_REGISTRATION));
+        return new RoomModifyResponse(room.getId(), registration.getRoomName(), room.getStudentName(),
+                room.getSubject(),
+                room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList(),
+                StudentPermissionResponse.from(room.getStudentPermission()),
+                ParentPermissionResponse.from(room.getParentPermission())
+        );
+    }
 }

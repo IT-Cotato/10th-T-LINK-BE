@@ -1,8 +1,5 @@
 package org.cotato.tlinkserver.domain.room;
 
-import org.cotato.tlinkserver.domain.user.User;
-import org.cotato.tlinkserver.domain.user.constant.Role;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,8 +16,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.cotato.tlinkserver.domain.user.User;
+import org.cotato.tlinkserver.domain.user.constant.Role;
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Entity
 @Table(name = "registrations")
@@ -29,52 +28,88 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 public class Registration {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "registration_id", updatable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@OnDelete(action = OnDeleteAction.SET_NULL)
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "room_id")
-	private Room room;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role", nullable = false, length = 10)
-	private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private Role role;
 
-	@Column(name = "room_name", nullable = false, length = 50)
-	private String roomName;
+    @Column(nullable = false, length = 50)
+    private String roomName;
 
-	@Column(name = "lecture_file")
-	private boolean lectureFile;
+    @Builder
+    public Registration(Role role, String roomName) {
+        this.role = role;
+        this.roomName = roomName;
+    }
 
-	@Column(name = "homework")
-	private boolean homework;
+    public boolean getLectureFilePermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isLectureFile();
+        }
 
-	@Column(name = "grade_statistic")
-	private boolean gradeStatistic;
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isLectureFile();
+        }
 
-	@Column(name = "counseling_log")
-	private boolean counselingLog;
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
 
-	@Column(name = "deposit")
-	private boolean deposit;
+    public boolean getHomeworkPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isHomework();
+        }
 
-	@Builder
-	public Registration(Role role, String roomName, boolean lectureFile, boolean homework, boolean gradeStatistic,
-		boolean counselingLog, boolean deposit) {
-		this.role = role;
-		this.roomName = roomName;
-		this.lectureFile = lectureFile;
-		this.homework = homework;
-		this.gradeStatistic = gradeStatistic;
-		this.counselingLog = counselingLog;
-		this.deposit = deposit;
-	}
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isHomework();
+        }
 
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getGradeStatisticPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isGradeStatistic();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isGradeStatistic();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getCounselingLogPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isCounselingLog();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isCounselingLog();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean getDepositPermission() {
+        if (role == Role.STUDENT) {
+            return room.getStudentPermission().isDeposit();
+        }
+
+        if (role == Role.PARENT) {
+            return room.getStudentPermission().isDeposit();
+        }
+
+        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -11,11 +11,11 @@ public record RoomDetailPermissionDTO(
 ) {
     public static RoomDetailPermissionDTO from(final Registration registration) {
         return new RoomDetailPermissionDTO(
-                registration.isLectureFile(),
-                registration.isHomework(),
-                registration.isGradeStatistic(),
-                registration.isCounselingLog(),
-                registration.isDeposit()
+                registration.getLectureFilePermission(),
+                registration.getHomeworkPermission(),
+                registration.getGradeStatisticPermission(),
+                registration.getCounselingLogPermission(),
+                registration.getDepositPermission()
         );
     }
 }

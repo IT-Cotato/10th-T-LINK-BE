@@ -1,22 +1,18 @@
 package org.cotato.tlinkserver.global.util;
 
+import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Operations;
+import io.awspring.cloud.s3.S3Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
-
-import io.awspring.cloud.s3.ObjectMetadata;
-import io.awspring.cloud.s3.S3Operations;
-import io.awspring.cloud.s3.S3Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -35,8 +31,8 @@ public class S3FileHandler {
         try (InputStream is = multipartFile.getInputStream()) {
             log.info("File name : " + multipartFile.getOriginalFilename());
             log.info("Key : " + key);
-			s3Operations.upload(bucket, key, is,
-                ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
+            s3Operations.upload(bucket, key, is,
+                    ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
         }
     }
 

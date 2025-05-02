@@ -9,23 +9,23 @@ import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum Gender {
-	MALE("남성"),
-	FEMALE("여성");
+    MALE("남성"),
+    FEMALE("여성");
 
-	@JsonValue
-	private final String inKorean;
+    @JsonValue
+    private final String inKorean;
 
-	Gender(String inKorean) {
-		this.inKorean = inKorean;
-	}
+    Gender(String inKorean) {
+        this.inKorean = inKorean;
+    }
 
-	@JsonCreator
-	public static Gender from(final String input) {
-		return Arrays.stream(Gender.values())
-				.filter(role -> role.inKorean.equals(input))
-				.findFirst()
-				.orElseThrow(
-						() -> new TLinkException(ErrorMessage.BAD_REQUEST)
-				);
-	}
+    @JsonCreator
+    public static Gender from(final String input) {
+        return Arrays.stream(Gender.values())
+                .filter(role -> role.inKorean.equals(input))
+                .findFirst()
+                .orElseThrow(
+                        () -> new TLinkException(ErrorMessage.BAD_REQUEST)
+                );
+    }
 }

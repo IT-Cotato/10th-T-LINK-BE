@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cotato.tlinkserver.domain.token.RefreshToken;
 import org.cotato.tlinkserver.domain.token.infra.RefreshTokenRepository;
-import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.exception.UnauthorizedException;
 import org.springframework.stereotype.Service;

@@ -28,7 +28,7 @@ public class UserFacade {
 
     private void validateExistUser(long userId) {
         if (!userService.existUserById(userId)) {
-            throw new NotFoundException(ErrorMessage.NOT_FOUND);
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_USER);
         }
     }
 

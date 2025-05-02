@@ -1,7 +1,5 @@
 package org.cotato.tlinkserver.domain.room;
 
-import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cotato.tlinkserver.domain.room.constant.DayOfWeek;
 
 @Entity
 @Table(name = "lesson_days")
@@ -26,22 +25,21 @@ import lombok.Setter;
 @Setter
 public class LessonDay {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lesson_day_id", updatable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "room_id")
-	private Room room;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "lesson_day", nullable = false, length = 10)
-	private DayOfWeek lessonDay;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private DayOfWeek lessonDay;
 
-	@Builder
-	public LessonDay(DayOfWeek lessonDay) {
-		this.lessonDay = lessonDay;
-	}
+    @Builder
+    public LessonDay(DayOfWeek lessonDay) {
+        this.lessonDay = lessonDay;
+    }
 
 }

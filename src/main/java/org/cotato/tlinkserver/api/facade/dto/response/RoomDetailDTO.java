@@ -16,7 +16,7 @@ public record RoomDetailDTO(
     public static RoomDetailDTO of(final Registration userRegistration, final String studentUsername) {
         Integer depositAt = null;
 
-        if (userRegistration.isDeposit()) {
+        if (userRegistration.getDepositPermission()) {
             depositAt = userRegistration.getRoom().getDepositAt();
         }
 

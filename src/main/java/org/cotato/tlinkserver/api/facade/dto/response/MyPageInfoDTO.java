@@ -12,7 +12,7 @@ public record MyPageInfoDTO(
         return new MyPageInfoDTO(
                 user.getUsername(),
                 user.getPhoneNumber(),
-                user.getProfilePath(),
+                user.getProfileUrl(),
                 user.getStatusMessage()
         );
     }

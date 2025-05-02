@@ -7,8 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,17 +18,13 @@ import lombok.Setter;
 @Setter
 public class Bank {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "bank_id", updatable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "bank_name", nullable = false, length = 20)
-	private String name;
+    @Column(nullable = false, length = 20)
+    private String name;
 
-	@Builder
-	public Bank(String name) {
-		this.name = name;
-	}
-
+    @Column(nullable = false, length = 100)
+    private String logoPath;
 }

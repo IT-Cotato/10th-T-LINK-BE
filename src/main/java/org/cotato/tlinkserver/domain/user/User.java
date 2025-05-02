@@ -1,28 +1,27 @@
 package org.cotato.tlinkserver.domain.user;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cotato.tlinkserver.auth.command.OnboardCommand;
-import org.cotato.tlinkserver.domain.homework.HomeworkFile;
-import org.cotato.tlinkserver.domain.room.Registration;
-import org.cotato.tlinkserver.domain.user.constant.Gender;
-import org.cotato.tlinkserver.domain.user.constant.Role;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cotato.tlinkserver.auth.command.OnboardCommand;
+import org.cotato.tlinkserver.domain.homework.HomeworkFile;
+import org.cotato.tlinkserver.domain.room.Registration;
+import org.cotato.tlinkserver.domain.user.constant.Gender;
+import org.cotato.tlinkserver.domain.user.constant.Role;
 
 @Entity
 @Table(name = "users")
@@ -31,91 +30,85 @@ import lombok.Setter;
 @Setter
 public class User {
 
-	private static final String DEFAULT_STATUS_MESSAGE = "";
+    private static final String DEFAULT_STATUS_MESSAGE = "";
 
-	@Id
-	@Column(name = "user_id", updatable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "provider", nullable = false, length = 20)
-	private SocialProvider provider;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private SocialProvider provider;
 
-	@Column(name = "username", length = 10)
-	private String username;
+    @Column(length = 100)
+    private String socialId;
 
-	@Column(name = "phone_number", unique = true, length = 15)
-	private String phoneNumber;
+    @Column(length = 10)
+    private String username;
 
-	@Column(name = "profile_path", nullable = false, length = 250)
-	private String profilePath;
+    @Column(unique = true, length = 15)
+    private String phoneNumber;
 
-	@Column(name = "status_message", nullable = false, length = 50)
-	private String statusMessage;
+    @Column(nullable = false, length = 250)
+    private String profileUrl;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role", nullable = false, length = 10)
-	private Role role;
+    @Column(nullable = false, length = 50)
+    private String statusMessage;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", length = 2)
-	private Gender gender;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private Role role;
 
-	@OneToMany(mappedBy = "user")
-	private List<Registration> registrations = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @Column(length = 2)
+    private Gender gender;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<HomeworkFile> homeworkFiles = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Registration> registrations = new ArrayList<>();
 
-	@Builder
-	public User(long id, SocialProvider provider, String username, String phoneNumber, String profilePath, Role role, Gender gender) {
-		this.id = id;
-		this.provider = provider;
-		this.username = username;
-		this.phoneNumber = phoneNumber;
-		this.profilePath = profilePath;
-		this.statusMessage = "";
-		this.role = role;
-		this.gender = gender;
-		this.statusMessage = DEFAULT_STATUS_MESSAGE;
-	}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
-	public static User create(AuthUser createAuthUser) {
-		return new User(
-				createAuthUser.getId(),
-				createAuthUser.getSocialProvider(),
-				null,
-				null,
-				createAuthUser.getSocialProfileUrl(),
-				createAuthUser.getRole(),
-				null
-		);
-	}
+    @Builder
+    public User(String socialId, SocialProvider provider, String username, String phoneNumber, String profileUrl, Role role,
+                Gender gender) {
+        this.socialId = socialId;
+        this.provider = provider;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.profileUrl = profileUrl;
+        this.role = role;
+        this.gender = gender;
+        this.statusMessage = DEFAULT_STATUS_MESSAGE;
+    }
 
-	public void addOnboardInfo(OnboardCommand command) {
-		this.role = command.role();
-		this.username = command.username();
-		this.phoneNumber = command.phoneNumber();
-		this.gender = command.gender();
-	}
+    public static User create(AuthUser createAuthUser) {
+        return User.builder()
+                .socialId(createAuthUser.getSocialId())
+                .provider(createAuthUser.getSocialProvider())
+                .profileUrl(createAuthUser.getSocialProfileUrl())
+                .role(createAuthUser.getRole())
+                .build();
+    }
 
-	// 연관 관계 메서드
-	public void addRoomList(Registration registration) {
-		registrations.add(registration);
-		registration.setUser(this);
-	}
+    public void addOnboardInfo(OnboardCommand command) {
+        this.role = command.role();
+        this.username = command.username();
+        this.phoneNumber = command.phoneNumber();
+        this.gender = command.gender();
+    }
 
-	public void addHomeworkFile(HomeworkFile homeworkFile) {
-		homeworkFiles.add(homeworkFile);
-		homeworkFile.setUser(this);
-	}
+    public void addHomeworkFile(HomeworkFile homeworkFile) {
+        homeworkFiles.add(homeworkFile);
+        homeworkFile.setUser(this);
+    }
 
-	public void addRegistration(Registration registration) {
-		registrations.add(registration);
-		registration.setUser(this);
-	}
+    public void addRegistration(Registration registration) {
+        registrations.add(registration);
+        registration.setUser(this);
+    }
 
-	public boolean isOnboarding() {
-		return role == Role.ONBOARDING;
-	}
+    public boolean isOnboarding() {
+        return role == Role.ONBOARDING;
+    }
 }

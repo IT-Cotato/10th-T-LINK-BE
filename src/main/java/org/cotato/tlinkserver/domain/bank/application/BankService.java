@@ -1,30 +1,28 @@
 package org.cotato.tlinkserver.domain.bank.application;
 
 import java.util.List;
-
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cotato.tlinkserver.domain.bank.Bank;
 import org.cotato.tlinkserver.domain.bank.infra.repository.BankRepository;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class BankService {
 
-	private final BankRepository bankRepository;
+    private final BankRepository bankRepository;
 
-	public Bank getBank(Long bankId) {
-		return bankRepository.findById(bankId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
-	}
+    public Bank getBank(Long bankId) {
+        return bankRepository.findById(bankId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_BANK));
+    }
 
-	public List<Bank> getBanks() {
-		return bankRepository.findAll();
-	}
+    public List<Bank> getBanks() {
+        return bankRepository.findAll();
+    }
 
 }

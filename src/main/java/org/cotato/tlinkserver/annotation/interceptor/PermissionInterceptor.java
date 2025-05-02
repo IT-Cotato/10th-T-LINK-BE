@@ -30,13 +30,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (handler instanceof ResourceHttpRequestHandler)
+        if (handler instanceof ResourceHttpRequestHandler) {
             return true;
+        }
 
         HandlerMethod method = (HandlerMethod) handler;
         Permission permission = method.getMethodAnnotation(Permission.class);
-        if (permission == null)
+        if (permission == null) {
             return true;
+        }
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         Role role;

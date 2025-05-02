@@ -32,7 +32,7 @@ public class GradeStatisticController {
     @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
     @PostMapping
     public ResponseEntity<BaseResponse<?>> saveExamBox(@RequestBody @Validated SaveExamBoxRequest saveExamBoxRequest,
-        @PathVariable("roomId") @IdValidation Long roomId) {
+                                                       @PathVariable("roomId") @IdValidation Long roomId) {
         gradeStatisticFacade.saveExamBox(saveExamBoxRequest, roomId);
         return ApiResponseUtil.success(SuccessMessage.CREATED);
     }
@@ -70,7 +70,7 @@ public class GradeStatisticController {
     @Permission(role = {Role.TEACHER, Role.STUDENT, Role.PARENT})
     @DeleteMapping("/{examBoxId}/exams/{examId}")
     public ResponseEntity<BaseResponse<?>> removeExam(@PathVariable("examBoxId") @IdValidation Long examBoxId,
-                                                         @PathVariable("examId") @IdValidation Long examId) {
+                                                      @PathVariable("examId") @IdValidation Long examId) {
         gradeStatisticFacade.removeExam(examBoxId, examId);
         return ApiResponseUtil.success(SuccessMessage.DELETED);
     }

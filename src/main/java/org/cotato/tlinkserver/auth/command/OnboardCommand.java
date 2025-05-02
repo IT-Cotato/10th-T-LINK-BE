@@ -1,8 +1,8 @@
 package org.cotato.tlinkserver.auth.command;
 
+import org.cotato.tlinkserver.api.dto.request.OnboardRequest;
 import org.cotato.tlinkserver.domain.user.constant.Gender;
 import org.cotato.tlinkserver.domain.user.constant.Role;
-import org.cotato.tlinkserver.api.dto.request.OnboardRequest;
 import org.cotato.tlinkserver.global.exception.TLinkException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 

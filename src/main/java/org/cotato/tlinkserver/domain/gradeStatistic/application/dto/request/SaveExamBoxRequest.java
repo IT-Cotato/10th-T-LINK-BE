@@ -7,7 +7,7 @@ public record SaveExamBoxRequest(
         @NotBlank
         String examBoxName
 ) {
-        public ExamBox toEntity() {
-                return ExamBox.builder().name(examBoxName).build();
-        }
+    public ExamBox toEntity() {
+        return ExamBox.builder().name(examBoxName).build();
+    }
 }
