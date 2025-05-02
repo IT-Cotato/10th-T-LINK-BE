@@ -43,7 +43,7 @@ public class LectureFileBoxFacade {
                                         .getURL().toString()
                         );
                     } catch (IOException e) {
-                        throw new NotFoundException(ErrorMessage.NOT_FOUND);
+                        throw new NotFoundException(ErrorMessage.NOT_FOUND_LECTURE_FILE);
                     }
                 }).toList();
 
@@ -57,12 +57,13 @@ public class LectureFileBoxFacade {
 
     @Transactional(readOnly = true)
     public FileUrlsResponse getFilePaths(final Long lectureFileBoxId) {
-        List<String> keys = lectureFileService.getKeys(lectureFileBoxId);
-        List<String> urls = keys.stream().map(key -> {
+        List<String> filePaths = lectureFileBoxService.getLectureFileBox(lectureFileBoxId).getLectureFiles().stream()
+                .map(LectureFile::getFilePath).toList();
+        List<String> urls = filePaths.stream().map(key -> {
             try {
                 return s3FileHandler.downloadFile(FolderPath.generate(FolderPath.LECTURE, key)).getURL().toString();
             } catch (IOException e) {
-                throw new NotFoundException(ErrorMessage.NOT_FOUND);
+                throw new NotFoundException(ErrorMessage.NOT_FOUND_LECTURE_FILE);
             }
         }).toList();
 
@@ -104,7 +105,7 @@ public class LectureFileBoxFacade {
                 LectureFile lectureFile = lectureFiles.stream()
                         .filter(file -> file.getId().equals(id))
                         .findFirst()
-                        .orElseThrow();
+                        .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_LECTURE_FILE));
                 s3FileHandler.deleteFile(FolderPath.generate(FolderPath.LECTURE, lectureFile.getFilePath()));
                 lectureFiles.remove(lectureFile);
             });
@@ -119,7 +120,6 @@ public class LectureFileBoxFacade {
 
     private void saveLectureFiles(final List<MultipartFile> lectureFiles, final LectureFileBox lectureFileBox) throws
             IOException {
-        // S3 파일 저장 경로 생성
         List<String> filePaths = lectureFiles.stream()
                 .map(lectureFile -> s3FileHandler.generateS3Key(lectureFile.getOriginalFilename()))
                 .toList();
@@ -127,15 +127,13 @@ public class LectureFileBoxFacade {
         int size = lectureFiles.size();
 
         for (int i = 0; i < size; i++) {
-            LectureFile lectureFile = LectureFile.builder().    // 강의 자료 파일 생성
-                    lectureFileBox(lectureFileBox)
+            LectureFile lectureFile = LectureFile.builder()
                     .filePath(filePaths.get(i))
                     .originalName(lectureFiles.get(i).getOriginalFilename())
                     .build();
 
-            s3FileHandler.uploadFile(lectureFiles.get(i),
-                    FolderPath.generate(FolderPath.LECTURE, filePaths.get(i)));    // 파일 업로드
-            lectureFileBox.addLectureFile(lectureFile);    // 연관 관계 매핑
+            s3FileHandler.uploadFile(lectureFiles.get(i), FolderPath.generate(FolderPath.LECTURE, filePaths.get(i)));
+            lectureFileBox.addLectureFile(lectureFile);
         }
     }
 

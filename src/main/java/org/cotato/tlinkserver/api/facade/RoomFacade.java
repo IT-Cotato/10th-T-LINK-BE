@@ -137,7 +137,7 @@ public class RoomFacade {
     private Registration getValidRegistration(final Room room, final long userId) {
         return room.getRegistration(userId)
                 .orElseThrow(
-                        () -> new NotFoundException(ErrorMessage.NOT_FOUND)
+                        () -> new NotFoundException(ErrorMessage.NOT_FOUND_REGISTRATION)
                 );
     }
 

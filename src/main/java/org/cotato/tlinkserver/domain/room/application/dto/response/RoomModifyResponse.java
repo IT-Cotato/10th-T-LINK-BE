@@ -20,7 +20,7 @@ public record RoomModifyResponse
         ) {
     public static RoomModifyResponse from(Room room, Long userId) {
         Registration registration = room.getRegistration(userId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_REGISTRATION));
         return new RoomModifyResponse(room.getId(), registration.getRoomName(), room.getStudentName(),
                 room.getSubject(),
                 room.getLessonDays().stream().map(lessonDay -> lessonDay.getLessonDay().getInKorean()).toList(),

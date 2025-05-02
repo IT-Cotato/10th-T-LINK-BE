@@ -10,6 +10,8 @@ import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.Coun
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogResponse;
 import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogsResponse;
 import org.cotato.tlinkserver.domain.counselingLog.infra.repository.CounselingLogRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,7 +22,9 @@ public class CounselingLogService {
     private final CounselingLogRepository counselingLogRepository;
 
     public CounselingLogDetailResponse getCounselingLog(final Long counselingLogId) {
-        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId).orElseThrow();
+        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorMessage.NOT_FOUND_COUNSELING_LOG));
         return CounselingLogDetailResponse.from(counselingLog);
     }
 
@@ -32,7 +36,8 @@ public class CounselingLogService {
 
     public void modifyCounselingLog(final Long counselingLogId,
                                     final CounselingLogSaveRequest counselingLogSaveRequest) {
-        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId).orElseThrow();
+        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_COUNSELING_LOG));
         counselingLog.setTitle(counselingLogSaveRequest.title());
         counselingLog.setContent(counselingLogSaveRequest.content());
         counselingLog.setEngagement(counselingLogSaveRequest.engagement());

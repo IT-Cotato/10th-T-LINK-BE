@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.cotato.tlinkserver.domain.lectureFile.LectureFileBox;
 import org.cotato.tlinkserver.domain.lectureFile.application.dto.response.LectureFileBoxesResponse;
 import org.cotato.tlinkserver.domain.lectureFile.infra.repository.LectureFileBoxRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,7 +19,8 @@ public class LectureFileBoxService {
     private final LectureFileBoxRepository lectureFileBoxRepository;
 
     public LectureFileBox getLectureFileBox(final Long id) {
-        return lectureFileBoxRepository.findById(id).orElseThrow();
+        return lectureFileBoxRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_LECTURE_FILE_BOX));
     }
 
     public LectureFileBoxesResponse getLectureFileBoxes(final Long roomId) {

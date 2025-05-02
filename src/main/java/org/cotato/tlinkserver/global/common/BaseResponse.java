@@ -8,12 +8,14 @@ import org.cotato.tlinkserver.global.message.SuccessMessage;
 @Getter
 public class BaseResponse<T> {
     private final int status;
+    private final String code;
     private final String message;
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private final T data;
 
     private BaseResponse(Builder<T> builder) {
         this.status = builder.status;
+        this.code = builder.code;
         this.message = builder.message;
         this.data = builder.data;
     }
@@ -36,6 +38,7 @@ public class BaseResponse<T> {
     public static BaseResponse<?> of(ErrorMessage errorMessage) {
         return builder()
                 .status(errorMessage.getHttpStatus().value())
+                .code(errorMessage.getCode())
                 .message(errorMessage.getMessage())
                 .build();
     }
@@ -43,6 +46,7 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<?> of(ErrorMessage errorMessage, T data) {
         return builder()
                 .status(errorMessage.getHttpStatus().value())
+                .code(errorMessage.getCode())
                 .message(errorMessage.getMessage())
                 .data(data)
                 .build();
@@ -54,11 +58,17 @@ public class BaseResponse<T> {
 
     public static class Builder<T> {
         private int status;
+        private String code;
         private String message;
         private T data;
 
         public Builder<T> status(int status) {
             this.status = status;
+            return this;
+        }
+
+        public Builder<T> code(String code) {
+            this.code = code;
             return this;
         }
 

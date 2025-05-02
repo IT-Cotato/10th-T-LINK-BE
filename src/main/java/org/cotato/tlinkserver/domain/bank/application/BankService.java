@@ -18,7 +18,7 @@ public class BankService {
     private final BankRepository bankRepository;
 
     public Bank getBank(Long bankId) {
-        return bankRepository.findById(bankId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+        return bankRepository.findById(bankId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_BANK));
     }
 
     public List<Bank> getBanks() {

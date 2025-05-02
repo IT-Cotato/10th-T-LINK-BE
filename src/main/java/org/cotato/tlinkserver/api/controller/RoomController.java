@@ -47,7 +47,8 @@ public class RoomController {
 
     @Permission(role = {Role.TEACHER})
     @GetMapping("/{roomId}/info")
-    public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") @IdValidation Long roomId, @UserId Long userId) {
+    public ResponseEntity<BaseResponse<?>> getRoomModify(@PathVariable("roomId") @IdValidation Long roomId,
+                                                         @UserId Long userId) {
         RoomModifyResponse roomModify = roomFacade.getRoomModify(roomId, userId);
         return ApiResponseUtil.success(SuccessMessage.SUCCESS, roomModify);
     }
@@ -78,7 +79,8 @@ public class RoomController {
     public ResponseEntity<BaseResponse<?>> joinRoom(@UserId Long userId, @PathVariable("shareCode") String shareCode) {
         int result = roomFacade.joinRoom(userId, shareCode);
         return switch (result) {
-            case 0, -1 -> ApiResponseUtil.failure(ErrorMessage.NOT_FOUND, result);
+            case 0 -> ApiResponseUtil.failure(ErrorMessage.ALREADY_ENTERED, result);
+            case -1 -> ApiResponseUtil.failure(ErrorMessage.ALREADY_OCCUPIED, result);
             default -> ApiResponseUtil.success(SuccessMessage.SUCCESS);
         };
     }

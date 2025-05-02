@@ -26,12 +26,12 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public Room getRoom(final Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+        return roomRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
     }
 
     public Room getRoom(final String shareCode) {
         return roomRepository.findByShareCode(shareCode)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
     }
 
     public Long saveRoom(final User teacher, final RoomSaveRequest request) {
@@ -59,7 +59,8 @@ public class RoomService {
     }
 
     public RoomModifyResponse getRoomModify(Long roomId, Long userId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND));
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
         return RoomModifyResponse.from(room, userId);
     }
 
