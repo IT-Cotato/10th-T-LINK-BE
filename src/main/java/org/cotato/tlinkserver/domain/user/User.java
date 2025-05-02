@@ -40,6 +40,9 @@ public class User {
     @Column(nullable = false, length = 20)
     private SocialProvider provider;
 
+    @Column(length = 100)
+    private String socialId;
+
     @Column(length = 10)
     private String username;
 
@@ -47,7 +50,7 @@ public class User {
     private String phoneNumber;
 
     @Column(nullable = false, length = 250)
-    private String profilePath;
+    private String profileUrl;
 
     @Column(nullable = false, length = 50)
     private String statusMessage;
@@ -67,28 +70,25 @@ public class User {
     private List<HomeworkFile> homeworkFiles = new ArrayList<>();
 
     @Builder
-    public User(long id, SocialProvider provider, String username, String phoneNumber, String profilePath, Role role,
+    public User(String socialId, SocialProvider provider, String username, String phoneNumber, String profileUrl, Role role,
                 Gender gender) {
-        this.id = id;
+        this.socialId = socialId;
         this.provider = provider;
         this.username = username;
         this.phoneNumber = phoneNumber;
-        this.profilePath = profilePath;
+        this.profileUrl = profileUrl;
         this.role = role;
         this.gender = gender;
         this.statusMessage = DEFAULT_STATUS_MESSAGE;
     }
 
     public static User create(AuthUser createAuthUser) {
-        return new User(
-                createAuthUser.getId(),
-                createAuthUser.getSocialProvider(),
-                null,
-                null,
-                createAuthUser.getSocialProfileUrl(),
-                createAuthUser.getRole(),
-                null
-        );
+        return User.builder()
+                .socialId(createAuthUser.getSocialId())
+                .provider(createAuthUser.getSocialProvider())
+                .profileUrl(createAuthUser.getSocialProfileUrl())
+                .role(createAuthUser.getRole())
+                .build();
     }
 
     public void addOnboardInfo(OnboardCommand command) {

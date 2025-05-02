@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtTokenGenerator {
 
+    private static final String JWT_TYPE = "JWT";
     private static final String JWT_CLAIM_ROLE = "role";
     private static final String JWT_IS_ACCESS_TOKEN = "isAccessToken";
 
@@ -31,12 +32,12 @@ public class JwtTokenGenerator {
         claims.put(JWT_IS_ACCESS_TOKEN, true);
 
         return Jwts.builder()
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setClaims(claims)
-                .setSubject(payload)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtProperties.accessTokenValidTime()))
-                .signWith(keyGenerator.getKeyFromString(jwtProperties.secretKey()), SignatureAlgorithm.HS256)
+                .header().type(JWT_TYPE).and()
+                .claims(claims)
+                .subject(payload)
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + jwtProperties.accessTokenValidTime()))
+                .signWith(keyGenerator.getKeyFromString(jwtProperties.secretKey()))
                 .compact();
     }
 
@@ -49,12 +50,12 @@ public class JwtTokenGenerator {
         claims.put(JWT_IS_ACCESS_TOKEN, true);
 
         return Jwts.builder()
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setClaims(claims)
-                .setSubject(payload)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtProperties.refreshTokenValidTime()))
-                .signWith(keyGenerator.getKeyFromString(jwtProperties.secretKey()), SignatureAlgorithm.HS256)
+                .header().type(JWT_TYPE).and()
+                .claims(claims)
+                .subject(payload)
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + jwtProperties.refreshTokenValidTime()))
+                .signWith(keyGenerator.getKeyFromString(jwtProperties.secretKey()))
                 .compact();
     }
 }
