@@ -54,6 +54,7 @@ public class AuthUser {
                 .socialId(user.getSocialId())
                 .socialProvider(user.getProvider())
                 .socialProfileUrl(user.getProfileUrl())
+                .role(user.getRole())
                 .build();
     }
 }

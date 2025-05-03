@@ -57,6 +57,7 @@ public class LoginService {
     @Transactional
     public Token getToken(AuthUser authUser) {
         Token token = createToken(authUser);
+        refreshTokenRepository.deleteAllByUserId(authUser.getId());
         refreshTokenRepository.save(
                 RefreshToken.of(token.refreshToken(), authUser.getId())
         );
@@ -75,8 +76,8 @@ public class LoginService {
 
     private Token createToken(AuthUser authUser) {
         return new Token(
-                jwtTokenGenerator.createAccessToken(String.valueOf(authUser.getSocialId()), authUser.getRole()),
-                jwtTokenGenerator.createRefreshToken(String.valueOf(authUser.getSocialId()), authUser.getRole())
+                jwtTokenGenerator.createAccessToken(String.valueOf(authUser.getId()), authUser.getRole()),
+                jwtTokenGenerator.createRefreshToken(String.valueOf(authUser.getId()), authUser.getRole())
         );
     }
 

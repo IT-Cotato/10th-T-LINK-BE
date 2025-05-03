@@ -60,9 +60,14 @@ public class ReissueService {
 
     @Transactional(readOnly = true)
     public Token regenerateToken(long userId, Role role) {
-        return new Token(
+        Token token = new Token(
                 jwtTokenGenerator.createAccessToken(String.valueOf(userId), role),
                 jwtTokenGenerator.createRefreshToken(String.valueOf(userId), role)
         );
+        RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
+                .orElseThrow(UnauthorizedException::wrong);
+
+        refreshToken.setRefreshToken(token.refreshToken());
+        return token;
     }
 }
