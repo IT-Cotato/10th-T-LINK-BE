@@ -109,8 +109,11 @@ public class RoomFacade {
 
         Registration registration = registrationService.getRegistration(room.getId(), user.getRole());
 
-        if (registration.getUser() == null) {
-            registration.setUser(user);
+        if (registration == null) {
+
+            registration = new Registration(user.getRole(),
+                    room.getRegistrations().stream().filter(r -> r.getRole().equals(Role.TEACHER)).findFirst().get()
+                            .getRoomName());
             user.addRegistration(registration);
             return 1;
         } else if (registration.getUser().equals(user)) {
