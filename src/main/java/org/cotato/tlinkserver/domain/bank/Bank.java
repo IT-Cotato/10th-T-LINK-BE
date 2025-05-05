@@ -26,5 +26,5 @@ public class Bank {
     private String name;
 
     @Column(nullable = false, length = 100)
-    private String logoPath;
+    private String logoName;
 }
