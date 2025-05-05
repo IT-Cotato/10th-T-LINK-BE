@@ -115,7 +115,7 @@ public class RoomController {
     @GetMapping("/{roomId}")
     public ResponseEntity<BaseResponse<?>> viewRoomDetail(
             @UserId Long userId,
-            @PathVariable @NotNull Long roomId
+            @PathVariable("roomId") @NotNull Long roomId
     ) {
         RoomDetailDTO roomDetailDTO = roomFacade.getRoomDetail(userId, roomId);
         return ApiResponseUtil.success(SuccessMessage.SUCCESS, RoomDetailResponse.from(roomDetailDTO));

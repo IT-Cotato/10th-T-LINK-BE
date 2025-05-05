@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cotato.tlinkserver.domain.user.User;
 import org.cotato.tlinkserver.domain.user.constant.Role;
-import org.cotato.tlinkserver.global.exception.TLinkException;
-import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Entity
 @Table(name = "registrations")
@@ -62,7 +60,7 @@ public class Registration {
             return room.getStudentPermission().isLectureFile();
         }
 
-        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+        return true;
     }
 
     public boolean getHomeworkPermission() {
@@ -74,7 +72,7 @@ public class Registration {
             return room.getStudentPermission().isHomework();
         }
 
-        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+        return true;
     }
 
     public boolean getGradeStatisticPermission() {
@@ -86,7 +84,7 @@ public class Registration {
             return room.getStudentPermission().isGradeStatistic();
         }
 
-        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+        return true;
     }
 
     public boolean getCounselingLogPermission() {
@@ -98,7 +96,7 @@ public class Registration {
             return room.getStudentPermission().isCounselingLog();
         }
 
-        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+        return true;
     }
 
     public boolean getDepositPermission() {
@@ -110,6 +108,6 @@ public class Registration {
             return room.getStudentPermission().isDeposit();
         }
 
-        throw new TLinkException(ErrorMessage.INTERNAL_SERVER_ERROR);
+        return true;
     }
 }
