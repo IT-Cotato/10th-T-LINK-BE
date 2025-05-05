@@ -6,7 +6,6 @@ import org.cotato.tlinkserver.api.dto.response.RoomLessonDayResponse;
 import org.cotato.tlinkserver.domain.room.Registration;
 import org.cotato.tlinkserver.domain.room.Room;
 import org.cotato.tlinkserver.domain.user.User;
-import org.cotato.tlinkserver.domain.user.constant.Role;
 
 @Builder
 public record RoomResponse
@@ -17,11 +16,8 @@ public record RoomResponse
                 List<RoomLessonDayResponse> lessonDays,
                 OpponentResponse opponent
         ) {
-    public static RoomResponse from(Registration registration, String roomName) {
-        Room room = registration.getRoom();
-        User opponent = registration.getUser();
-
-        if (opponent == null) {
+    public static RoomResponse from(Room room, String roomName, Registration registration) {
+        if (registration == null) {
             return RoomResponse.builder()
                     .roomId(room.getId())
                     .roomName(roomName)
@@ -32,7 +28,20 @@ public record RoomResponse
                     .build();
         }
 
-        if (opponent.getRole().equals(Role.TEACHER)) {
+        User teacher = registration.getUser();
+        return RoomResponse.builder()
+                .roomId(room.getId())
+                .roomName(roomName)
+                .subject(room.getSubject())
+                .lessonDays(room.getLessonDays().stream()
+                        .map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean()))
+                        .toList())
+                .opponent(OpponentResponse.from(teacher, teacher.getUsername()))
+                .build();
+    }
+
+    public static RoomResponse from(Room room, String roomName, Registration registration, String studentName) {
+        if (registration == null) {
             return RoomResponse.builder()
                     .roomId(room.getId())
                     .roomName(roomName)
@@ -40,18 +49,18 @@ public record RoomResponse
                     .lessonDays(room.getLessonDays().stream()
                             .map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean()))
                             .toList())
-                    .opponent(OpponentResponse.from(opponent, opponent.getUsername()))
-                    .build();
-        } else {
-            return RoomResponse.builder()
-                    .roomId(room.getId())
-                    .roomName(roomName)
-                    .subject(room.getSubject())
-                    .lessonDays(room.getLessonDays().stream()
-                            .map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean()))
-                            .toList())
-                    .opponent(OpponentResponse.from(opponent, room.getStudentName()))
                     .build();
         }
+
+        User student = registration.getUser();
+        return RoomResponse.builder()
+                .roomId(room.getId())
+                .roomName(roomName)
+                .subject(room.getSubject())
+                .lessonDays(room.getLessonDays().stream()
+                        .map(lessonDay -> RoomLessonDayResponse.from(lessonDay.getLessonDay().getInKorean()))
+                        .toList())
+                .opponent(OpponentResponse.from(student, studentName))
+                .build();
     }
 }

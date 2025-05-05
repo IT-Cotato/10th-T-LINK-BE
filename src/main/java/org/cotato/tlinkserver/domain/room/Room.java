@@ -58,11 +58,11 @@ public class Room {
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "student_permission_id")
     private StudentPermission studentPermission;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "parent_permission_id")
     private ParentPermission parentPermission;
 

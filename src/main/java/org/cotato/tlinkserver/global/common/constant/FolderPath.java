@@ -1,7 +1,7 @@
 package org.cotato.tlinkserver.global.common.constant;
 
 public enum FolderPath {
-    LECTURE("lecture"), HOMEWORK("homework");
+    LECTURE("lecture"), HOMEWORK("homework"), BANK_LOGO("bank-logo");
 
     private static final String DELIMITER = "/";
     private final String path;
@@ -16,5 +16,9 @@ public enum FolderPath {
 
     public String path() {
         return this.path;
+    }
+
+    public static String getBackLogoPath() {
+        return BANK_LOGO.path() + DELIMITER;
     }
 }
