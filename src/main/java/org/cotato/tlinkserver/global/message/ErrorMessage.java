@@ -42,6 +42,7 @@ public enum ErrorMessage {
     CONFLICT(HttpStatus.CONFLICT, "COMMON-006", "이미 처리된 리소스입니다."),
     ALREADY_ENTERED(HttpStatus.CONFLICT, "ROOM-003", "현재 접속한 방입니다."),
     ALREADY_OCCUPIED(HttpStatus.CONFLICT, "ROOM-004", "다른 유저가 접속한 방입니다."),
+    DUPLICATED_PHONE_NUMBER(HttpStatus.CONFLICT, "USER-002", "중복된 전화번호가 있습니다."),
 
     /* 500 Internal Server Error*/
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-007", "서버 내부에서 오류가 발생했습니다."),

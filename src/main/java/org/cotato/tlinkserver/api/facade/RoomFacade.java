@@ -1,6 +1,7 @@
 package org.cotato.tlinkserver.api.facade;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.cotato.tlinkserver.annotation.Facade;
 import org.cotato.tlinkserver.api.dto.RoomJoinResponse;
@@ -106,17 +107,16 @@ public class RoomFacade {
     public int joinRoom(final Long userId, final String shareCode) {
         User user = userService.getValidUser(userId);
         Room room = roomService.getRoom(shareCode);
-
-        Registration registration = registrationService.getRegistration(room.getId(), user.getRole());
-
-        if (registration == null) {
-
-            registration = new Registration(user.getRole(),
+        Optional<Registration> registration = room.getRegistrations().stream()
+                .filter(r -> r.getRole().equals(user.getRole())).findFirst();
+        if (registration.isEmpty()) {
+            Registration newRegistration = new Registration(user.getRole(),
                     room.getRegistrations().stream().filter(r -> r.getRole().equals(Role.TEACHER)).findFirst().get()
                             .getRoomName());
-            user.addRegistration(registration);
+            user.addRegistration(newRegistration);
+            room.addRegistration(newRegistration);
             return 1;
-        } else if (registration.getUser().equals(user)) {
+        } else if (registration.get().getUser().equals(user)) {
             return 0;
         } else {
             return -1;
