@@ -1,16 +1,33 @@
 package org.cotato.tlinkserver.domain.user.constant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Arrays;
 import lombok.Getter;
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum Role {
-	TEACHER("선생님"),
-	PARENT("학부모"),
-	STUDENT("학생");
+    ONBOARDING("ONBOARDING"),
+    TEACHER("TEACHER"),
+    PARENT("PARENT"),
+    STUDENT("STUDENT");
 
-	private final String inKorean;
+    @JsonValue
+    private final String inKorean;
 
-	Role(String inKorean) {
-		this.inKorean = inKorean;
-	}
+    Role(String inKorean) {
+        this.inKorean = inKorean;
+    }
+
+    @JsonCreator
+    public static Role from(final String input) {
+        return Arrays.stream(Role.values())
+                .filter(role -> role.inKorean.equals(input))
+                .findFirst()
+                .orElseThrow(
+                        () -> new TLinkException(ErrorMessage.BAD_REQUEST)
+                );
+    }
 }

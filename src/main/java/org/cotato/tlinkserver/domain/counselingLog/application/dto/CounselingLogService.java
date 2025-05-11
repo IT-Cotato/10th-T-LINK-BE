@@ -1,0 +1,50 @@
+package org.cotato.tlinkserver.domain.counselingLog.application.dto;
+
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.cotato.tlinkserver.domain.counselingLog.CounselingLog;
+import org.cotato.tlinkserver.domain.counselingLog.application.dto.request.CounselingLogSaveRequest;
+import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogDetailResponse;
+import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogResponse;
+import org.cotato.tlinkserver.domain.counselingLog.application.dto.response.CounselingLogsResponse;
+import org.cotato.tlinkserver.domain.counselingLog.infra.repository.CounselingLogRepository;
+import org.cotato.tlinkserver.global.exception.NotFoundException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class CounselingLogService {
+
+    private final CounselingLogRepository counselingLogRepository;
+
+    public CounselingLogDetailResponse getCounselingLog(final Long counselingLogId) {
+        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorMessage.NOT_FOUND_COUNSELING_LOG));
+        return CounselingLogDetailResponse.from(counselingLog);
+    }
+
+    public CounselingLogsResponse getCounselingLogs(final Long roomId) {
+        List<CounselingLogResponse> counselingLogs = counselingLogRepository.findCounselingLogsByRoomId(roomId).stream()
+                .map(CounselingLogResponse::from).toList();
+        return CounselingLogsResponse.from(counselingLogs);
+    }
+
+    public void modifyCounselingLog(final Long counselingLogId,
+                                    final CounselingLogSaveRequest counselingLogSaveRequest) {
+        CounselingLog counselingLog = counselingLogRepository.findById(counselingLogId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_COUNSELING_LOG));
+        counselingLog.setTitle(counselingLogSaveRequest.title());
+        counselingLog.setContent(counselingLogSaveRequest.content());
+        counselingLog.setEngagement(counselingLogSaveRequest.engagement());
+        counselingLog.setHomeworkSubmitted(counselingLogSaveRequest.homeworkSubmitted());
+    }
+
+    public void removeCounselingLog(final Long counselingLogId) {
+        counselingLogRepository.deleteById(counselingLogId);
+    }
+}

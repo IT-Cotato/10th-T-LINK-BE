@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,25 +22,24 @@ import lombok.Setter;
 @Setter
 public class LectureFile {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lecture_file_id", updatable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "lecture_file_box_id")
-	private LectureFileBox lectureFileBox;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_file_box_id")
+    private LectureFileBox lectureFileBox;
 
-	@Column(name = "original_name", nullable = false, length = 30)
-	private String originalName;
+    @Column(name = "original_name", nullable = false, length = 50)
+    private String originalName;
 
-	@Column(name = "file_path", nullable = false, length = 250)
-	private String filePath;
+    @Column(name = "file_path", nullable = false, length = 250)
+    private String filePath;
 
-	@Builder
-	public LectureFile(LectureFileBox lectureFileBox, String originalName, String filePath) {
-		this.lectureFileBox = lectureFileBox;
-		this.originalName = originalName;
-		this.filePath = filePath;
-	}
+    @Builder
+    public LectureFile(LectureFileBox lectureFileBox, String originalName, String filePath) {
+        this.lectureFileBox = lectureFileBox;
+        this.originalName = originalName;
+        this.filePath = filePath;
+    }
 }

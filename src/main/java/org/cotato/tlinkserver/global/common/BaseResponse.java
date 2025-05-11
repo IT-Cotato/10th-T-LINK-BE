@@ -1,0 +1,89 @@
+package org.cotato.tlinkserver.global.common;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
+import org.cotato.tlinkserver.global.message.SuccessMessage;
+
+@Getter
+public class BaseResponse<T> {
+    private final int status;
+    private final String code;
+    private final String message;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private final T data;
+
+    private BaseResponse(Builder<T> builder) {
+        this.status = builder.status;
+        this.code = builder.code;
+        this.message = builder.message;
+        this.data = builder.data;
+    }
+
+    public static BaseResponse<?> of(SuccessMessage successMessage) {
+        return builder()
+                .status(successMessage.getHttpStatus().value())
+                .message(successMessage.getMessage())
+                .build();
+    }
+
+    public static <T> BaseResponse<?> of(SuccessMessage successMessage, T data) {
+        return builder()
+                .status(successMessage.getHttpStatus().value())
+                .message(successMessage.getMessage())
+                .data(data)
+                .build();
+    }
+
+    public static BaseResponse<?> of(ErrorMessage errorMessage) {
+        return builder()
+                .status(errorMessage.getHttpStatus().value())
+                .code(errorMessage.getCode())
+                .message(errorMessage.getMessage())
+                .build();
+    }
+
+    public static <T> BaseResponse<?> of(ErrorMessage errorMessage, T data) {
+        return builder()
+                .status(errorMessage.getHttpStatus().value())
+                .code(errorMessage.getCode())
+                .message(errorMessage.getMessage())
+                .data(data)
+                .build();
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static class Builder<T> {
+        private int status;
+        private String code;
+        private String message;
+        private T data;
+
+        public Builder<T> status(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder<T> code(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public BaseResponse<T> build() {
+            return new BaseResponse<T>(this);
+        }
+    }
+}

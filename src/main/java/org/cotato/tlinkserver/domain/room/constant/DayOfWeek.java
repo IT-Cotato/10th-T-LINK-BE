@@ -1,20 +1,37 @@
 package org.cotato.tlinkserver.domain.room.constant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Arrays;
 import lombok.Getter;
+import org.cotato.tlinkserver.global.exception.TLinkException;
+import org.cotato.tlinkserver.global.message.ErrorMessage;
 
 @Getter
 public enum DayOfWeek {
-	MONDAY("월요일"),
-	TUESDAY("화요일"),
-	WEDNESDAY("수요일"),
-	THURSDAY("목요일"),
-	FRIDAY("금요일"),
-	SATURDAY("토요일"),
-	SUNDAY("일요일");
+    MONDAY("월"),
+    TUESDAY("화"),
+    WEDNESDAY("수"),
+    THURSDAY("목"),
+    FRIDAY("금"),
+    SATURDAY("토"),
+    SUNDAY("일");
 
-	private final String inKorean;
+    @JsonValue
+    private final String inKorean;
 
-	DayOfWeek(String inKorean) {
-		this.inKorean = inKorean;
-	}
+    DayOfWeek(String inKorean) {
+        this.inKorean = inKorean;
+    }
+
+    @JsonCreator
+    public static DayOfWeek from(final String input) {
+        return Arrays.stream(DayOfWeek.values())
+                .filter(day -> day.inKorean.equals(input))
+                .findFirst()
+                .orElseThrow(
+                        () -> new TLinkException(ErrorMessage.BAD_REQUEST)
+                );
+    }
+
 }
