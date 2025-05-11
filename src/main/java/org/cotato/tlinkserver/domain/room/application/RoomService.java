@@ -17,6 +17,7 @@ import org.cotato.tlinkserver.domain.user.constant.Role;
 import org.cotato.tlinkserver.global.exception.NotFoundException;
 import org.cotato.tlinkserver.global.message.ErrorMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -25,15 +26,18 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
+    @Transactional(readOnly = true)
     public Room getRoom(final Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
     }
 
+    @Transactional(readOnly = true)
     public Room getRoom(final String shareCode) {
         return roomRepository.findByShareCode(shareCode)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
     }
 
+    @Transactional
     public Long saveRoom(final User teacher, final RoomSaveRequest request) {
         Room room = Room.builder()
                 .studentName(request.studentName())
@@ -54,16 +58,19 @@ public class RoomService {
         return roomRepository.save(room).getId();
     }
 
+    @Transactional
     public void removeRoom(final Room room) {
         roomRepository.delete(room);
     }
 
+    @Transactional(readOnly = true)
     public RoomModifyResponse getRoomModify(Long roomId, Long userId) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_ROOM));
         return RoomModifyResponse.from(room, userId);
     }
 
+    @Transactional
     public void modify(Room room, Registration registration, RoomModifyRequest request) {
         room.setStudentName(request.studentName());
         room.setSubject(request.subject());
@@ -77,6 +84,7 @@ public class RoomService {
         modifyPermission(room.getStudentPermission(), request);
     }
 
+    @Transactional
     public void modify(Registration registration, RoomModifyRequest request) {
         registration.setRoomName(request.roomName());
     }
